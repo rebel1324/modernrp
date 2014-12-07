@@ -54,6 +54,10 @@ local sheetItems = {
 		{defaultCloth, "A Black Suits", 18},
 	}
 }
+local categoryName = {
+	[1] = "Male Clothes",
+	[2] = "Female Clothes"
+}
 
 function PLUGIN:PluginLoaded()
 	for cat, data in ipairs(sheetItems) do
@@ -63,6 +67,7 @@ function PLUGIN:PluginLoaded()
 			ITEM.desc = v[2]
 			ITEM.sheet = {cat, v[3]} -- sheetdata [1]<male> index [2]<fancy>
 			ITEM.isCloth = true
+			ITEM.category = categoryName[cat] or "Clothes"
 		end
 	end
 end

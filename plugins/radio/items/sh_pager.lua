@@ -2,6 +2,7 @@ ITEM.name = "Pager"
 ITEM.model = "models/gibs/shield_scanner_gib1.mdl"
 ITEM.width = 1
 ITEM.height = 1
+ITEM.category = "Communication"
 function ITEM:getDesc()
 	local str
 	

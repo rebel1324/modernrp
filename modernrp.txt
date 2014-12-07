@@ -1,0 +1,7 @@
+"sample"
+{
+	"base"		"nutscript"
+	"title"		"Sample"
+	"author"	"Chessnut"
+	"menusystem" "1"
+}

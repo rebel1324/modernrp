@@ -1,7 +1,7 @@
-"sample"
+"modernrp"
 {
 	"base"		"nutscript"
-	"title"		"Sample"
-	"author"	"Chessnut"
+	"title"		"Modern RP Base"
+	"author"	"Black Tea"
 	"menusystem" "1"
 }

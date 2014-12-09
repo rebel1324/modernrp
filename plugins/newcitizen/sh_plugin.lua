@@ -46,6 +46,15 @@ if (CLIENT) then
 	end
 end
 
+function PLUGIN:OnCharFallover(client, ragdoll, isFallen)
+	if (client and ragdoll and client:IsValid() and ragdoll:IsValid() and client:getChar() and isFallen) then
+		local mats = client:GetMaterials()
+		for k, v in pairs(mats) do
+			ragdoll:SetSubMaterial(k - 1, client:GetSubMaterial(k - 1))
+		end
+	end
+end
+
 function changeFacemap(client, value, ragdoll)
 	local model = string.lower(client:GetModel())
 	local modelData = RESKINDATA[model]

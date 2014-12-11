@@ -2,7 +2,7 @@ AddCSLuaFile()
 
 if CLIENT then
 	SWEP.DrawCrosshair = false
-	SWEP.PrintName = "GALIL"
+	SWEP.PrintName = "SMG"
 	SWEP.CSMuzzleFlashes = true
 	SWEP.ViewModelMovementScale = 0.6
 	SWEP.ZoomAmount = 5
@@ -28,20 +28,20 @@ SWEP.Contact		= ""
 SWEP.Purpose		= ""
 SWEP.Instructions	= ""
 
-SWEP.ViewModel		= "models/weapons/cstrike/c_rif_galil.mdl"
-SWEP.WorldModel		= "models/weapons/w_rif_galil.mdl"
+SWEP.ViewModel		= "models/weapons/c_smg1.mdl"
+SWEP.WorldModel		= "models/weapons/w_smg1.mdl"
 
 SWEP.Spawnable			= true
 SWEP.AdminSpawnable		= true
 
 SWEP.ViewModelFOV	= 65
-SWEP.Primary.ClipSize		= 30
+SWEP.Primary.ClipSize		= 45
 SWEP.Primary.DefaultClip	= 30
 SWEP.Primary.Automatic		= true
 SWEP.Primary.Ammo			= "smg1"
 
-SWEP.FireDelay = 0.12
-SWEP.FireSound = Sound("Weapon_Galil.Single")
+SWEP.FireDelay = 0.07
+SWEP.FireSound = Sound("Weapon_SMG1.Single")
 SWEP.Recoil = 1
 
 SWEP.Spread = 0.007
@@ -55,12 +55,13 @@ SWEP.Damage = 30
 SWEP.DeployTime = 1
 SWEP.ReloadTime = 1.75
 SWEP.muzScale = .5
-SWEP.ShellAngle = Vector( -20, -40, 0)
-SWEP.Shell = 2
+SWEP.ShellAngle = Vector(40, -40, 0)
+SWEP.Shell = 1
 SWEP.ShellSize = .6
 SWEP.LowerAngles = Angle(45, -15, -15)
 SWEP.AimPos = Vector(-4.36, -2, 1)
 SWEP.AimAng = Vector(0, 0, 0)
+SWEP.AdjustPos = Vector(-1.5, 1, -2)
 
 function SWEP:ViewMuzzleFlash()
 	if !self.Owner:ShouldDrawLocalPlayer() then
@@ -82,9 +83,14 @@ end
 
 
 if (CLIENT) then
+	local function fFrameTime()
+		return math.Clamp(FrameTime(), 1/60, 1)
+	end
+
+
 	function SWEP:PostDrawViewModel(vm, weapon, client)
 		local vm = self.Owner:GetViewModel()
-		local at = vm:LookupAttachment("1")
+		local at = vm:LookupAttachment("muzzle")
 		local atpos = vm:GetAttachment(at)
 
 		self.emitter:DrawAt(atpos.Pos, atpos.Ang)

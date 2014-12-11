@@ -43,6 +43,7 @@ SWEP.Secondary.Ammo			= "none"
 SWEP.AddSpread = 0
 SWEP.SpreadWait = 0
 SWEP.AddSpreadSpeed = 1
+SWEP.AdjustPos = Vector(0, 0, 0)
 
 local math = math
 
@@ -61,6 +62,8 @@ function SWEP:Initialize()
 	self.CurCone = self.Spread
 	
 	if CLIENT then
+		self.emitter = ParticleEmitter(Vector(0, 0, 0))
+
 		if self.RequiresHands then -- ooh spy, is it bone merge!?
 			self.Hands = ClientsideModel("models/weapons/c_arms_cstrike.mdl", RENDERGROUP_BOTH)
 			self.Hands:SetNoDraw(true)
@@ -377,13 +380,19 @@ if CLIENT then
 	
 	function SWEP:ViewModelDrawn()
 		EP, EA2, FT = EyePos(), EyeAngles(), fFrameTime()
-		
+		local vm = self.Owner:GetViewModel()
+		local at = vm:LookupAttachment("1")
+		local atpos = vm:GetAttachment(at)
+		if IsValid(self.emitter) then
+			self.emitter:DrawAt(atpos.Pos, atpos.Ang)
+		end
+
 		if IsValid(self.Hands) then
 			self.Hands:SetRenderOrigin(EP)
 			self.Hands:SetRenderAngles(EA2)
 			self.Hands:FrameAdvance(FT)
 			self.Hands:SetupBones()
-			self.Hands:SetParent(self.Owner:GetViewModel())
+			self.Hands:SetParent(vm)
 			self.Hands:DrawModel()
 		end
 	end
@@ -520,6 +529,7 @@ if CLIENT then
 		end
 		
 		pos = pos + (self.BlendPos.y - self.FireMove) * Forward(ang)
+		pos = pos + self.AdjustPos.x * Right(ang) + self.AdjustPos.y * Forward(ang) + self.AdjustPos.z * Up(ang)
 		pos = pos + (self.BlendPos.z - self.AngleDelta.p * 0.1) * Up(ang)
 		
 		self.FireMove = Lerp(FT * 4, self.FireMove, 0)
@@ -634,6 +644,11 @@ if CLIENT then
 	end
 
 	function SWEP:FireAnimationEvent(pos,ang,event)
+		if event==6001 then
+			-- muzzle
+			self:ViewMuzzleFlash()
+			return (event==6001)
+		end
 		if event==5001 then
 			-- muzzle
 			self:ViewMuzzleFlash()
@@ -648,6 +663,11 @@ if CLIENT then
 			-- shell
 			self:ShellEject()
 			return (event==20)
+		end
+		if event==21 then
+			-- shell
+			self:ShellEject()
+			return (event==21)
 		end
 	end	
 

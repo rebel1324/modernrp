@@ -5,6 +5,7 @@ ITEM.height = 1
 ITEM.desc = "A Medical Stuff"
 ITEM.healAmount = 50
 ITEM.healSeconds = 10
+ITEM.category = "Medical"
 
 local function healPlayer(client, target, amount, seconds)
 	hook.Run("OnPlayerHeal", client, target, amount, seconds)

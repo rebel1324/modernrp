@@ -60,7 +60,74 @@ if (CLIENT) then
 			nut.bar.list[hungerBar].color = color
 		end
 	end
+
+	local timers = {5, 15, 30}
+
+	netstream.Hook("stvOpen", function(entity, index)
+		local inventory = nut.item.inventories[index]
+
+		if (IsValid(entity) and inventory and inventory.slots) then
+			nut.gui.inv1 = vgui.Create("nutInventory")
+			nut.gui.inv1:ShowCloseButton(true)
+
+			local inventory2 = LocalPlayer():getChar():getInv()
+
+			if (inventory2) then
+				nut.gui.inv1:setInventory(inventory2)
+			end
+
+			local panel = vgui.Create("nutInventory")
+			panel:ShowCloseButton(true)
+			panel:SetTitle("Cookable Object")
+			panel:setInventory(inventory)
+			panel:MoveLeftOf(nut.gui.inv1, 4)
+			panel.OnClose = function(this)
+				if (IsValid(nut.gui.inv1) and !IsValid(nut.gui.menu)) then
+					nut.gui.inv1:Remove()
+				end
+
+				netstream.Start("invExit")
+			end
+
+			local actPanel = vgui.Create("DPanel")
+			actPanel:SetDrawOnTop(true)
+			actPanel:SetSize(100, panel:GetTall())
+			actPanel.Think = function(this)
+				if (!panel or !panel:IsValid() or !panel:IsVisible()) then
+					this:Remove()
+
+					return
+				end
+
+				local x, y = panel:GetPos()
+				this:SetPos(x - this:GetWide() - 5, y)
+			end
+
+			local btn = actPanel:Add("DButton")
+			btn:Dock(TOP)
+			btn:SetText("Activate")
+			btn:DockMargin(5, 5, 5, 0)
+			function btn.DoClick()
+				netstream.Start("stvActive", entity, 0)
+			end
+
+			for k, v in ipairs(timers) do
+				local btn = actPanel:Add("DButton")
+				btn:Dock(TOP)
+				btn:SetText(v .. " Seconds")
+				btn:DockMargin(5, 5, 5, 0)
+
+				function btn.DoClick()
+					netstream.Start("stvActive", entity, v)
+				end
+			end
+
+			nut.gui["inv"..index] = panel
+		end
+	end)
 else
+	local PLUGIN = PLUGIN
+
 	function PLUGIN:LoadData()
 		local savedTable = self:getData() or {}
 

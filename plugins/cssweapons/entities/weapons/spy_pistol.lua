@@ -58,5 +58,35 @@ SWEP.ReloadTime = 2.5
 SWEP.muzScale = .25
 SWEP.ShellAngle = Vector( -40, -50, -90)
 SWEP.ShellSize = .8
-SWEP.AimPos = Vector(-5.95, -4, 3)
+SWEP.AdjustPos = Vector(-1.5, 0, 1)
+SWEP.AimPos = Vector(-5.95, -4, 3) - SWEP.AdjustPos
 SWEP.AimAng = Vector(-.7, 0, 0)
+
+function SWEP:ViewMuzzleFlash()
+	if !self.Owner:ShouldDrawLocalPlayer() then
+		local vm = self.Owner:GetViewModel()
+		if !IsValid(vm) then return end
+		local at = vm:LookupAttachment( "1" )
+		local atpos = vm:GetAttachment( at )
+
+		local e = EffectData()
+		e:SetEntity(self)
+		e:SetScale(.5)
+		e:SetOrigin(atpos.Pos)
+		e:SetNormal(atpos.Ang:Forward())
+		util.Effect("TurretGunBurst", e)
+
+		self:BeLight( atpos.Pos )
+	end
+end
+
+
+if (CLIENT) then
+	function SWEP:PostDrawViewModel(vm, weapon, client)
+		local vm = self.Owner:GetViewModel()
+		local at = vm:LookupAttachment("1")
+		local atpos = vm:GetAttachment(at)
+
+		self.emitter:DrawAt(atpos.Pos, atpos.Ang)
+	end
+end

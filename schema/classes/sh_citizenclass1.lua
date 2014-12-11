@@ -1,5 +1,5 @@
 -- Set the 'nice' display name for the class.
-CLASS.name = "Example Citizen Class"
+CLASS.name = "Citizen Class A"
 -- Set the faction that the class belongs to.
 CLASS.faction = FACTION_CITIZEN
 

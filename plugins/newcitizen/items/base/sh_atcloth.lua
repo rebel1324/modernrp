@@ -111,3 +111,7 @@ ITEM.functions.Preview = {
 		return false
 	end,
 }
+
+function ITEM:onCanBeTransfered(oldInventory, newInventory)
+	return !self:getData("equip")
+end

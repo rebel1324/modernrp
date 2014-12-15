@@ -2,16 +2,18 @@ local PLUGIN = PLUGIN
 PLUGIN.name = "Perma Stash"
 PLUGIN.author = "Black Tea"
 PLUGIN.desc = "You save your stuffs in the stash."
-PLUGIN.stashData = {}
-PLUGIN.stashSize = 10
-
-nut.util.include("cl_vgui.lua")
+PLUGIN.stashData = PLUGIN.stashData or {}
 
 if (SERVER) then
-	function PLUGIN:SaveStash(id)
+	// HOW STASH WORKS
+	// 1. PLAYER SEND ITEM TO LOGIC INVENTORY.
+	// 2. WHEN PLAYER SEND ITEM TO LOGIC INVENTORY, PUT ITEM INDEX TO CHARACTER'S STASH TABLE.
+	// 3. THEN WE CAN SAVE ITEMS WITHOUT CORRUPTION OF ITEM DATA. 
+
+	function PLUGIN:SaveStash(charID)
 		local schema = string.lower(SCHEMA.folder)
-		local path = Format("%s/%s.txt", schema, id)
-		local encoded = self.stashData[id]
+		local path = Format("%s/%s.txt", schema, charID)
+		local encoded = self.stashData[charID]
 
 		if (encoded) then
 			encoded = pon.encode(encoded)
@@ -20,30 +22,36 @@ if (SERVER) then
 		end
 	end
 
-	function PLUGIN:LoadStash(id)
+	function PLUGIN:NewStash()
+		return {
+			reserve = 0,
+			items = {
+				//itemindexes
+			},
+		}
+	end
+
+	function PLUGIN:LoadStash(charID)
 		local schema = string.lower(SCHEMA.folder)
-		local path = Format("%s/%s.txt", schema, id)
+		local path = Format("%s/%s.txt", schema, charID)
 		local stash
 
 		if (file.Exists(path, "DATA")) then
 			stash = file.Read(path, "DATA")
-		end
-
-		if (stash and stash != "") then
 			stash = pon.decode(stash)
-
-			return stash or {}
+		else
+			stash = self:NewStash()
 		end
 
-		return {}
+		return stash or self:NewStash()
 	end
 
-	function PLUGIN:GetStash(id)
-		if (!self.stashData[id]) then
-			self.stashData[id] = self:LoadStash() or {}
+	function PLUGIN:GetStash(charID)
+		if (!self.stashData[charID]) then
+			self.stashData[charID] = self:LoadStash() or self:NewStash()
 		end
 
-		return self.stashData[id]
+		return self.stashData[charID]
 	end
 
 	function PLUGIN:CanPlayerUseStash(client)
@@ -67,55 +75,27 @@ if (SERVER) then
 
 	end
 
-	netstream.Hook("SthAdd", function(client, id, itemID)
+	netstream.Hook("stashMove", function(client, charID, itemID, toStash)
 		if (hook.Run("CanPlayerUseStash", client) == false) then
 			return
 		end
 
-		local itemTable = nut.item.instances[itemID]
-		local char = client:getChar()
-
-		if (char and char:getInv() and itemTable) then
-			self.stashData[id] = self.stashData[id] or {}
-			self.stashData[id][itemID] = self.stashData[id][itemID]
-
-			table.insert(self.stashData[id][itemID], itemTable.data or {})
-			char:remove(itemID)
+		if (toStash) then
+		else
 		end
-	end)
-
-	netstream.Hook("SthRmv", function(client, id, itemid)
-		if (hook.Run("CanPlayerUseStash", client) == false) then
-			return
-		end
-
 	end)
 else
-	netstream.Hook("nutStashFrame", function(stashInv)
+	netstream.Hook("stashLoad", function(stashInv)
 		if (stashMenu and stashMenu:IsVisible()) then
 			stashMenu:Close()
 			stashMenu = nil
 		end
 
-		stashMenu = vgui.Create("nutStashFrame")
+		stashMenu = vgui.Create("nutStash")
 		stashMenu:loadStash(stashInv)
 	end)
 
-	netstream.Hook("SthRmv", function(client, id, itemid)
+	netstream.Hook("stashSync", function(client, itemID, toStash)
 		-- remove hook.
 	end)
 end
-
-
-
-/*
-	STASH STRUCTURE
-
-	stashData[characterID] = {
-		[uniqueID] = {
-			DATA,
-			DATA,
-			DATA,
-		}
-	}
-*/

@@ -8,7 +8,7 @@ ENT.AdminOnly = true
 ENT.RenderGroup 		= RENDERGROUP_BOTH
 ENT.Category = "NutScript"
 ENT.invType = "microwave"
-nut.item.registerInv(ENT.invType, 2, 2)
+nut.item.registerInv(ENT.invType, 2, 1)
 
 if (SERVER) then
 	function ENT:Initialize()
@@ -65,7 +65,7 @@ if (SERVER) then
 		end
 
 		local timerName = self:GetClass():lower() .. "_" .. self:EntIndex() .. "_stoveThink"
-		if (seconds != 0) then
+		if (seconds != 0 and !self:getNetVar("active")) then
 			seconds = math.abs(seconds)
 
 			timer.Create(timerName, seconds, 1, function()
@@ -117,7 +117,7 @@ if (SERVER) then
 		
 		local index = self:getNetVar("id")
 
-		if (!self.nutIsSafe and index) then
+		if (!nut.shuttingDown and !self.nutIsSafe and index) then
 			local item = nut.item.inventories[index]
 
 			if (item) then
@@ -144,15 +144,11 @@ if (SERVER) then
 		effectData:SetStart(self:GetPos())
 		effectData:SetOrigin(self:GetPos())
 
-		if (self:getInv()) then
-			self:OnRemove()
-		end 
-
 		self:EmitSound("ambient/explosions/explode_1.wav", 120, 200)
 		self:Ignite(3)
 		util.Effect("Explosion", effectData, true, true)
 		util.BlastDamage( self, self or self, self:GetPos() + Vector( 0, 0, 1 ), 256, 120 )
-		
+
 		timer.Simple(60, function()
 			if (self and self:IsValid()) then
 				self:Remove()
@@ -160,6 +156,11 @@ if (SERVER) then
 		end)
 	end
 
+	local heatCooks = {
+		{0, 3, 1},
+		{3, 10, 3},
+		{10, 25, 4},
+	}
 	function ENT:Think()
 		if (self:getNetVar("gone")) then
 			return
@@ -169,12 +170,34 @@ if (SERVER) then
 			local items = self:getInv():getItems(true)
 
 			for k, v in pairs(items) do
-				v.cookStack = v.cookStack or 0
-				v.cookStack = v.cookStack + 1
+				v:setData("heat", v:getData("heat", 0) + 1)
 
 				if (v.ammo) then
-					if (v.cookStack > 3) then
+					if (v:getData("heat") > 3) then
 						self:explode()
+					end
+				end
+
+				if (v.isFood and v.cookable) then
+					local heat = v:getData("heat")
+					local cookLevel = v:getData("cooked", 0)
+					local overheat = true
+
+					for _, range in ipairs(heatCooks) do
+						if (heat >= range[1] and heat < range[2]) then
+							if (cookLevel != range[3]) then
+								v:setData("cooked", range[3])
+							end
+							overheat = false
+
+							break
+						end
+					end
+
+					if (overheat) then
+						if (cookLevel != 2) then
+							v:setData("cooked", 2)
+						end
 					end
 				end
 			end

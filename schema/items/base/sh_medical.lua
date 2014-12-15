@@ -59,4 +59,7 @@ ITEM.functions.usef = { -- sorry, for name order.
 
 		return false
 	end,
+	onCanRun = function(item)
+		return (!IsValid(item.entity))
+	end
 }

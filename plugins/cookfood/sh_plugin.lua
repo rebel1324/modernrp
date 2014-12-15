@@ -5,15 +5,16 @@ PLUGIN.desc = "How about getting new foods in NutScript?"
 PLUGIN.hungrySeconds = 300 -- A player can stand up 300 seconds without any foods
 
 COOKLEVEL = {
-	{"Uncooked", 1, color_white},
-	{"Burnt", .7, Color(207, 0, 15)},
-	{"Well Done", 2, Color(235, 149, 50)},
-	{"Good", 3, Color(103, 128, 159)},
-	{"Very Good", 3.5, Color(63, 195, 128)},
+	[1] = {"Uncooked", 1, color_white},
+	[2] = {"Burnt", .7, Color(207, 0, 15)},
+	[3] = {"Well Done", 2, Color(235, 149, 50)},
+	[4] = {"Good", 3, Color(103, 128, 159)},
+	[5] = {"Very Good", 3.5, Color(63, 195, 128)},
 }
+COOKER_MICROWAVE = 1
+COOKER_STOVE = 2
 
 nut.util.include("cl_vgui.lua")
-
 
 local playerMeta = FindMetaTable("Player")
 local entityMeta = FindMetaTable("Entity")
@@ -35,7 +36,9 @@ function playerMeta:addHunger(amount)
 end
 
 function entityMeta:isStove()
-	return (self:GetClass() == "nut_stove")
+	local class = self:GetClass()
+
+	return (class == "nut_stove" or class == "nut_microwave")
 end
 
 -- Register HUD Bars.
@@ -103,13 +106,15 @@ if (CLIENT) then
 				this:SetPos(x - this:GetWide() - 5, y)
 			end
 
-			local btn = actPanel:Add("DButton")
-			btn:Dock(TOP)
-			btn:SetText("Activate")
-			btn:DockMargin(5, 5, 5, 0)
-			function btn.DoClick()
-				netstream.Start("stvActive", entity, 0)
-			end
+			/*
+				local btn = actPanel:Add("DButton")
+				btn:Dock(TOP)
+				btn:SetText("Activate")
+				btn:DockMargin(5, 5, 5, 0)
+				function btn.DoClick()
+					netstream.Start("stvActive", entity, 0)
+				end
+			*/
 
 			for k, v in ipairs(timers) do
 				local btn = actPanel:Add("DButton")
@@ -195,20 +200,3 @@ else
 		end
 	end
 end
-
-netstream.Hook("cookFood", function(client, id)
-	local stove
-		
-	for k, v in ipairs(ents.FindByClass("nut_stove")) do
-		local pos = v:GetPos()
-		
-		if (client:GetPos():Distance(pos) < 128) then
-			stove = v
-		end
-	end
-
-	if (stove and stove:IsValid()) then
-		if stove:startCook(client, id) then
-		end
-	end
-end)

@@ -42,7 +42,7 @@ if (SERVER) then
 		local perc = (( self.lifetime - CurTime() )/self.configLifetime)
 		if (self.delaytime < CurTime()) then
 			for k, v in pairs( ents.FindInSphere( self:GetPos(), 230*perc ) ) do
-				if (v:IsPlayer()) then
+				if (v.IsPlayer and v:IsPlayer()) then
 					local tpos = v:GetPos() + Vector( 0, 0, 5 )
 					local curpos = self:GetPos() + self:GetUp() * 50
 					local tvec = ( tpos - curpos )

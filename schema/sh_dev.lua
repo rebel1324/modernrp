@@ -4,8 +4,9 @@
 local loadFile = true
 
 if (loadFile) then
-	print("[DEV] Nutscript Development Helper is Currently Active!")	
-	print("[DEV] Set loadFile to false if you don't want any problems in release.")
+	if (SERVER) then
+		nut.log.add("NUTSCRIPT DEVELOPER HELPER IS STILL ACTIVE!", FLAG_DANGER, 100, true)
+	end
 end
 
 dev = dev or {}

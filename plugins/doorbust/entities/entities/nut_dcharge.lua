@@ -55,48 +55,10 @@ if (SERVER) then
 
 		local doors = ents.FindInSphere(self:GetPos(), self.radius)
 		for k, v in ipairs(doors) do
-			if (v:isDoor() and !v.busted) then
-				local collision = v:GetCollisionGroup()
-				local solid = v:GetSolid()
-				local prop
-				v.busted = true
-
-				local model = v:GetModel()
-				if (model and string.find(model, "models")) then
-					v:SetNoDraw(true)
-					v:SetCollisionGroup(COLLISION_GROUP_NONE)
-					v:SetSolid(0)
-
-					prop = ents.Create("prop_physics")
-					prop:SetModel(v:GetModel())
-					prop:SetPos(v:GetPos())
-					prop:SetAngles(v:GetAngles())
-					prop:Spawn()
-					prop:Activate()
-					prop:SetSkin(v:GetSkin())
-					prop:SetBodyGroups(v:GetBodyGroups())
-					prop:SetCollisionGroup(COLLISION_GROUP_WEAPON)
-
-					local phys = prop:GetPhysicsObject()
-					if (!phys) then prop:Remove() 
-					else
-						phys:SetVelocity(VectorRand()*10*phys:GetMass())
-					end
-				else
-					v:Fire("unlock", 0)
-					v:Fire("open", .1)
-				end
-
-				timer.Simple(self.doorRestore, function()
-					v:SetNoDraw(false)
-					v:SetCollisionGroup(collision)
-					v:SetSolid(solid)
-					v.busted = false
-
-					if (prop and prop:IsValid()) then
-						prop:Remove()
-					end
-				end)
+			if (v:isDoor()) then
+				local dir = v:GetPos() - self:GetPos()
+				dir:Normalize()
+				v:blastDoor(dir * 300, 20, true)
 			end
 		end
 

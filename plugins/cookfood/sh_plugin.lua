@@ -2,7 +2,7 @@ local PLUGIN = PLUGIN
 PLUGIN.name = "Cook Food"
 PLUGIN.author = "Black Tea"
 PLUGIN.desc = "How about getting new foods in NutScript?"
-PLUGIN.hungrySeconds = 300 -- A player can stand up 300 seconds without any foods
+PLUGIN.hungrySeconds = 800 -- A player can stand up 300 seconds without any foods
 
 COOKLEVEL = {
 	[1] = {"Uncooked", 1, color_white},

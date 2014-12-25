@@ -9,7 +9,6 @@ SCHEMA.desc = "An example modern RP schema that is very basic."
 -- TODO: Permastash
 
 -- HUD: Heartbeat 
--- HUD: ITEM SWITCHER
 /*
  1. [] [] [] [] 
  2. [] [] [] []
@@ -19,6 +18,8 @@ SCHEMA.desc = "An example modern RP schema that is very basic."
  you can change your weapon by changing slot number
  you pressing same number.
 */
+
+nut.perk.loadFromDir("modernrp/schema/perks")
 
 nut.util.include("sh_configs.lua")
 nut.util.include("sh_meta.lua")

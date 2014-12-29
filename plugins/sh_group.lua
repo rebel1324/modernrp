@@ -12,6 +12,22 @@ GROUP_OWNER = 0
 GROUP_ADMIN = 1
 GROUP_NORMAL = 2
 
+local langkey = "english"
+do
+	local langTable = {
+		groupCreated = "You created group %s.",
+		groupDeleted = "You dismissed group %s.",
+		groupPermission = "You need more permission in group to do this action.",
+		groupFail = "Failed to create group",
+		groupExists = "You're already assinged on group.",
+		groupInvalid = "Group is not valid",
+		groupHUDLeader = "You're already assinged on group.",
+		groupHUD = "He is memeber of '%s'.",
+	}
+
+	table.Merge(nut.lang.stored[langkey], langTable)
+end
+
 if (SERVER) then
 	function PLUGIN:SaveData()
 		nut.group.saveAll()
@@ -75,63 +91,83 @@ if (SERVER) then
 
 			if (groupID) then
 				self:setData("groupID", groupID)
-				client:notify(L("groupCreated", client))
+				group = nut.group.list[groupID]
+				client:notify(L("groupCreated", client, group.name))
+
+				return true
 			else
 				client:notify(L("groupFail", client))
 			end
 		else
 			client:notify(L("groupExists", client))
 		end
+
+		return false
 	end
 
-	function charMeta:dismissGroup()
-		local client = self:getPlayer()
-		local groupID = self:getGroup()
-		local group = nut.group.list[groupID]
+	do
+		function charMeta:dismissGroup()
+			local client = self:getPlayer()
+			local groupID = self:getGroup()
+			local group = nut.group.list[groupID]
 
-		if (group) then
-			local members = nut.group.getMembers(groupID)
-			local ranks = members[self:getID()]
-			
-			if (ranks and ranks == GROUP_OWNER) then
-				client:notify(L("groupDeleted", client))
-				nut.group.delete(groupID)
+			if (group) then
+				local members = nut.group.getMembers(groupID)
+				local ranks = members[self:getID()]
+				
+				if (ranks and ranks == GROUP_OWNER) then
+					client:notify(L("groupDeleted", client, group.name))
+
+					for k, v in ipairs(nut.group.getAliveMembers(id)) do
+						self:setData("groupID", nil, nil, player.GetAll())
+					end
+
+					nut.group.delete(groupID)
+					return true
+				else
+					client:notify(L("groupPermission", client))
+				end
 			else
-				client:notify(L("noPermission", client))
+				client:notify(L("groupInvalid", client))
 			end
-		else
-			client:notify(L("groupInvalid", client))
+
+			return false
 		end
-	end
-	
-	function charMeta:kickGroup(kickerCharID, groupID)
-		local groupID = nut.group.list[groupID]
+		
+		function charMeta:kickGroup(kickerCharID, groupID)
+			local groupID = nut.group.list[groupID]
 
-		if (group) then
-			local members = nut.group.getMembers(id)
-			local kickerRank = (kickerCharID == 0 and 0 or members[kickerCharID])
-			local charRank = members[self:getID()]
+			if (group) then
+				local members = nut.group.getMembers(id)
+				local kickerRank = (kickerCharID == 0 and 0 or members[kickerCharID])
+				local charRank = members[self:getID()]
 
-			if (kickerRank < charRank) then
-				self:SetData("groupID", 0)
-				print("You're kicked.")
+				if (kickerRank < charRank) then
+					self:SetData("groupID", nil, nil, player.GetAll())
+					return true
+				end
+			end
+
+			return false
+		end
+
+		function charMeta:inviteGroup(inviterCharID, groupID)
+			local groupID = nut.group.list[groupID]
+
+			if (group) then
+				-- varies on group setting.
 			end
 		end
-	end
 
-	function charMeta:inviteGroup(inviterCharID, groupID)
-		local groupID = nut.group.list[groupID]
+		function charMeta:joinGroup(groupID)
+			local group = nut.group.list[groupID]
 
-		if (group) then
-			-- varies on group setting.
-		end
-	end
+			if (group) then
+				self:setData("groupID", groupID, nil, player.GetAll())
+				return true
+			end
 
-	function charMeta:joinGroup(groupID)
-		local groupID = nut.group.list[groupID]
-
-		if (groupID) then
-			self:setData("groupID", groupID)
+			return false
 		end
 	end
 
@@ -153,7 +189,8 @@ if (SERVER) then
 	end
 
 	function PLUGIN:PlayerLoadedChar(client, charID, prevID)
-		local groupID = self:getGroup()
+		local char = client:getChar()
+		local groupID = char:getGroup()
 		local groupTable = nut.group.list[groupID]
 
 		if (!groupTable) then
@@ -161,6 +198,10 @@ if (SERVER) then
 
 			if (groupInfo) then
 				nut.group.list[groupID] = groupInfo
+			else
+				if (groupID != 0) then
+					char:setData("groupID", nil)
+				end
 			end
 		end
 
@@ -187,8 +228,13 @@ else
 
 	local tx, ty 
 	function PLUGIN:DrawCharInfo(character, x, y, alpha)
-		tx, ty = nut.util.drawText("Current Group: " .. character:getGroup(), x, y, ColorAlpha(color_white, alpha), 1, 1, "nutSmallFont", alpha * 0.65)
-		y = y + ty
+		local groupID = character:getGroup()
+		local group = nut.group.list[groupID] 
+
+		if (group) then
+			tx, ty = nut.util.drawText(L("groupHUD", group.name), x, y, ColorAlpha(color_white, alpha), 1, 1, "nutSmallFont", alpha * 0.65)
+			y = y + ty
+		end
 
 		return x, y
 	end
@@ -244,6 +290,22 @@ do
 
 			if (char and hook.Run("CanCharCreateGroup", char) != false) then				
 				char:dismissGroup()
+			end
+		end
+	})
+
+	nut.command.add("groupinvite", {
+		syntax = "<name>",
+		onRun = function(client, arguments)
+			local target = nut.command.findPlayer(client, arguments[1])
+
+			if (IsValid(target) and target:getChar()) then
+				local char = client:getChar()
+				local groupID = char:getGroup()
+				local tChar = target:getChar()
+				print(groupID)
+				print(tChar:joinGroup(groupID))
+				client:notify(L("groupInvited", client))
 			end
 		end
 	})

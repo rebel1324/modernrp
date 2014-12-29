@@ -3,21 +3,11 @@ SCHEMA.author = "Black Tea"
 SCHEMA.desc = "An example modern RP schema that is very basic."
 
 -- TODO: Vehicles
+-- TODO: Group
+-- TODO: Lottery
 -- TODO: Drugs? maybe?
--- TODO: FAS2 Weapon Integration?
 -- TODO: Make Item Spawner Default.
 -- TODO: Permastash
-
--- HUD: Heartbeat 
-/*
- 1. [] [] [] [] 
- 2. [] [] [] []
- 3. [] [] [] []
-
- you can selct weapon slot 1, 2, 3
- you can change your weapon by changing slot number
- you pressing same number.
-*/
 
 nut.util.include("sh_configs.lua")
 nut.util.include("sv_hooks.lua")

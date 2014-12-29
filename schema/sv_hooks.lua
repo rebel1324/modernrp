@@ -1,9 +1,11 @@
+-- This hook initializes the salary timers for players.
 function SCHEMA:InitializedSchema()
 	-- Initialize Salary Timer.
 	timer.Create("nutSalary", nut.config.get("wageInterval", 180), 0, function()
 		for k, v in ipairs(player.GetAll()) do
 			local char = v:getChar()
 
+			-- If faction has default salary, give them the salary.
 			if (char) then
 				local charFaction = char:getFaction()
 				local faction = nut.faction.indices[charFaction]
@@ -15,13 +17,14 @@ function SCHEMA:InitializedSchema()
 
 					char.player:notify(L("salaryReceived", v, nut.currency.get(faction.salary)))
 
-					char:addReserve(faction.salary) -- just test.
+					char:addReserve(faction.salary)
 				end
 			end
 		end
 	end)
 end
 
+-- This hook restricts oneself from using a weapon that configured by the sh_config.lua file.
 function SCHEMA:CanPlayerInteractItem(client, action, item)
 	if (action == "drop" or action == "take") then
 		return
@@ -51,6 +54,7 @@ function SCHEMA:CanPlayerInteractItem(client, action, item)
 	end
 end
 
+-- This hook returns whether player can receive the salary or not.
 function SCHEMA:CanPlayerReceiveSalary(client)
 	local char = client:getChar()
 	if (!char.player:Alive()) then
@@ -58,6 +62,7 @@ function SCHEMA:CanPlayerReceiveSalary(client)
 	end
 end
 
+-- This hook notices you the death penalty that you've got by the server.
 function SCHEMA:PlayerSpawn(client)
 	local char = client:getChar()
 
@@ -70,6 +75,7 @@ function SCHEMA:PlayerSpawn(client)
 	end
 end
 
+-- This hook enforces death penalty for dead players.
 function SCHEMA:PlayerDeath(client)
 	local char = client:getChar()
 
@@ -81,7 +87,3 @@ function SCHEMA:PlayerDeath(client)
 		end
 	end
 end
-
-nut.char.hookVar("name", "NameChangeNotify", function(char, oldVar, newVar)
-	// Maybe Name Based stuffs?
-end)

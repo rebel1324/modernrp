@@ -23,6 +23,8 @@ do
 		groupInvalid = "Group is not valid",
 		groupHUDLeader = "You're already assinged on group.",
 		groupHUD = "He is memeber of '%s'.",
+		groupGotKicked = "You're kicked from the group.",
+		groupKicked = "You kicked %s from the group.",
 	}
 
 	table.Merge(nut.lang.stored[langkey], langTable)
@@ -134,18 +136,24 @@ if (SERVER) then
 			return false
 		end
 		
-		function charMeta:kickGroup(kickerCharID, groupID)
-			local groupID = nut.group.list[groupID]
+		function charMeta:kickGroup(kickerChar, groupID)
+			local client = self:getPlayer()
+			local kicker = kickerChar:getPlayer()
+			local group = nut.group.list[groupID]
 
 			if (group) then
-				local members = nut.group.getMembers(id)
-				local kickerRank = (kickerCharID == 0 and 0 or members[kickerCharID])
-				local charRank = members[self:getID()]
-
+				local members = nut.group.getMembers(groupID)
+				local kickerRank = (!kicker and 0 or members[kickerChar:getID()])
+				local charRank = members[self:getID()] or GROUP_NORMAL
+				
 				if (kickerRank < charRank) then
-					self:SetData("groupID", nil, nil, player.GetAll())
+					self:setData("groupID", nil, nil, player.GetAll())
 					return true
+				else
+					kicker:notify(L("groupPermission", kicker))
 				end
+			else
+				kicker:notify(L("groupInvalid", kicker))
 			end
 
 			return false
@@ -163,6 +171,7 @@ if (SERVER) then
 			local group = nut.group.list[groupID]
 
 			if (group) then
+				nut.group.list[groupID].members[self:getID()] = GROUP_NORMAL
 				self:setData("groupID", groupID, nil, player.GetAll())
 				return true
 			end
@@ -295,7 +304,7 @@ do
 	})
 
 	nut.command.add("groupinvite", {
-		syntax = "<name>",
+		syntax = "<string name>",
 		onRun = function(client, arguments)
 			local target = nut.command.findPlayer(client, arguments[1])
 
@@ -306,6 +315,24 @@ do
 				print(groupID)
 				print(tChar:joinGroup(groupID))
 				client:notify(L("groupInvited", client))
+			end
+		end
+	})
+
+	nut.command.add("groupkick", {
+		syntax = "<string name>",
+		onRun = function(client, arguments)
+			local target = nut.command.findPlayer(client, arguments[1])
+
+			if (IsValid(target) and target:getChar()) then
+				local char = client:getChar()
+				local groupID = char:getGroup()
+				local tChar = target:getChar()
+
+				if (tChar:kickGroup(char, groupID)) then
+					client:notify(L("groupKicked", client, target:Name()))	
+					target:notify(L("groupGotKicked", target))	
+				end
 			end
 		end
 	})

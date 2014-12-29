@@ -236,9 +236,9 @@ if (SERVER) then
 
 		if (char) then
 			local groupID = char:getGroup()
-			local aliveMembers = nut.group.getAliveMembers()
+			local aliveMembers = nut.group.getAliveMembers(groupID)
 
-			if (table.Count(aliveMembers) <= 0) then
+			if (table.Count(aliveMembers) <= 1) then
 				nut.group.save(groupID)
 				nut.group.list[groupID] = nil
 			end

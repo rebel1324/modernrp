@@ -11,6 +11,6 @@ Me or Other Players that plays your server does not want to feel dejavu when pla
 Some Suggestion:
 If you don't really likes ATM, you can open and use Braxnet ATM or Create your own ATM.
 
-Everything allowed but using/porting any code snippet in this "Modern RP Schema" for The Roleplay Framework "Clockwork" or Any "Clockwork" related schemas/plugins is not allowed by the author of this schema.
-The "Clockwork" means the roleplay framework that created by Conna Wiles, which is being sold on www.cloudsixteen.com.
-The "Author" menas "Black Tea Za rebel1324" aka "Kyu Yeon Lee" (rebel1324@gmail.com). 
+Everything allowed but using/porting any code snippet in this "Modern RP Schema" for The Roleplay Framework "Clockwork" or Any "Clockwork" related schemas/plugins is not allowed by the author of this schema.  
+The "Clockwork" means the roleplay framework that created by Conna Wiles, which is being sold on www.cloudsixteen.com.  
+The "Author" menas "Black Tea Za rebel1324" aka "Kyu Yeon Lee" (rebel1324@gmail.com).  

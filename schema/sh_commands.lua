@@ -45,7 +45,7 @@ nut.command.add("bankwithdraw", {
 			local char = client:getChar()
 			amount = math.Round(tonumber(amount))
 
-			if (amount and amount > 0 and char) then
+			if (amount and isnumber(amount) and amount > 0 and char) then
 				if (char:hasReserve(amount)) then
 					char:takeReserve(amount)
 					char:giveMoney(amount)
@@ -80,7 +80,7 @@ nut.command.add("banktransfer", {
 				local tChar = target:getChar()
 				amount = math.Round(tonumber(amount))
 
-				if (amount and amount > 0 and char) then
+				if (amount and isnumber(amount) and amount > 0 and char) then
 					if (char:hasReserve(amount)) then
 						-- Fee 5%
 						tChar:addReserve(math.Round(amount * .95))
@@ -110,7 +110,7 @@ nut.command.add("banklongtransfer", {
 			local char = client:getChar()
 			amount = math.Round(tonumber(amount))
 
-			if (amount and amount > 0 and char) then
+			if (amount and isnumber(amount) and amount > 0 and char) then
 				if (char:hasReserve(amount)) then
 					-- Fee 10%
 				end

@@ -14,3 +14,18 @@ If you don't really likes ATM, you can open and use Braxnet ATM or Create your o
 Everything allowed but using/porting any code snippet in this "Modern RP Schema" for The Roleplay Framework "Clockwork" or Any "Clockwork" related schemas/plugins is not allowed by the author of this schema.  
 The "Clockwork" means the roleplay framework that created by Conna Wiles, which is being sold on www.cloudsixteen.com.  
 The "Author" menas "Black Tea Za rebel1324" aka "Kyu Yeon Lee" (rebel1324@gmail.com).  
+
+Except the reason above, You may:
+Sell the script (With proper credit.)  
+Modify the script (As long as you wants.)  
+
+You may not:
+Claming the work to be your own.  
+Removing the Credit.  
+Using/Modifying for the "Clockwork"
+
+This work is done with:
+Black Tea Za rebel1324 (https://github.com/rebel1324)
+Chessnut (https://github.com/Chessnut)
+
+If you don't like this, Don't ever use it.

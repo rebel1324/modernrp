@@ -1,2 +1,1 @@
-function SCHEMA:PostDrawTranslucentRenderables()
-end
+print(1)

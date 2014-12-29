@@ -19,11 +19,12 @@ SCHEMA.desc = "An example modern RP schema that is very basic."
  you pressing same number.
 */
 
-nut.perk.loadFromDir("modernrp/schema/perks")
-
 nut.util.include("sh_configs.lua")
-nut.util.include("sh_meta.lua")
 nut.util.include("sv_hooks.lua")
 nut.util.include("cl_hooks.lua")
 nut.util.include("sh_hooks.lua")
+nut.util.include("sh_commands.lua")
+nut.util.include("meta/sh_player.lua")
+nut.util.include("meta/sh_entity.lua")
+nut.util.include("meta/sh_character.lua")
 nut.util.include("sh_dev.lua") -- Developer Functions

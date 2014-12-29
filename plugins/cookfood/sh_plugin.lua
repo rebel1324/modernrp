@@ -46,21 +46,23 @@ if (CLIENT) then
 	local color = Color(39, 174, 96)
 
 	do
-		hungerBar = nut.bar.add(function()
+		 nut.bar.add(function()
 			return (1 - LocalPlayer():getHungerPercent())
-		end, color)
+		end, color, nil, "hunger")
 	end
 
+	local hungerBar, percent, wave
 	function PLUGIN:Think()
-		local percent = (1 - LocalPlayer():getHungerPercent())
+		hungerBar = nut.bar.get("hunger")
+		percent = (1 - LocalPlayer():getHungerPercent())
 
 		if (percent < .33) then -- if hunger is 33%
-			local wave = math.abs(math.sin(RealTime()*5)*100)
+			wave = math.abs(math.sin(RealTime()*5)*100)
 
-			nut.bar.list[hungerBar].lifeTime = CurTime() + 1
-			nut.bar.list[hungerBar].color = Color(color.r + wave, color.g - wave, color.b - wave)
+			hungerBar.lifeTime = CurTime() + 1
+			hungerBar.color = Color(color.r + wave, color.g - wave, color.b - wave)
 		else
-			nut.bar.list[hungerBar].color = color
+			hungerBar.color = color
 		end
 	end
 
@@ -105,16 +107,6 @@ if (CLIENT) then
 				local x, y = panel:GetPos()
 				this:SetPos(x - this:GetWide() - 5, y)
 			end
-
-			/*
-				local btn = actPanel:Add("DButton")
-				btn:Dock(TOP)
-				btn:SetText("Activate")
-				btn:DockMargin(5, 5, 5, 0)
-				function btn.DoClick()
-					netstream.Start("stvActive", entity, 0)
-				end
-			*/
 
 			for k, v in ipairs(timers) do
 				local btn = actPanel:Add("DButton")

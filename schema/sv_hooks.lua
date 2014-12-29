@@ -15,7 +15,7 @@ function SCHEMA:InitializedSchema()
 
 					char.player:notify(L("salaryReceived", v, nut.currency.get(faction.salary)))
 
-					char:giveMoney(faction.salary) -- just test.
+					char:addReserve(faction.salary) -- just test.
 				end
 			end
 		end
@@ -58,22 +58,27 @@ function SCHEMA:CanPlayerReceiveSalary(client)
 	end
 end
 
-function SCHEMA:CanPlayerHandcuff(client, target)
-	local clientChar = client:getChar()
-	local targetChar = target:getChar()
-
-	if (targetChar:isHandcuffed() or clientChar:isHandcuffed()) then
-		return false
-	end
-end
-
 function SCHEMA:PlayerSpawn(client)
 	local char = client:getChar()
 
-	if (char and char:isHandcuffed()) then
-		print("player is handcuffed!")
-		print("give player handcuff SWEP.")
-		client:Give("weapon_handcuffs")
+	if (char) then
+		if (client.deadChar and client.deadChar == char:getID() and char.lostMoney and char.lostMoney > 10) then
+			client:notify(L("hospitalPrice", client, nut.currency.get(char.lostMoney)))
+		end
+			
+		client.deadChar = nil
+	end
+end
+
+function SCHEMA:PlayerDeath(client)
+	local char = client:getChar()
+
+	if (char) then
+		client.deadChar = char:getID()
+		char.lostMoney = math.Round(char:getReserve()*.1)
+		if (char.lostMoney > 10) then
+			char:takeReserve(10)
+		end
 	end
 end
 

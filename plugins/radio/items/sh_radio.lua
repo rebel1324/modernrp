@@ -19,7 +19,7 @@ end
 
 if (CLIENT) then
 	function ITEM:paintOver(item, w, h)
-		if (item:getData("power")) then
+		if (item:getData("power", false)) then
 			surface.SetDrawColor(110, 255, 110, 100)
 		else
 			surface.SetDrawColor(255, 110, 110, 100)

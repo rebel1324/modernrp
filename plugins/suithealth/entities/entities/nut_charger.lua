@@ -100,7 +100,7 @@ if (SERVER) then
 			self:setNetVar("used", math.Clamp(self:getUsed() + self.restoreCost, 0, 1))
 			self.rechargeTime = CurTime() + self.restoreCool
 		else
-			if (self.rechargeTime < CurTime()) then
+			if (!self.rechargeTime or self.rechargeTime < CurTime()) then
 				self:setNetVar("used", math.Clamp(self:getUsed() - self.restoreCost * .8, 0, 1))
 			end
 		end

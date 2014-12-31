@@ -15,8 +15,6 @@ if (SERVER) then
 	function ENT:Use(activator)
 		if (self.id and WRITINGDATA[self.id]) then
 			netstream.Start(activator, "receiveNote", self.id, WRITINGDATA[self.id], self:canWrite(activator))
-		else
-			print("writing DATA")
 		end
 	end
 else

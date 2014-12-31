@@ -81,11 +81,15 @@ nut.command.add("banktransfer", {
 				local tChar = target:getChar()
 				amount = math.Round(tonumber(amount))
 
+				if (char == tChar) then
+					client:notify(L("sameChar", client))
+					return
+				end
+
 				if (amount and isnumber(amount) and amount > 0 and char) then
 					if (char:hasReserve(amount)) then
-						-- Fee 5%
-						tChar:addReserve(math.Round(amount * .95))
-						char:takeReserve(amount)
+						tChar:addReserve(amount)
+						char:takeReserve(amount + amount*.05)
 					end
 				else
 					client:notify(L("provideValidNumber", client))

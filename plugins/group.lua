@@ -202,7 +202,6 @@ if (SERVER) then
 
 	function nut.group.syncAll(client)
 		for k, v in pairs(nut.group.list) do
-			print(v)
 			netstream.Start(client, "nutGroupSync", k, v)
 		end
 	end
@@ -217,6 +216,7 @@ if (SERVER) then
 
 			if (groupInfo) then
 				nut.group.list[groupID] = groupInfo
+				char:setData("groupID", groupID, nil, player.GetAll())
 			else
 				if (groupID != 0) then
 					char:setData("groupID", nil)

@@ -22,7 +22,7 @@ if (SERVER) then
 	end
 
 	function PLUGIN:LoadData()
-		local entTable = self:getData(entTable)
+		local entTable = self:getData(entTable) or {}
 		
 		for k, v in ipairs(entTable) do
 			local ent = ents.Create(v.class or "nut_charger")

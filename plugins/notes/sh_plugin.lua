@@ -35,7 +35,7 @@ else
 	end)
 
 	function PLUGIN:EntityRemoved(entity)
-		if (entity and IsValid(entity) and entity:GetClass() == "nut_note" and entity.id) then
+		if (!nut.shuttingDown and entity and IsValid(entity) and entity:GetClass() == "nut_note" and entity.id) then
 			if WRITINGDATA[entity.id] then
 				WRITINGDATA[entity.id] = nil
 			end
@@ -58,7 +58,7 @@ else
 		end
 
 		if (load != true) then
-			note.id = math.random(1, 100000)
+			note.id = os.time()
 			WRITINGDATA[note.id] = ""
 		end
 	end

@@ -3,7 +3,6 @@ SCHEMA.author = "Black Tea"
 SCHEMA.desc = "An example modern RP schema that is very basic."
 
 -- TODO: Vehicles
--- TODO: Group
 -- TODO: Lottery
 -- TODO: Drugs? maybe?
 -- TODO: Make Item Spawner Default.

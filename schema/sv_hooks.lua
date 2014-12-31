@@ -83,7 +83,7 @@ function SCHEMA:PlayerDeath(client)
 		client.deadChar = char:getID()
 		char.lostMoney = math.Round(char:getReserve()*.1)
 		if (char.lostMoney > 10) then
-			char:takeReserve(10)
+			char:takeReserve(char.lostMoney)
 		end
 	end
 end

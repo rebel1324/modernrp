@@ -90,8 +90,8 @@ else
 			rest = 1 - clmp(owner:GetVelocity():Length2D()/40, 0, 1)
 			curStep = curStep + (vel/math.pi)*(ft*2)
 			
-			newAng.p = angles.p + sin(curStep*15)*vel*.6*bobFactor + sin(RealTime()) * rest
-			newAng.y = angles.y + cos(curStep*7.5)*vel*.8*bobFactor + cos(RealTime()*.5) * rest * .5
+			newAng.p = angles.p + sin(curStep*15) * vel *.6* bobFactor + sin(RealTime()) * rest * bobFactor
+			newAng.y = angles.y + cos(curStep*7.5) * vel *.8* bobFactor + cos(RealTime()*.5) * rest * .5 * bobFactor
 			newAng.r = angles.r
 
 	 		view = {}

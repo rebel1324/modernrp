@@ -5,8 +5,13 @@ end
 
 -- This hook returns whether character is recognised or not.
 function SCHEMA:IsCharRecognised(char, id)
-	-- All Public Faction should be known for all Citizens.
-	-- if (faction.isPublic) then return true end
+	local client = char:getPlayer()
 
-	return char:getData("rgn", ""):find(id..",")
+	if (client) then
+		local faction = nut.faction.indices[client:Team()]
+
+		if (faction and faction.isPublic) then
+			return true
+		end
+	end
 end

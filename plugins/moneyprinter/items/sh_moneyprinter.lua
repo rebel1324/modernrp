@@ -26,6 +26,7 @@ ITEM.functions.use = { -- sorry, for name order.
 			printer:Spawn()
 
 			hook.Run("OnMoneyPrinterSpawned", printer, item)
+			return true
 		end
 
 		return false

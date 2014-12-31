@@ -11,6 +11,7 @@ FACTION.models = {
 }
 -- Set it so the faction requires a whitelist.
 FACTION.isDefault = false
+FACTION.isPublic = true
 
 FACTION.salary = 20
 

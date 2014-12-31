@@ -26,6 +26,7 @@ do
 		groupGotKicked = "You're kicked from the group.",
 		groupNotMember = "Target is not on your group.",
 		groupKicked = "You kicked %s from the group.",
+		groupShort = "Group's Name is too short.",
 	}
 
 	table.Merge(nut.lang.stored[langkey], langTable)
@@ -201,6 +202,7 @@ if (SERVER) then
 
 	function nut.group.syncAll(client)
 		for k, v in pairs(nut.group.list) do
+			print(v)
 			netstream.Start(client, "nutGroupSync", k, v)
 		end
 	end
@@ -301,6 +303,12 @@ do
 
 				if (groupName != "" and groupName:utf8len() > 3) then
 					char:createGroup(groupName)
+				else
+					if (groupName:utf8len() <= 3) then
+						client:notify(L("groupShort", client))
+					else
+						client:notify(L("invalidArg", client, 1))
+					end
 				end
 			end
 		end

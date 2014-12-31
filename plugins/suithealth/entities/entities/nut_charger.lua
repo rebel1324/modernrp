@@ -80,8 +80,10 @@ if (SERVER) then
 		self:EmitSound(self.denySound)
 
 		-- Make user pay tokens
-		self.user:notify(Format("You paid %s for Medical Care.", nut.currency.get(math.Round(self.usedCharge*100))))
-
+		if (self.usedCharge > 0) then
+			self.user:notify(Format("You paid %s for Medical Care.", nut.currency.get(math.Round(self.usedCharge*100))))
+		end
+		
 		self.user.onCharge = nil
 		self.user = nil
 		self.usedCharge = 0

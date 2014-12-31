@@ -38,3 +38,4 @@ nut.util.include("meta/sh_player.lua")
 nut.util.include("meta/sh_entity.lua")
 nut.util.include("meta/sh_character.lua")
 nut.util.include("sh_dev.lua") -- Developer Functions
+nut.dialogue.loadFromDir(SCHEMA.folder .. "/schema/dialogues")

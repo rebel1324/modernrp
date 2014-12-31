@@ -5,9 +5,10 @@ end
 
 -- This hook returns whether character is recognised or not.
 function SCHEMA:IsCharRecognised(char, id)
-	local client = char:getPlayer()
-
-	if (client) then
+	local character = nut.char.loaded[id]
+	local client = character:getPlayer()
+	print(client)
+	if (client and character) then
 		local faction = nut.faction.indices[client:Team()]
 
 		if (faction and faction.isPublic) then

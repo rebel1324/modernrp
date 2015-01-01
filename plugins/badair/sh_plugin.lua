@@ -77,10 +77,12 @@ if (CLIENT) then
 	end
 
 	netstream.Hook("mskInit", function(maskHealth)
-		local crackNums = math.Round((1 - maskHealth/DEFAULT_GASMASK_HEALTH)*6)
-		shtrPos = {}
-		if (crackNums > 1) then
-			initCracks(crackNums)
+		if (maskHealth) then
+			local crackNums = math.Round((1 - maskHealth/DEFAULT_GASMASK_HEALTH)*6)
+			shtrPos = {}
+			if (crackNums > 1) then
+				initCracks(crackNums)
+			end
 		end
 	end)
 

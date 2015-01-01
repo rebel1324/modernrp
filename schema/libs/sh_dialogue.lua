@@ -124,11 +124,22 @@ if (SERVER) then
 	end)
 else
 	netstream.Hook("dlgResult", function(key, dlgData)
-		if (!key) then
-			-- haltDialogue
-			return
+		if (nut.gui.dialogue and nut.gui.dialogue:IsVisible()) then
+			if (!key) then
+				nut.gui.dialogue:Close()
+
+				return
+			end
+			
+			local dlgKey = nut.gui.dialogue.dlgKey
+			local dlgObject = nut.dialogue.list[dlgKey]
+			local dlgNextNode = dlgObject:getNode(key)
+
+			nut.gui.dialogue:loadDialogue(dlgObject, dlgNextNode)
+			if (dlgNextNode.clientCallback) then
+				dlgNextNode.clientCallback(nut.gui.dialogue, dlgData)
+			end
 		end
-		
 	end)
 end
 

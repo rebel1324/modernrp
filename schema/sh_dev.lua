@@ -46,6 +46,19 @@ function dev.charInvs()
 	end
 end
 
+function dev.printData()
+	for k, v in ipairs(player.GetAll()) do
+		print("INVENTORY: " .. v:Name() .. " +=============")
+		local char = v:getChar()
+		local inv = char:getInv()
+
+		for key, item in pairs(inv:getItems()) do
+			print("ITEM DATA > ".. item.name)
+			PrintTable(item.data)
+		end
+	end
+end
+
 function dev.printmats(client)
 	local trace = client:GetEyeTraceNoCursor()
 	local ent = trace.Entity

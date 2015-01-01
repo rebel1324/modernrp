@@ -1,0 +1,13 @@
+"Refract"
+{
+	"$model"			"0"
+	"$normalmap"		"shtr"
+ 	"$refractamount"		"0.2"
+ 	"$bluramount"		".1"
+	"$scale"			"[1 1]"
+	"$RefractTintTexture"	"shtr_n"
+	"$translucent"		"1"
+	//"$ignorez"		"1"
+	//"$no_fullbright"		"1"	
+}
+

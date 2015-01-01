@@ -54,7 +54,7 @@ if (SERVER) then
 					t.filter = { self } -- By adding player and the vehicle, you can get the seat.
 					local tr = util.TraceLine( t ) 
 					
-					if (tr.Entity == v) then
+					if (tr.Entity == v and hook.Run("CanPlayerTearGassed", v) != false) then
 						tr.Entity:setNetVar("teargas", CurTime() + 10)
 					end
 				end

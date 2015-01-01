@@ -2,10 +2,6 @@ PLUGIN.name = "Grenade Throwables"
 PLUGIN.author = "Black Tea"
 PLUGIN.desc = "Grenade Throwables."
 
-function PLUGIN:CanPlayerTearGassed(client)
-	return true
-end
-
 function PLUGIN:Move(client, mv)
 	if client:GetMoveType() != MOVETYPE_WALK then return end
 

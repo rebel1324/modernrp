@@ -29,6 +29,12 @@ SCHEMA.helps = {
 	<br>Also you can send me some cheer mail to me: rebel1324@gmail.com]]
 }
 
+if (SERVER) then
+	resource.AddFile("sound/gasmaskon.wav")
+	resource.AddFile("sound/gasmaskoff.wav")
+	resource.AddFile("materials/gasmask.vmt")
+end
+
 nut.util.include("sh_configs.lua")
 nut.util.include("sv_hooks.lua")
 nut.util.include("cl_hooks.lua")

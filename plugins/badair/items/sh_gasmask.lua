@@ -9,6 +9,7 @@ ITEM.iconCam = {
 	fov	= 3.382306512871,
 	pos	= Vector(-106.45804595947, 124.09488677979, -88.828506469727)
 }
+
 local defaultDesc = "A Gas-mask type Respirator that protects you from bad airs."
 function ITEM:getDesc()
 	local str
@@ -47,9 +48,9 @@ else
 
 				if (itemTable.gasMask and itemTable:getData("equip")) then
 					-- SAVE TEMP MASKVARS
-					v:setData("equip", false)
-					v:setData("health", char:getVar("gasMaskHealth", DEFAULT_GASMASK_HEALTH))
-					v:setData("filter", char:getVar("gasMaskFilter", DEFAULT_GASMASK_FILTER))
+					itemTable:setData("equip", false)
+					itemTable:setData("health", char:getVar("gasMaskHealth", DEFAULT_GASMASK_HEALTH))
+					itemTable:setData("filter", char:getVar("gasMaskFilter", DEFAULT_GASMASK_FILTER))
 
 					char:setVar("gasMaskHealth", nil)
 					char:setVar("gasMaskFilter", nil)
@@ -84,11 +85,11 @@ else
 
 				if (itemTable.gasMask and itemTable:getData("equip")) then
 					-- INITIALIZE TEMP MASKVARS
-					netstream.Start(client, "mskInit", char:getVar("gasMaskHealth"))
-
 					char:setVar("gasMask", true)
-					char:setVar("gasMaskHealth", v:getData("health", DEFAULT_GASMASK_HEALTH))
-					char:setVar("gasMaskFilter", v:getData("filter", DEFAULT_GASMASK_FILTER))
+					char:setVar("gasMaskHealth", itemTable:getData("health", DEFAULT_GASMASK_HEALTH))
+					char:setVar("gasMaskFilter", itemTable:getData("filter", DEFAULT_GASMASK_FILTER))
+
+					netstream.Start(client, "mskInit", char:getVar("gasMaskHealth"))
 					break
 				end
 			end
@@ -177,4 +178,11 @@ ITEM.functions.Equip = {
 
 function ITEM:onCanBeTransfered(oldInventory, newInventory)
 	return !self:getData("equip")
+end
+
+-- Called when a new instance of this item has been made.
+function ITEM:onInstanced(invID, x, y)
+	self:setData("equip", false)
+	self:setData("health", DEFAULT_GASMASK_HEALTH)
+	self:setData("filter", DEFAULT_GASMASK_FILTER)
 end

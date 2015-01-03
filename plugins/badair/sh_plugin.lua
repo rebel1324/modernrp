@@ -6,7 +6,6 @@ PLUGIN.desc = "Fuck the air mate."
 DEFAULT_GASMASK_HEALTH = 100
 DEFAULT_GASMASK_FILTER = 600
 
-
 if (CLIENT) then
 	local gasmaskTexture2 = Material("gasmask_fnl")
 	local gasmaskTexture = Material("shtr_01")

@@ -32,7 +32,10 @@ SCHEMA.helps = {
 if (SERVER) then
 	resource.AddFile("sound/gasmaskon.wav")
 	resource.AddFile("sound/gasmaskoff.wav")
-	resource.AddFile("materials/gasmask.vmt")
+	resource.AddFile("sound/gmsk_in.wav")
+	resource.AddFile("sound/gmsk_out.wav")
+	resource.AddFile("materials/gasmask_fnl.vmt")
+	resource.AddFile("materials/shtr_01.vmt")
 end
 
 nut.util.include("sh_configs.lua")

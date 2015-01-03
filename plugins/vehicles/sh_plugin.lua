@@ -29,9 +29,15 @@ if (SERVER) then
 
 			return vehicleEnt
 		elseif (spawnInfo.type == TYPE_SCAR) then
-		
+			local vehicleEnt = ents.Create("prop_vehicle_jeep")
+			vehicleEnt:SetModel(spawnInfo.model)
+			vehicleEnt:SetKeyValue("vehiclescript", spawnInfo.script) 
+			vehicleEnt:SetPos(pos)
+			vehicleEnt:Spawn()
+			
+			return vehicleEnt
 		elseif (spawnInfo.type == TYPE_TDM) then
-
+			
 		else
 			print("Tried call NutSpawnVehicle without vehicleType.")
 		end

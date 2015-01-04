@@ -206,7 +206,7 @@ if (SERVER) then
 		end
 	end
 
-	function PLUGIN:PlayerLoadedChar(client, charID, prevID)
+	function PLUGIN:PlayerLoadedChar(client, curChar, prevChar)
 		local char = client:getChar()
 		local groupID = char:getGroup()
 		local groupTable = nut.group.list[groupID]

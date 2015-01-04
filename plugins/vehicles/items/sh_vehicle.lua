@@ -3,6 +3,11 @@ ITEM.model = "models/buggy.mdl"
 ITEM.width = 1
 ITEM.height = 1
 ITEM.maxGas = 1000
+ITEM.vehicleData = {
+	type = TYPE_GENERIC,
+	model = "models/buggy.mdl",
+	script = "scripts/vehicles/jeep_test.txt",
+}
 function ITEM:getDesc()
 	return "It's vehicle mofo."
 end
@@ -27,18 +32,19 @@ ITEM.functions._use = {
 			-- Get the Vehicle Spawn position.
 			traceData = {}
 			traceData.start = client:GetShootPos()
-			traceData.endpos = traceData.start + client:GetAimVector() * 256
+			traceData.endpos = traceData.start + client:GetAimVector() * 512
 			trace = util.TraceLine(traceData)
 
-			local ent = NutSpawnVehicle(trace.HitPos, Angle(), {
-				type = TYPE_GENERIC,
-				model = "models/buggy.mdl",
-				script = "scripts/vehicles/jeep_test.txt",
-			})
+			local ent = NutSpawnVehicle(trace.HitPos, Angle(), item.vehicleData)
 
+			-- If the vehicle is successfully spawned
 			if (ent) then
+				-- Set some initial variables for the vehicles.
+				ent:setNetVar("gas", item:getData("gas", item.maxGas))
 				ent:setNetVar("owner", client)
 				char:setVar("curVehicle", ent, nil, client)
+				item:setData("spawned", true)
+				client:notify("You spawned the vehicle.")
 			end
 		else
 			client:notify(L("notSky", client))
@@ -46,9 +52,12 @@ ITEM.functions._use = {
 
 		return false
 	end,
+	onCanRun = function(item)
+		return (!item:getData("spawned"))
+	end
 }
 
-ITEM.functions._use = { 
+ITEM.functions._store = { 
 	name = "Store",
 	tip = "useTip",
 	icon = "icon16/world.png",
@@ -62,16 +71,32 @@ ITEM.functions._use = {
 			-- If character's current vehicle is valid?
 			if (vehicle and IsValid(vehicle)) then
 				local dist = vehicle:GetPos():Distance(client:GetPos())
+
+				-- If player is near the vehicle.
 				if (dist < 512) then
-					--item:setData("gas", vehicle:getNetVar("gas"))
-					vehicle:Remove()
+					-- Save variables of the car.
+					item:setData("spawned", nil)
+					item:setData("gas", vehicle:getNetVar("gas"))
 					char:setVar("curVehicle", nil, nil, client)
+					vehicle:Remove()
+					client:notify("You successfully stored your vehicle in virtual garage.")
+				else
+					client:notify("You need to be closer to your vehicle.")
 				end
+			else
+				--If vehicle is not valid, Set all item variables to zero or invalid. (For preventing exploit.)
+				char:setVar("curVehicle", nil, nil, client)
+				item:setData("spawned", nil)
+				item:setData("gas", 0)
+				client:notify("Your vehicle is destoryed or removed. But stored successfully.")
 			end
 		end
 
 		return false
 	end,
+	onCanRun = function(item)
+		return (item:getData("spawned") == true)
+	end
 }
 
 ITEM.functions.sell = { 
@@ -82,6 +107,9 @@ ITEM.functions.sell = {
 		-- Sell vehicle and remove the vehicle.
 		return true
 	end,
+	onCanRun = function(item)
+		return (!item:getData("spawned"))
+	end
 }
 
 -- Don't ever think about it.

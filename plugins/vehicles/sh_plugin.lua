@@ -11,14 +11,55 @@ TYPE_SCAR = 1
 TYPE_TDM = 2
 
 if (SERVER) then
-	function PLUGIN:PlayerDisconnected()
+	-- If player disconnects from the server, remove all the vehicles on the server.
+	function PLUGIN:PlayerDisconnected(client)
+		local char = client:getChar()
 
+		-- If disconnecting player's character is valid.
+		if (char) then
+			local vehicle = char:getVar("curVehicle")
+
+			-- If the vehicle is spawned and player is disconnected, deplete gas.
+			for k, v in ipairs(char:getInv():getItems()) do
+				if (v.vehicleData) then
+					if (v:getData("spawned")) then
+						v:setData("spawned", nil)
+						v:setData("gas", 0)
+					end
+				end
+			end
+
+			-- and remove vehicle safe.
+			if (vehicle and IsValid(vehicle)) then
+				vehicle:Remove()
+			end
+		end
 	end
 
-	function PLUGIN:PlayerLoadedChar()
+	-- If player changes the char, remove all the vehicles on the server.
+	function PLUGIN:PlayerLoadedChar(client, curChar, prevChar)
+		-- If player is changing the char and the character ID is differs from the current char ID.
+		if (prevChar and curChar:getID() != prevChar:getID()) then
+			local vehicle = curChar:getVar("curVehicle")
 
+			-- If the vehicle is spawned and player is disconnected, deplete gas.
+			for k, v in ipairs(curChar:getInv():getItems()) do
+				if (v.vehicleData) then
+					if (v:getData("spawned")) then
+						v:setData("spawned", nil)
+						v:setData("gas", 0)
+					end
+				end
+			end
+
+			-- and remove vehicle safe.
+			if (vehicle and IsValid(vehicle)) then
+				vehicle:Remove()
+			end
+		end
 	end
 
+	-- Spawn the vehicle with certain format.
 	function NutSpawnVehicle(pos, ang, spawnInfo)
 		if (spawnInfo.type == TYPE_GENERIC) then
 			local vehicleEnt = ents.Create("prop_vehicle_jeep")
@@ -44,4 +85,13 @@ if (SERVER) then
 
 		return false
 	end
+
+	-- Calculate fuel.
+	/*
+		function PLUGIN:Think()
+			for k, v in ipairs(player.GetAll()) do
+
+			end
+		end
+	*/
 end

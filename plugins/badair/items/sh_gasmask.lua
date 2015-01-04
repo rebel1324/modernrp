@@ -5,10 +5,38 @@ ITEM.width = 1
 ITEM.height = 1
 ITEM.gasMask = true
 ITEM.iconCam = {
-	ang	= Angle(-28.700408935547, -49.785682678223, 0),
-	fov	= 3.382306512871,
-	pos	= Vector(-106.45804595947, 124.09488677979, -88.828506469727)
+	ang	= Angle(29.00287437439, 411.06158447266, 0),
+	fov	= 4.2897785277726,
+	pos	= Vector(-111.17874145508, -135.5086517334, 96.315162658691)
 }
+ITEM.pacData = {
+	[1] = {
+		["children"] = {
+			[1] = {
+				["children"] = {
+				},
+				["self"] = {
+					["UniqueID"] = "3085914138",
+					["Angles"] = Angle(70, 89.999946594238, -7.7347511250991e-005),
+					["Position"] = Vector(-0.23635864257813, 3.2275695800781, -1.5456237792969),
+					["Size"] = 0.95,
+					["EditorExpand"] = true,
+					["Bone"] = "anim_attachment_head",
+					["Model"] = "models/barneyhelmet_faceplate.mdl",
+					["ClassName"] = "model",
+				},
+			},
+		},
+		["self"] = {
+			["EditorExpand"] = true,
+			["UniqueID"] = "2607460179",
+			["ClassName"] = "group",
+			["Name"] = "my outfit",
+			["Description"] = "add parts to me!",
+		},
+	},
+}
+
 
 local defaultDesc = "A Gas-mask type Respirator that protects you from bad airs."
 function ITEM:getDesc()
@@ -68,11 +96,13 @@ else
 			if (client.deadMaskChar and client.deadMaskChar == char:getID() and char:getVar("gasMask", nil)) then
 				-- REMOVE TEMP MASKVARS
 				char:setVar("gasMask", nil)
+				char:removePart("gasmask")
 			end
 				
 			client.deadMaskChar = nil
 		end
 	end)
+	
 
 	hook.Add("PlayerLoadout", "UnequipGasMasks", function(client)
 		local char = client:getChar()
@@ -124,6 +154,7 @@ ITEM.functions.EquipUn = { -- sorry, for name order.
 		item:setData("equip", false)
 		item:setData("health", char:getVar("gasMaskHealth", DEFAULT_GASMASK_HEALTH))
 		item:setData("filter", char:getVar("gasMaskFilter", DEFAULT_GASMASK_FILTER))
+		char:removePart(item.uniqueID)
 
 		char:setVar("gasMask", nil)
 		char:setVar("gasMaskHealth", nil)
@@ -163,6 +194,7 @@ ITEM.functions.Equip = {
 		char:setVar("gasMask", true)
 		char:setVar("gasMaskHealth", item:getData("health", DEFAULT_GASMASK_HEALTH))
 		char:setVar("gasMaskFilter", item:getData("filter", DEFAULT_GASMASK_FILTER))
+		char:addPart(item.uniqueID)
 
 		netstream.Start(item.player, "mskInit", char:getVar("gasMaskHealth"))
 
@@ -185,4 +217,11 @@ function ITEM:onInstanced(invID, x, y)
 	self:setData("equip", false)
 	self:setData("health", DEFAULT_GASMASK_HEALTH)
 	self:setData("filter", DEFAULT_GASMASK_FILTER)
+end
+
+-- Called after the item is registered into the item tables.
+function ITEM:onRegistered()
+	if (CLIENT) then
+		nut.pac.registerPart(self.uniqueID, self.pacData)
+	end
 end

@@ -9,7 +9,14 @@ ITEM.vehicleData = {
 	script = "scripts/vehicles/jeep_test.txt",
 }
 function ITEM:getDesc()
-	return "It's vehicle mofo."
+	if (self.entity) then
+		return "This is not supposed to happen."
+	else
+		return Format(
+			[[A Jeep car.
+			Current Gas: %s]]
+		, math.Round(self:getData("gas", self.maxGas)))
+	end
 end
 
 ITEM.functions = {}

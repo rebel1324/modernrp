@@ -95,3 +95,14 @@ if (SERVER) then
 		end
 	*/
 end
+
+function PLUGIN:VehicleMove(client, vehicle, moveData)
+	if (client and client:getChar() and vehicle) then
+		local gas = vehicle:getNetVar("gas")
+
+		if (gas and gas <= 0) then
+			moveData:SetForwardSpeed(0)
+			moveData:SetSideSpeed(0)
+		end
+	end
+end

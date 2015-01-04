@@ -13,18 +13,14 @@ if (CLIENT) then
 	local nextBreath = CurTime()
 	local exhale = false
 
+	-- Local function for condition.
 	local function canEffect(client)
 		return (client:getChar() and client:getChar():getVar("gasMask") == true and !client:ShouldDrawLocalPlayer() and (!nut.gui.char or !nut.gui.char:IsVisible()))
 	end
 
 	shtrPos = {}
 
-	concommand.Add("refractgo", function()
-		for i = 1, 10 do
-			shtrPos[i] = {math.random(0, ScrW()), math.random(0, ScrH()), math.Rand(.9, 2), math.random(0, 360)}
-		end
-	end)
-
+	-- Draw the Gas Mask Overlay. But other essiential stuffs must be visible.
 	function PLUGIN:HUDPaintBackground()
 		if (canEffect(LocalPlayer())) then
 			w, h = ScrW(), ScrH()
@@ -50,6 +46,7 @@ if (CLIENT) then
 		end
 	end
 
+	-- Gas Mask Think.
 	function PLUGIN:Think()
 		for k, client in ipairs(player.GetAll()) do
 			if (client:getChar() and client:Alive() and client:getChar():getVar("gasMask") == true) then
@@ -65,6 +62,7 @@ if (CLIENT) then
 		end
 	end
 
+	-- Local functions for the Visibility of the crack.
 	local function addCrack()
 		table.insert(shtrPos, {math.random(0, ScrW()), math.random(0, ScrH()), math.Rand(.9, 2), math.random(0, 360)})
 	end
@@ -90,6 +88,7 @@ if (CLIENT) then
 		addCrack()
 	end)
 else
+	-- This hook simulates the damage of the Gas Mask.
 	function PLUGIN:EntityTakeDamage(client, dmgInfo)
 		if (client and client:IsPlayer()) then
 			local char = client:getChar()
@@ -111,11 +110,13 @@ else
 	end
 end
 
+-- This hook is for my other plugin, "Grenade" Plugin.
 function PLUGIN:CanPlayerTearGassed(client)
 	local char = client:getChar()
 	return (!char:getVar("gasMask") or char:getVar("gasMaskHealth") <= 0)
 end
 
+-- If the player is wearing Gas Mask, His some voice should be muffled a bit.
 function PLUGIN:EntityEmitSound(sndTable)
 	local ent = sndTable.Entity
 	if (ent and ent:IsValid() and ent:IsPlayer() and ent:getChar() and ent:getChar():getVar("gasMask")) then

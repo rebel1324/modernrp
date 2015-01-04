@@ -34,14 +34,15 @@ ITEM.functions._use = {
 			traceData.start = client:GetShootPos()
 			traceData.endpos = traceData.start + client:GetAimVector() * 512
 			trace = util.TraceLine(traceData)
-
+			print(item.vehicleData)
 			local ent = NutSpawnVehicle(trace.HitPos, Angle(), item.vehicleData)
 
 			-- If the vehicle is successfully spawned
 			if (ent) then
+				ent:SetCollisionGroup(COLLISION_GROUP_VEHICLE)
 				-- Set some initial variables for the vehicles.
 				ent:setNetVar("gas", item:getData("gas", item.maxGas))
-				ent:setNetVar("owner", client)
+				ent:setNetVar("owner", char:getID())
 				char:setVar("curVehicle", ent, nil, client)
 				item:setData("spawned", true)
 				client:notify("You spawned the vehicle.")

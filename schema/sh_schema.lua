@@ -2,11 +2,10 @@ SCHEMA.name = "Modern RP Base" -- Change this name if you're going to create new
 SCHEMA.author = "Black Tea"
 SCHEMA.desc = "An example modern RP schema that is very basic."
 
--- TODO: Vehicles
 -- TODO: Lottery
 -- TODO: Drugs? maybe?
 -- TODO: Make Item Spawner Default.
--- TODO: Permastash
+-- TODO: Permastash <CRAFTING>
 
 -- Schema Help Menu. You can add more stuffs in cl_hooks.lua.
 SCHEMA.helps = {

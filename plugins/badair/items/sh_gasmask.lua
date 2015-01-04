@@ -218,10 +218,3 @@ function ITEM:onInstanced(invID, x, y)
 	self:setData("health", DEFAULT_GASMASK_HEALTH)
 	self:setData("filter", DEFAULT_GASMASK_FILTER)
 end
-
--- Called after the item is registered into the item tables.
-function ITEM:onRegistered()
-	if (CLIENT) then
-		nut.pac.registerPart(self.uniqueID, self.pacData)
-	end
-end

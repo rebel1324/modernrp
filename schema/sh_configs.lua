@@ -10,8 +10,28 @@ addRequire("smg1", {gunskill = 5})
 addRequire("pistol", {gunskill = 1})
 
 -- Adding Schema Specific Configs.
-nut.config.add("wageInterval", 180, "The delay of player get salary from the server.", nil, {
+nut.config.add("wageInterval", 180, "The Interval of distrubution of salary money.", 
+	function(oldValue, newValue)
+		if (timer.Exists("nutSalary")) then
+			timer.Adjust("nutSalary", newValue, 0, SCHEMA.SalaryPayload)
+		end
+	end, {
 	data = {min = 10, max = 3600},
+	category = "schema"
+})
+
+nut.config.add("incomeInterval", 180, "The Interval of player getting income from the bank money.", 
+	function(oldValue, newValue)
+		if (timer.Exists("nutBankIncome")) then
+			timer.Adjust("nutBankIncome", newValue, 0, SCHEMA.BankIncomePayload)
+		end
+	end, {
+	data = {min = 10, max = 3600},
+	category = "schema"
+})
+
+nut.config.add("incomeRate", 1, "The Percentage Rate of Bank Income.", nil, {
+	data = {min = 0, max = 100},
 	category = "schema"
 })
 

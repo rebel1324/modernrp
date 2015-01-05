@@ -2,7 +2,6 @@
 -- Since The Original work is not by me, Using this outside of NutScript is highly restricted.
 
 nut.screen = nut.screen or {}
-nut.screen.list = nut.screen.list or {}
 
 -- This function creates new Touchable Screen Object.
 function nut.screen.new(w, h, scale)
@@ -16,7 +15,8 @@ function nut.screen.new(w, h, scale)
 		}, 
 		FindMetaTable("TouchScreen"))
 	screen.renderCode = function(scr, ent, wide, tall)
-		print("DEFAULT")
+		draw.RoundedBox(0, 0, 0, wide, tall, Color(255, 0, 0, 255))
+		draw.SimpleText("MISSING RENDERCODE", "ChatFont", wide/2, tall/2, color_white, 1, 1)
 	end
 	return screen
 end

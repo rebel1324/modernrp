@@ -1,27 +1,54 @@
 -- This hook initializes the salary timers for players.
-function SCHEMA:InitializedSchema()
-	-- Initialize Salary Timer.
-	timer.Create("nutSalary", nut.config.get("wageInterval", 180), 0, function()
-		for k, v in ipairs(player.GetAll()) do
-			local char = v:getChar()
+function SCHEMA:SalaryPayload()
+	for k, v in ipairs(player.GetAll()) do
+		local char = v:getChar()
 
-			-- If faction has default salary, give them the salary.
-			if (char) then
-				local charFaction = char:getFaction()
-				local faction = nut.faction.indices[charFaction]
+		-- If faction has default salary, give them the salary.
+		if (char) then
+			local charFaction = char:getFaction()
+			local faction = nut.faction.indices[charFaction]
 
-				if (faction.salary) then
-					if (hook.Run("CanPlayerReceiveSalary", v) == false) then
-						return false
-					end
-
-					char.player:notify(L("salaryReceived", v, nut.currency.get(faction.salary)))
-
-					char:addReserve(faction.salary)
+			if (faction.salary) then
+				if (hook.Run("CanPlayerReceiveSalary", v) == false) then
+					return false
 				end
+
+				char.player:notify(L("reserveIncreased", v, nut.currency.get(faction.salary)))
+
+				char:addReserve(faction.salary)
 			end
 		end
-	end)
+	end
+end
+
+function SCHEMA:BankIncomePayload()
+	for k, v in ipairs(player.GetAll()) do
+		local char = v:getChar()
+
+		-- If faction has default salary, give them the salary.
+		if (char) then
+			local charFaction = char:getFaction()
+			local faction = nut.faction.indices[charFaction]
+
+			if (faction.salary) then
+				if (hook.Run("CanPlayerGetBankIncome", v) == false) then
+					return false
+				end
+
+				local profit = math.Round(char:getReserve() * (math.abs(nut.config.get("incomeRate", 1) / 100)))
+
+				char.player:notify(L("reserveIncreased", v, nut.currency.get(profit)))
+				char:addReserve(profit)
+			end
+		end
+	end
+end
+
+function SCHEMA:InitializedSchema()
+	-- Initialize Salary Timer.
+	timer.Create("nutSalary", nut.config.get("wageInterval", 180), 0, SCHEMA.SalaryPayload)
+
+	timer.Create("nutBankIncome", nut.config.get("incomeInterval", 180), 0, SCHEMA.BankIncomePayload)
 end
 
 -- This hook restricts oneself from using a weapon that configured by the sh_config.lua file.

@@ -1,5 +1,5 @@
 LANGUAGE = {
-	salaryReceived = "Your Bank Reserve increased by %s for salary",
+	reserveIncreased = "Your Bank Reserve increased by %s for salary",
 	salaryRejected = "You couldn't receive the salary",
 	bankMenu = "Bank Menu",
 	bankReserve = "Bank Reserve: %s",

@@ -1,4 +1,3 @@
-
 function SCHEMA:BuildHelpMenu(tabs)
 	tabs["schema"] = function(node)
 		local body = ""
@@ -9,4 +8,28 @@ function SCHEMA:BuildHelpMenu(tabs)
 
 		return body
 	end
+end
+
+function SCHEMA:LoadFonts(font)
+	-- The more readable font.
+	font = "Consolas"
+	surface.CreateFont("nutATMTitleFont", {
+		font = font,
+		size = 72,
+		weight = 1000
+	})
+
+	surface.CreateFont("nutATMFont", {
+		font = font,
+		size = 36,
+		weight = 1000
+	})
+
+	surface.CreateFont("nutATMFontBlur", {
+		font = font,
+		size = 36,
+		blursize = 6,
+		weight = 1000
+	})
+
 end

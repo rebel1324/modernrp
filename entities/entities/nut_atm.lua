@@ -43,26 +43,10 @@ if (SERVER) then
 else
 	local gradient = nut.util.getMaterial("vgui/gradient-u")
 	local commands = {
-		{"deposit", "/bankdeposit"},
-		{"withdraw", "/bankwithdraw"},
-		{"transfer"},
+		{"deposit", "/bankdeposit", 0},
+		{"withdraw", "/bankwithdraw", 0},
+		{"transfer", "/bankdeposit", 0},
 	}
-
-	local function drawMatrixString(str, font, x, y, scale, angle, color)
-		surface.SetFont(font)
-		local tx, ty = surface.GetTextSize(str)
-
-		local matrix = Matrix()
-		matrix:Translate(Vector(x, y, 1))
-		matrix:Rotate(angle or Angle(0, 0, 0))
-		matrix:Scale(scale)
-
-		cam.PushModelMatrix(matrix)
-			surface.SetTextPos(2, 2)
-			surface.SetTextColor(color or color_white)
-			surface.DrawText(str)
-		cam.PopModelMatrix()
-	end
 
 	local function renderCode(self, ent, w, h)
 		local char = LocalPlayer():getChar()
@@ -70,6 +54,7 @@ else
 		if (char) then
 			local mx, my = self:mousePos()
 			local scale = 1 / self.scale
+			local bx, by, color, idxAlpha
 
 			if (self.fadeAlpha < 1) then
 				draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 255))
@@ -78,27 +63,30 @@ else
 				surface.DrawTexturedRect(0, 0, w, h)
 
 				local tx, ty = draw.SimpleText("8", "nutIconsBig", 2 * scale, 2 * scale, ColorAlpha(color_white, 255), 1, 1)
-				tx, ty = draw.SimpleText(char:getReserve(), "nutBigFont", tx + 2 * scale, 2 * scale, ColorAlpha(color_white, 255), 3, 1)
+				tx, ty = draw.SimpleText(char:getReserve(), "nutATMFont", tx + 2 * scale, 2 * scale, ColorAlpha(color_white, 255), 3, 1)
 
-				local bx, by, color
 				self.curSel = -1
-				surface.SetFont("nutBigFont")
+				surface.SetFont("nutATMFont")
+
 				for i, v in ipairs(commands) do
+					idxAlpha = self.idxAlpha[i]
 					color = color_white
 					tx, ty = surface.GetTextSize(v[1])
 					bx, by = w/2, (6 + (i-1)*3) * scale
 
 					if (self:cursorInBox(bx - tx/2, by - ty/2, tx, ty)) then
-						color = Color(255, 0, 0)
+						color = Color(255 - (50 * idxAlpha), (1 - idxAlpha) * 255, (1 - idxAlpha) * 255)
+
 						self.curSel = i
 					end
 
-					draw.SimpleText(L(v[1]), "nutBigFont", bx, by, ColorAlpha(color, 255), 1, 1)
+					draw.SimpleText(L(v[1]), "nutATMFontBlur", bx, by, ColorAlpha(color, idxAlpha * 255), 1, 1)
+					draw.SimpleText(L(v[1]), "nutATMFont", bx, by, ColorAlpha(color, 255), 1, 1)
 				end
 			end
 
 			draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, self.fadeAlpha * 255))
-			draw.SimpleText("ATM", "nutHugeFont", w/2, h/2, ColorAlpha(color_white, self.fadeAlpha * 150), 1, 1)
+			draw.SimpleText("ATM", "nutATMTitleFont", w/2, h/2, ColorAlpha(color_white, self.fadeAlpha * 150), 1, 1)
 		end
 	end
 
@@ -124,6 +112,7 @@ else
 		self.screen = nut.screen.new(17, 17, .05)
 		
 		self.screen.fadeAlpha = 1
+		self.screen.idxAlpha = {}
 		self.screen.renderCode = renderCode
 		self.screen.onMouseClick = onMouseClick
 	end
@@ -133,6 +122,7 @@ else
 	end
 
 	local pos, ang, renderAng
+	local mc = math.Clamp
 	function ENT:DrawTranslucent()
 		self.screen:render()
 	end
@@ -154,9 +144,19 @@ else
 		self.screen:think()
 
 		if (self.screen.hasFocus) then
-			self.screen.fadeAlpha = math.Clamp(self.screen.fadeAlpha - FrameTime()*4, 0, 1)
+			self.screen.fadeAlpha = mc(self.screen.fadeAlpha - FrameTime()*4, 0, 1)
 		else
-			self.screen.fadeAlpha = math.Clamp(self.screen.fadeAlpha + FrameTime(), 0, 1)
+			self.screen.fadeAlpha = mc(self.screen.fadeAlpha + FrameTime()*2, 0, 1)
+		end
+
+		for k, v in ipairs(commands) do
+			self.screen.idxAlpha[k] = self.screen.idxAlpha[k] or 0
+
+			if (self.screen.curSel == k) then
+				self.screen.idxAlpha[k] = mc(self.screen.idxAlpha[k] + FrameTime()*10, 0, 1)
+			else
+				self.screen.idxAlpha[k] = mc(self.screen.idxAlpha[k] - FrameTime()*5, 0, 1)
+			end
 		end
 	end
 end

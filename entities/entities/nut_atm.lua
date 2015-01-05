@@ -41,6 +41,7 @@ if (SERVER) then
 		--netstream.Start(activator, "nutBank")
 	end
 else
+	-- Some Local Variables for 3D2D and Think.
 	local gradient = nut.util.getMaterial("vgui/gradient-u")
 	local commands = {
 		{"deposit", "/bankdeposit", 0},
@@ -48,6 +49,7 @@ else
 		{"transfer", "/bankdeposit", 0},
 	}
 
+	-- This fuction is 3D2D Rendering Code.
 	local function renderCode(self, ent, w, h)
 		local char = LocalPlayer():getChar()
 
@@ -90,6 +92,7 @@ else
 		end
 	end
 
+	-- This function called when client clicked(Pressed USE, Primary/Secondary Attack).
 	local function onMouseClick(self, key)
 		if (key) then
 			if (self.curSel) then
@@ -109,21 +112,29 @@ else
 	end
 
 	function ENT:Initialize()
+		-- Creates new Touchable Screen Object for this Entity.
 		self.screen = nut.screen.new(17, 17, .05)
 		
+		-- Initialize some variables for this Touchable Screen Object.
 		self.screen.fadeAlpha = 1
 		self.screen.idxAlpha = {}
+
+		-- Make the local "renderCode" function as the Touchable Screen Object's 3D2D Screen Rendering function.
 		self.screen.renderCode = renderCode
+
+		-- Make the local "onMouseClick" function as the Touchable Screen Object's Input event.
 		self.screen.onMouseClick = onMouseClick
 	end
 	
 	function ENT:Draw()
+		-- Draw Model.
 		self:DrawModel()
 	end
 
 	local pos, ang, renderAng
 	local mc = math.Clamp
 	function ENT:DrawTranslucent()
+		-- Render 3D2D Screen.
 		self.screen:render()
 	end
 
@@ -131,24 +142,31 @@ else
 		pos = self:GetPos()
 		ang = self:GetAngles()
 
+		-- Shift the Rendering Position.
 		pos = pos + ang:Up() * 11.1
 		pos = pos + ang:Right() * -1.4
 		pos = pos + ang:Forward() * 13.2
 
+		-- Rotate the Rendering Angle.
 		renderAng = Angle(ang[1], ang[2], ang[3])
 		renderAng:RotateAroundAxis(ang:Forward(), 0)
 		renderAng:RotateAroundAxis(ang:Up(), -2)
 
+		-- Update the Rendering Position and angle of the Touchable Screen Object.
 		self.screen.pos = pos
 		self.screen.ang = renderAng
+
+		-- Default Think must be in this place to make Touchable Screen's Input works.
 		self.screen:think()
 
+		-- If The Screen has no Focus(If player is not touching it), Increase Idle Screen's Alpha.
 		if (self.screen.hasFocus) then
 			self.screen.fadeAlpha = mc(self.screen.fadeAlpha - FrameTime()*4, 0, 1)
 		else
 			self.screen.fadeAlpha = mc(self.screen.fadeAlpha + FrameTime()*2, 0, 1)
 		end
 
+		-- Increase Blur Alpha for Selected Button.
 		for k, v in ipairs(commands) do
 			self.screen.idxAlpha[k] = self.screen.idxAlpha[k] or 0
 

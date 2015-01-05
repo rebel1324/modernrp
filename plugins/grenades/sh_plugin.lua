@@ -61,35 +61,3 @@ else
 		surface.DrawRect(0, 0, ScrW(), ScrH())
 	end
 end
-/*
-local buffPLUGIN = nut.plugin.Get( "buffs" )
-if not buffPLUGIN then
-	print( 'Tear Gas Grenade will not work without "buffs" plugin!' )
-else
-	function PLUGIN:CanTearGassed( player )
-		return true -- If some faction or item prevents from tear gassed, just mod this.
-	end
-
-	buffPLUGIN.buffs[ "teargas" ] = {
-		name = "Tear Gas",
-		desc = "Your action will be limited due the effect of tear gas.",
-		onbuffed = function( player, parameter )
-			if !player:HasBuff( "teargas" ) then
-				player:ChatPrint( "You're gassed by the tear gas grenade." )
-			end
-		end,
-		ondebuffed = function( player, parameter )
-			if !player:Alive() then return end
-			if player:HasBuff( "teargas" ) then
-				player:ChatPrint( "Tear Gas's effect has worn out." )
-			end
-		end,
-		func = function( player, parameter)
-			player.timeNextCough = player.timeNextCough or CurTime()
-			if player.timeNextCough < CurTime() then
-				player:EmitSound( Format( "ambient/voices/cough%d.wav", math.random( 1, 4 ) ) )
-				player.timeNextCough = CurTime() + 2
-			end
-		end,
-	} 
-end

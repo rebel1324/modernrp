@@ -36,7 +36,6 @@ if (CLIENT) then
 			else
 				bookFrame:SetHTML(itemTable.content)
 			end
-			print(itemTable.content)
 		end
 	end)
 end

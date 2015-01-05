@@ -63,7 +63,7 @@ function SCREEN:isAccessible(client)
 	local w, h, pos, ang = self.w, self.h, self.pos, self.ang
 	client = client or LocalPlayer()
 	
-	if (pos:Distance(client:EyePos()) > (w/2 + 350)) then
+	if (pos:Distance(client:EyePos()) > (w/2 + 64)) then
 		return
 	end
 

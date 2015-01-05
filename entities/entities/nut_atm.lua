@@ -67,12 +67,6 @@ else
 	local function renderCode(self, ent, w, h)
 		local char = LocalPlayer():getChar()
 
-		if (self.hasFocus) then
-			self.fadeAlpha = math.Clamp(self.fadeAlpha - FrameTime()*4, 0, 1)
-		else
-			self.fadeAlpha = math.Clamp(self.fadeAlpha + FrameTime(), 0, 1)
-		end
-
 		if (char) then
 			local mx, my = self:mousePos()
 			local scale = 1 / self.scale
@@ -104,7 +98,7 @@ else
 			end
 
 			draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, self.fadeAlpha * 255))
-			draw.SimpleText("ATM", "nutBigFont", w/2, h/2, ColorAlpha(color_white, self.fadeAlpha * 150), 1, 1)
+			draw.SimpleText("ATM", "nutHugeFont", w/2, h/2, ColorAlpha(color_white, self.fadeAlpha * 150), 1, 1)
 		end
 	end
 
@@ -158,5 +152,11 @@ else
 		self.screen.pos = pos
 		self.screen.ang = renderAng
 		self.screen:think()
+
+		if (self.screen.hasFocus) then
+			self.screen.fadeAlpha = math.Clamp(self.screen.fadeAlpha - FrameTime()*4, 0, 1)
+		else
+			self.screen.fadeAlpha = math.Clamp(self.screen.fadeAlpha + FrameTime(), 0, 1)
+		end
 	end
 end

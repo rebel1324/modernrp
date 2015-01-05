@@ -7,7 +7,7 @@ end
 function SCHEMA:IsCharRecognised(char, id)
 	local character = nut.char.loaded[id]
 	local client = character:getPlayer()
-	print(client)
+	
 	if (client and character) then
 		local faction = nut.faction.indices[client:Team()]
 

@@ -11,7 +11,7 @@ local function healPlayer(client, target, amount, seconds)
 	hook.Run("OnPlayerHeal", client, target, amount, seconds)
 
 	if (client:Alive() and target:Alive()) then
-		local id = "nutHeal_"..math.random(0, 99999)
+		local id = "nutHeal_"..FrameTime()
 		timer.Create(id, 1, seconds, function()
 			if (!target:IsValid() or !target:Alive()) then
 				timer.Destroy(id)	

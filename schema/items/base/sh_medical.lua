@@ -24,7 +24,7 @@ end
 
 local function onUse(item)
 	item.player:EmitSound("items/medshot4.wav", 80, 110)
-	item.player:ScreenFade(.3, Color(0, 255, 0, 100), 1, 0)
+	item.player:ScreenFade(1, Color(0, 255, 0, 100), .4, 0)
 end
 
 ITEM:hook("use", onUse)

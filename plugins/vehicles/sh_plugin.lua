@@ -47,7 +47,7 @@ if (SERVER) then
 				if (v.vehicleData) then
 					if (v:getData("spawned")) then
 						v:setData("spawned", nil)
-						v:setData("gas", 0)
+						v:setData("gas",  0)
 					end
 				end
 			end
@@ -62,15 +62,20 @@ if (SERVER) then
 	-- Spawn the vehicle with certain format.
 	function NutSpawnVehicle(pos, ang, spawnInfo)
 		if (spawnInfo.type == TYPE_GENERIC) then
+			local solid, entIndex, color, physObj
 			local vehicleEnt = ents.Create("prop_vehicle_jeep")
+
 			vehicleEnt:SetModel(spawnInfo.model)
 			vehicleEnt:SetKeyValue("vehiclescript", spawnInfo.script) 
 			vehicleEnt:SetPos(pos)
 			vehicleEnt:Spawn()
-
+			vehicleEnt.preSpawn = true
+			vehicleEnt:SetRenderMode(1)
+			vehicleEnt:SetColor(spawnInfo.color or color_white)
+			
 			return vehicleEnt
 		elseif (spawnInfo.type == TYPE_SCAR) then
-			local vehicleEnt = ents.Create("prop_vehicle_jeep")
+			local vehicleEnt  = ents.Create("prop_vehicle_jeep")
 			vehicleEnt:SetModel(spawnInfo.model)
 			vehicleEnt:SetKeyValue("vehiclescript", spawnInfo.script) 
 			vehicleEnt:SetPos(pos)

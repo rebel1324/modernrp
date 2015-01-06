@@ -31,7 +31,7 @@ ITEM.functions._use = {
 		-- Check if the player is outside or inside.
 		local traceData = {}
 		traceData.start = client:GetPos() + client:OBBCenter()
-		traceData.endpos = traceData.start + Vector(0, 0, 65535 )
+		traceData.endpos = traceData.start + Vector(0, 0, 65535)
 		traceData.filter = {client}
 		local trace = util.TraceLine(traceData)
 		
@@ -40,13 +40,16 @@ ITEM.functions._use = {
 			traceData = {}
 			traceData.start = client:GetShootPos()
 			traceData.endpos = traceData.start + client:GetAimVector() * 512
+			traceData.filter = client
 			trace = util.TraceLine(traceData)
-			print(item.vehicleData)
-			local ent = NutSpawnVehicle(trace.HitPos, Angle(), item.vehicleData)
+
+			local a, b = trace.HitPos, client:GetPos()
+			a[3] = math.Clamp(a[3], b[3] - 16, b[3] + 4)
+
+			local ent = NutSpawnVehicle(a, Angle(), item.vehicleData)
 
 			-- If the vehicle is successfully spawned
 			if (ent) then
-				ent:SetCollisionGroup(COLLISION_GROUP_VEHICLE)
 				-- Set some initial variables for the vehicles.
 				ent:setNetVar("gas", item:getData("gas", item.maxGas))
 				ent:setNetVar("owner", char:getID())

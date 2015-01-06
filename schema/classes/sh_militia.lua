@@ -1,5 +1,5 @@
 -- Set the 'nice' display name for the class.
-CLASS.name = "Citizen Class B"
+CLASS.name = "Militia"
 -- Set the faction that the class belongs to.
 CLASS.faction = FACTION_CITIZEN
 
@@ -11,4 +11,4 @@ end
 -- CLASS.index is defined internall when the class is registered.
 -- It is basically the class's numeric ID.
 -- We set a global variable to save this index for easier reference.
-CLASS_CITIZEN_EXAMPLE = CLASS.index
+CLASS_MILITIA = CLASS.index

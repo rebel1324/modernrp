@@ -13,6 +13,7 @@ local effectText = {
 ITEM:hook("_use", function(item)
 	item.player:EmitSound("items/battery_pickup.wav")
 	item.player:ChatPrint(table.Random(effectText))
+	item.player:ScreenFade(1, Color(255, 255, 255, 255), 3, 0)
 end)
 
 local weedestColor = Color(27, 150, 0)

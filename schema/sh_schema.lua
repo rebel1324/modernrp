@@ -2,11 +2,6 @@ SCHEMA.name = "Modern RP Base" -- Change this name if you're going to create new
 SCHEMA.author = "Black Tea"
 SCHEMA.desc = "An example modern RP schema that is very basic."
 
--- TODO: Lottery
--- TODO: Drugs? maybe?
--- TODO: Make Item Spawner Default.
--- TODO: Permastash <CRAFTING>
-
 -- Schema Help Menu. You can add more stuffs in cl_hooks.lua.
 SCHEMA.helps = {
 	["About the schema"] = 
@@ -29,12 +24,21 @@ SCHEMA.helps = {
 }
 
 if (SERVER) then
+	-- Adding Gasmask Resources
 	resource.AddFile("sound/gasmaskon.wav")
 	resource.AddFile("sound/gasmaskoff.wav")
 	resource.AddFile("sound/gmsk_in.wav")
 	resource.AddFile("sound/gmsk_out.wav")
 	resource.AddFile("materials/gasmask_fnl.vmt")
+	resource.AddFile("materials/gasmask3.vtf")
+	resource.AddFile("materials/gasmask3_n.vtf")
 	resource.AddFile("materials/shtr_01.vmt")
+	resource.AddFile("materials/shtr.vtf")
+	resource.AddFile("materials/shtr_n.vtf")
+
+	-- Adding Schema Resources
+	resource.AddFile("materials/modernrp/dankweed.vmt")
+	resource.AddFile("materials/modernrp/hitmarker.vmt")
 end
 
 nut.util.include("sh_configs.lua")

@@ -24,6 +24,7 @@ CLASS.business = {
 
 	-- Misc
 	["note"] = 1,
+	["spraycan"] = 1,
 
 	-- Outfit
 	["pot"] = 1,

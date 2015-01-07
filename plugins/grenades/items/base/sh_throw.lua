@@ -1,7 +1,7 @@
 ITEM.name = "Throwable Object"
 ITEM.model = "models/Items/grenadeAmmo.mdl"
 ITEM.width = 1
-ITEM.height = 2
+ITEM.height = 1
 ITEM.throwent = "nut_flare"
 ITEM.throwforce = 2500
 ITEM.desc = "A Money Printer that you can print money"

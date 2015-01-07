@@ -145,3 +145,7 @@ function SCHEMA:OnMoneyPrinterSpawned(printer, item)
 		printer:setInterval(item.printSpeed)
 	end
 end
+
+function SCHEMA:PlayerSpray(client)
+	return (client:getChar():getInv():hasItem("spraycan"))
+end

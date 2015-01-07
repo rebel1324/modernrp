@@ -48,7 +48,7 @@ if (SERVER) then
 			effectData:SetOrigin(self:GetPos())
 			util.Effect("Explosion", effectData, true, true)
 			
-			util.BlastDamage( self, self.Owner or self, self:GetPos() + Vector( 0, 0, 1 ), 256, 120 )
+			util.BlastDamage(self, self, self:GetPos() + Vector( 0, 0, 1 ), 256, 120 )
 		end
 	end
 
@@ -71,16 +71,18 @@ if (SERVER) then
 				return
 			end
 
-			local pos = self:GetPos() + self:OBBCenter() + Vector(0, 0, 25)
-			local angle = self:GetAngles()
-			local amount = self.amount or 100
-			local dice = math.Rand(0, 100)
+			if (hook.Run("CanGenerateMoney", self) != false) then
+				local pos = self:GetPos() + self:OBBCenter() + Vector(0, 0, 25)
+				local angle = self:GetAngles()
+				local amount = hook.Run("OnGenerateMoney", self, self.amount) or self.amount or 100
+				local dice = math.Rand(0, 100)
 
-			nut.currency.spawn(pos, amount, angle)
-			self:SetDTBool(0, false)
+				nut.currency.spawn(pos, amount, angle)
+				self:SetDTBool(0, false)
 
-			if (dice < 10) then
-				self:GoneWrong()
+				if (dice < 10) then
+					self:GoneWrong()
+				end
 			end
 
 			timer.Simple(self.interval, function()

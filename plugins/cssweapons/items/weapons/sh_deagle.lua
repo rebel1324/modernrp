@@ -5,9 +5,9 @@ ITEM.class = "nut_cs_deagle"
 ITEM.weaponCategory = "sidearm"
 ITEM.width = 2
 ITEM.height = 1
-ITEM.forceRender = true
+ITEM.price = 1500
 ITEM.iconCam = {
 	ang	= Angle(-1.0698819160461, 269.48867797852, 0),
 	fov	= 5.4367761524034,
-	pos	= Vector(0, 200, 0)
+	pos	= Vector(-2, 200, 0)
 }

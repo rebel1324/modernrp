@@ -119,7 +119,7 @@ end
 -- If the player is wearing Gas Mask, His some voice should be muffled a bit.
 function PLUGIN:EntityEmitSound(sndTable)
 	local ent = sndTable.Entity
-	if (ent and ent:IsValid() and ent:IsPlayer() and ent:getChar() and ent:getChar():getVar("gasMask")) then
+	if (ent and IsValid(ent) and ent:IsPlayer() and ent:getChar() and ent:getChar():getVar("gasMask")) then
 		local sndName = sndTable.SoundName:lower()
 		
 		if (sndName:find("male")) then

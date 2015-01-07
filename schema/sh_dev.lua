@@ -93,7 +93,7 @@ function dev.iconFrame(ply, cmd, args)
 		panel:SetModel(a.model)
 		panel:SetPos(10, 30)
 
-		if ((a.iconCam and !renderdIcons[string.lower(a.model)]) or a.forceRender) then
+		if (a.iconCam) then
 			local iconCam = a.iconCam
 			iconCam = {
 				cam_pos = iconCam.pos,

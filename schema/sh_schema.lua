@@ -25,28 +25,28 @@ SCHEMA.helps = {
 
 if (SERVER) then
 	-- Adding Gasmask Resources
-	local function addFile(string)
-		resource.AddFile(SCHEMA.folder .. "/contents/" .. string)
-	end
-
-	addFile("sound/gasmaskon.wav")
-	addFile("sound/gasmaskoff.wav")
-	addFile("sound/gmsk_in.wav")
-	addFile("sound/gmsk_out.wav")
-	addFile("materials/gasmask_fnl.vmt")
-	addFile("materials/gasmask3.vtf")
-	addFile("materials/gasmask3_n.vtf")
-	addFile("materials/shtr_01.vmt")
-	addFile("materials/shtr.vtf")
-	addFile("materials/shtr_n.vtf")
+	resource.AddFile("sound/gasmaskon.wav")
+	resource.AddFile("sound/gasmaskoff.wav")
+	resource.AddFile("sound/gmsk_in.wav")
+	resource.AddFile("sound/gmsk_out.wav")
+	resource.AddFile("materials/gasmask_fnl.vmt")
+	resource.AddFile("materials/gasmask3.vtf")
+	resource.AddFile("materials/gasmask3_n.vtf")
+	resource.AddFile("materials/shtr_01.vmt")
+	resource.AddFile("materials/shtr.vtf")
+	resource.AddFile("materials/shtr_n.vtf")
 
 	-- Adding Schema Resources
-	addFile("materials/modernrp/dankweed.png")
-	addFile("materials/modernrp/hitmarker.png")
-	addFile("materials/modernrp/muzzleflash1.vtf")
-	addFile("materials/modernrp/muzzleflash2.vtf")
-	addFile("materials/modernrp/muzzleflash3.vtf")
-	addFile("materials/modernrp/muzzleflash4.vtf")
+	resource.AddFile("materials/modernrp/dankweed.png")
+	resource.AddFile("materials/modernrp/hitmarker.png")
+	resource.AddFile("materials/effects/fas_muzzle1.png")
+	resource.AddFile("materials/effects/fas_muzzle2.png")
+	resource.AddFile("materials/effects/fas_muzzle3.png")
+	resource.AddFile("materials/effects/fas_muzzle4.png")
+	resource.AddFile("materials/effects/fas_muzzle5.png")
+	resource.AddFile("materials/effects/fas_muzzle6.png")
+	resource.AddFile("materials/effects/fas_muzzle7.png")
+	resource.AddFile("materials/effects/fas_muzzle8.png")
 end
 
 nut.util.include("sh_configs.lua")

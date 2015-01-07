@@ -2,6 +2,7 @@ ITEM.name = "MLG Nanobot"
 ITEM.model = "models/props_lab/box01a.mdl"
 ITEM.desc = "The true secret nanobots for Wreckening NoScoping Action"
 ITEM.duration = 100
+ITEM.price = 150
 ITEM.attribBoosts = {
 	["gunskill"] = 5,
 }

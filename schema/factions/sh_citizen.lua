@@ -28,7 +28,7 @@ local CITIZEN_MODELS = {
 }
 FACTION.models = CITIZEN_MODELS
 -- The amount of money citizens get.
-FACTION.salary = 10
+FACTION.salary = 100
 -- FACTION.index is defined when the faction is registered and is just a numeric ID.
 -- Here, we create a global variable for easier reference to the ID.
 FACTION_CITIZEN = FACTION.index

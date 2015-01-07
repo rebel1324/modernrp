@@ -6,6 +6,7 @@ ITEM.foodDesc = "A Pretty big Watermeon."
 ITEM.quantity = 3
 ITEM.width = 2
 ITEM.height = 2
+ITEM.price = 7
 
 ITEM:hook("use", function(item)
 	item.player:EmitSound("physics/body/body_medium_break2.wav", 90, 150)

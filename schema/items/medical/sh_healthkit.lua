@@ -4,6 +4,7 @@ ITEM.width = 2
 ITEM.height = 2
 ITEM.healAmount = 80
 ITEM.healSeconds = 20
+ITEM.price = 200
 ITEM.desc = "An Advanced Medical Kit. Heals " .. ITEM.healAmount .. " for " .. ITEM.healSeconds .." seconds."
 ITEM.iconCam = {
 	ang	= Angle(91.549095153809, -0.070778094232082, 0),

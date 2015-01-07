@@ -6,8 +6,10 @@ ITEM.isFood = true
 ITEM.cookable = true
 ITEM.hungerAmount = 30
 ITEM.foodDesc = "This is test food."
+ITEM.category = "Consumeable"
 ITEM.mustCooked = false
 ITEM.quantity = 1
+
 function ITEM:getDesc()
 	local str = self.foodDesc
 

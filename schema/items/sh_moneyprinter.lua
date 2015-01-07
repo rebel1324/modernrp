@@ -5,10 +5,11 @@ ITEM.height = 2
 ITEM.amount = 200
 ITEM.printSpeed = 50
 ITEM.health = 100
+ITEM.price = 300
+ITEM.category = "Illegal"
 ITEM.desc = "A Money Printer that you can print money"
 
-// On player uneqipped the item, Removes a weapon from the player and keep the ammo in the item.
-ITEM.functions.use = { -- sorry, for name order.
+ITEM.functions.use = { 
 	name = "Use",
 	tip = "useTip",
 	icon = "icon16/world.png",
@@ -31,4 +32,7 @@ ITEM.functions.use = { -- sorry, for name order.
 
 		return false
 	end,
+	onCanRun = function(item)
+		return (!IsValid(item.entity) and !nut.faction.indices[item.player:Team()].isPublic)
+	end
 }

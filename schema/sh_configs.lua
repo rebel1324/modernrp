@@ -1,4 +1,12 @@
 WEAPON_REQSKILLS = {}
+ITEM_FORALL = {}
+
+-- Add Item on Public Business (No Restriction on Business.)
+local function addPublicItem(itemID, mul)
+	ITEM_FORALL[itemID] = (mul or 1)
+end
+
+-- Add Item Stat Requirements.
 local function addRequire(itemID, reqAttribs)
 	WEAPON_REQSKILLS[itemID] =  reqAttribs
 end

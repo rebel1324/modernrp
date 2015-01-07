@@ -13,7 +13,7 @@ FACTION.models = {
 FACTION.isDefault = false
 FACTION.isPublic = true
 
-FACTION.salary = 20
+FACTION.salary = 200
 
 -- FACTION.index is defined when the faction is registered and is just a numeric ID.
 -- Here, we create a global variable for easier reference to the ID.

@@ -54,9 +54,15 @@ local sheetItems = {
 		{defaultCloth, "A Black Suits", 18},
 	}
 }
+
 local categoryName = {
 	[1] = "Male Clothes",
 	[2] = "Female Clothes"
+}
+
+local businessClass = {
+	CLASS_DEALER,
+	CLASS_BLACKDEALER,
 }
 
 function PLUGIN:PluginLoaded()
@@ -66,8 +72,17 @@ function PLUGIN:PluginLoaded()
 			ITEM.name = v[1]
 			ITEM.desc = v[2]
 			ITEM.sheet = {cat, v[3]} -- sheetdata [1]<male> index [2]<fancy>
+			ITEM.price = v[4] or 100
 			ITEM.isCloth = true
 			ITEM.category = categoryName[cat] or "Clothes"
+
+			for _, idx in ipairs(businessClass) do
+				local classData = nut.class.list[idx]
+
+				if (classData and classData.business) then
+					classData.business["acloth_"..cat..v[3]] = 1
+				end	
+			end
 		end
 	end
 end

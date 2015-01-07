@@ -3,6 +3,7 @@ ITEM.model = "models/props_lab/clipboard.mdl"
 ITEM.width = 1
 ITEM.height = 1
 ITEM.desc = "This is something you can write a doodle on."
+ITEM.price = 5
 
 // On player uneqipped the item, Removes a weapon from the player and keep the ammo in the item.
 ITEM.functions.use = { -- sorry, for name order.

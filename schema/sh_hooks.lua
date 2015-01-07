@@ -17,6 +17,7 @@ function SCHEMA:IsCharRecognised(char, id)
 	end
 end
 
+-- Restrict Business.
 function SCHEMA:CanPlayerUseBusiness(client, id)
 	local item = nut.item.list[id]
 	local char = client:getChar()
@@ -29,5 +30,5 @@ function SCHEMA:CanPlayerUseBusiness(client, id)
 		end
 	end
 
-	return false
+	return (false)
 end

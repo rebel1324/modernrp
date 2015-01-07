@@ -4,6 +4,7 @@ ITEM.model = "models/props_interiors/pot02a.mdl"
 ITEM.width = 1
 ITEM.height = 1
 ITEM.outfitCategory = "hat"
+ITEM.price = 150
 ITEM.pacData = {
 	[1] = {
 		["children"] = {

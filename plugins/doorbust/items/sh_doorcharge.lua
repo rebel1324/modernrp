@@ -2,8 +2,7 @@ ITEM.name = "Doorbust Charge"
 ITEM.model = "models/props_c17/consolebox05a.mdl"
 ITEM.width = 2
 ITEM.height = 2
-ITEM.throwent = "nut_flare"
-ITEM.throwforce = 2500
+ITEM.price = 600
 ITEM.desc = "A Money Printer that you can print money"
 
 -- You can use hunger table? i guess? 

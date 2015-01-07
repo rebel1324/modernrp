@@ -5,4 +5,5 @@ ITEM.mustCooked = true
 ITEM.foodDesc = "A Pot of Stew."
 ITEM.quantity = 8
 ITEM.width = 2
+ITEM.price = 20
 ITEM.height = 2

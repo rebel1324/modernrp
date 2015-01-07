@@ -4,4 +4,5 @@ ITEM.width = 1
 ITEM.height = 1
 ITEM.healAmount = 25
 ITEM.healSeconds = 2
+ITEM.price = 120
 ITEM.desc = "An Advanced Medical Kit. Heals " .. ITEM.healAmount .. " for " .. ITEM.healSeconds .." seconds."

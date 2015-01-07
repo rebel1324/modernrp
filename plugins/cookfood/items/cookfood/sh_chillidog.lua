@@ -3,6 +3,7 @@ ITEM.model = "models/food/hotdog.mdl"
 ITEM.hungerAmount = 100
 ITEM.foodDesc = "A Chillidog."
 ITEM.quantity = 1
+ITEM.price = 5
 ITEM.iconCam = {
 	ang	= Angle(25, 40, 0),
 	fov	= 1.6259810694433,

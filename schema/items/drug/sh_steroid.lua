@@ -2,6 +2,7 @@ ITEM.name = "Steroid"
 ITEM.model = "models/props_lab/jar01b.mdl"
 ITEM.desc = "A Good Sideeffect-Free Steroid."
 ITEM.duration = 100
+ITEM.price = 200
 ITEM.attribBoosts = {
 	["meleeskill"] = 5,
 }

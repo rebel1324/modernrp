@@ -37,7 +37,7 @@ if (SERVER) then
 			self.onbreak = true
 			self:Remove()
 
-			hook.Run("OnPlayerDestory", entity, dmginfo)
+			hook.Run("OnMoneyPrinterDestoryed", entity, dmginfo)
 		end
 	end
 
@@ -46,8 +46,8 @@ if (SERVER) then
 			local effectData = EffectData()
 			effectData:SetStart(self:GetPos())
 			effectData:SetOrigin(self:GetPos())
-				
 			util.Effect("Explosion", effectData, true, true)
+			
 			util.BlastDamage( self, self.Owner or self, self:GetPos() + Vector( 0, 0, 1 ), 256, 120 )
 		end
 	end
@@ -57,7 +57,7 @@ if (SERVER) then
 		self:Ignite(3)
 
 		timer.Simple(3, function() 
-			if (!self:IsValid()) then return end
+			if (!IsValid(self)) then return end
 			self:Remove()
 		end)
 	end

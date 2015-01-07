@@ -8,12 +8,18 @@ CLASS.faction = FACTION_CITIZEN
 function CLASS:OnSet(client)
 end
 
-CLASS.business = {
-	["weed"] = true,
-	["mlgbot"] = true,
-	["healthkit"] = true,
-	["healvial"] = true,
+CLASS.business = {}
+local categories = {
+	["Ammunition"] = 1,
+	["Illegal"] = 1,
+	["Weapons"] = 2,
+	["Medical"] = 2,
 }
+for k, v in pairs(nut.item.list) do
+	if (categories[v.category]) then
+		CLASS.business[v.uniqueID] = categories[v.category]
+	end
+end
 
 -- CLASS.index is defined internall when the class is registered.
 -- It is basically the class's numeric ID.

@@ -4,6 +4,7 @@ ITEM.desc = "Dank Joints that will make your eye high"
 ITEM.duration = 100
 ITEM.attribBoosts = {
 	["end"] = 5,
+	["stm"] = 3,
 }
 
 local effectText = {

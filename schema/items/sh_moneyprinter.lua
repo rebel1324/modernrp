@@ -33,6 +33,8 @@ ITEM.functions.use = {
 		return false
 	end,
 	onCanRun = function(item)
-		return (!IsValid(item.entity) and !nut.faction.indices[item.player:Team()].isPublic)
+		local client = item.player or LocalPlayer()
+		
+		return (!IsValid(item.entity) and !nut.faction.indices[client:Team()].isPublic)
 	end
 }

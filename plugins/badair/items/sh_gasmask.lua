@@ -18,14 +18,13 @@ ITEM.pacData = {
 				["children"] = {
 				},
 				["self"] = {
+					["Angles"] = Angle(8.4950472228229e-005, -66.922698974609, -89.999969482422),
 					["UniqueID"] = "3085914138",
-					["Angles"] = Angle(70, 89.999946594238, -7.7347511250991e-005),
-					["Position"] = Vector(-0.23635864257813, 3.2275695800781, -1.5456237792969),
+					["ClassName"] = "model",
 					["Size"] = 0.95,
 					["EditorExpand"] = true,
-					["Bone"] = "anim_attachment_head",
 					["Model"] = "models/barneyhelmet_faceplate.mdl",
-					["ClassName"] = "model",
+					["Position"] = Vector(3.3733520507813, -1.6019897460938, -0.10595703125),
 				},
 			},
 		},

@@ -108,14 +108,15 @@ function SCHEMA:PlayerDeath(client)
 
 	if (char) then
 		client.deadChar = char:getID()
-		char.lostMoney = math.Round(char:getReserve()*.1)
+		char.lostMoney = math.Round(char:getReserve() * (nut.config.get("dpBank", 10) / 100))
 		if (char.lostMoney > 10) then
 			char:takeReserve(char.lostMoney)
 		end
 	end
 end
 
-function SCHEMA:CanGenerateMoney()
+-- This hook returns if the printer can generate the money.
+function SCHEMA:CanGenerateMoney(printer)
 	-- return false if it's disabled.
 	return true
 end

@@ -1,10 +1,4 @@
 WEAPON_REQSKILLS = {}
-ITEM_FORALL = {}
-
--- Add Item on Public Business (No Restriction on Business.)
-local function addPublicItem(itemID, mul)
-	ITEM_FORALL[itemID] = (mul or 1)
-end
 
 -- Add Item Stat Requirements.
 local function addRequire(itemID, reqAttribs)
@@ -48,7 +42,7 @@ nut.config.add("dpBank", 10, "The Death Penalty: Hospital Cost (x% of Bank Reser
 	category = "schema"
 })
 
-nut.config.add("dpBankFee", 5, "The Bank Transfer Fee (x% of Transfer Money).", nil, {
+nut.config.add("BankFee", 5, "The Bank Transfer Fee (x% of Transfer Money).", nil, {
 	data = {min = 0, max = 100},
 	category = "schema"
 })

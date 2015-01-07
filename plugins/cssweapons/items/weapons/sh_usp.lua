@@ -1,7 +1,7 @@
-ITEM.name = "P228"
+ITEM.name = "USP"
 ITEM.desc = "A Weapon."
-ITEM.model = "models/weapons/w_pist_p228.mdl"
-ITEM.class = "nut_cs_p228"
+ITEM.model = "models/weapons/w_pist_usp.mdl"
+ITEM.class = "nut_cs_usp"
 ITEM.weaponCategory = "sidearm"
 ITEM.width = 2
 ITEM.height = 1

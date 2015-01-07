@@ -17,7 +17,7 @@ SCHEMA.helps = {
 	<br>You can make this as complete schema. Such as Real City Life Schema, Zombie Survival Schema or Another Original Schema.]],
 	["About the author"] = 
 	[[This schema's author is Black Tea za rebel1324(https://github.com/rebel1324).
-	<br>I'm is gone to army in 2014. Feb. 9. So, After this date, There is no way to get further support from me.
+	<br>I'm is gone to army in 2015. Feb. 9. So, After this date, There is no way to get further support from me.
 	<br>This could be my last official schema release.
 	<br>But, I beileve you. You can make awesome stuffs with NutScript.
 	<br>Also you can send me some cheer mail to me: rebel1324@gmail.com]]
@@ -25,20 +25,28 @@ SCHEMA.helps = {
 
 if (SERVER) then
 	-- Adding Gasmask Resources
-	resource.AddFile("sound/gasmaskon.wav")
-	resource.AddFile("sound/gasmaskoff.wav")
-	resource.AddFile("sound/gmsk_in.wav")
-	resource.AddFile("sound/gmsk_out.wav")
-	resource.AddFile("materials/gasmask_fnl.vmt")
-	resource.AddFile("materials/gasmask3.vtf")
-	resource.AddFile("materials/gasmask3_n.vtf")
-	resource.AddFile("materials/shtr_01.vmt")
-	resource.AddFile("materials/shtr.vtf")
-	resource.AddFile("materials/shtr_n.vtf")
+	local function addFile(string)
+		resource.AddFile(SCHEMA.folder .. "/contents/" .. string)
+	end
+
+	addFile("sound/gasmaskon.wav")
+	addFile("sound/gasmaskoff.wav")
+	addFile("sound/gmsk_in.wav")
+	addFile("sound/gmsk_out.wav")
+	addFile("materials/gasmask_fnl.vmt")
+	addFile("materials/gasmask3.vtf")
+	addFile("materials/gasmask3_n.vtf")
+	addFile("materials/shtr_01.vmt")
+	addFile("materials/shtr.vtf")
+	addFile("materials/shtr_n.vtf")
 
 	-- Adding Schema Resources
-	resource.AddFile("materials/modernrp/dankweed.vmt")
-	resource.AddFile("materials/modernrp/hitmarker.vmt")
+	addFile("materials/modernrp/dankweed.png")
+	addFile("materials/modernrp/hitmarker.png")
+	addFile("materials/modernrp/muzzleflash1.vtf")
+	addFile("materials/modernrp/muzzleflash2.vtf")
+	addFile("materials/modernrp/muzzleflash3.vtf")
+	addFile("materials/modernrp/muzzleflash4.vtf")
 end
 
 nut.util.include("sh_configs.lua")

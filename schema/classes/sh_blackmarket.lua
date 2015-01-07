@@ -46,6 +46,18 @@ CLASS.business = {
 	-- Misc
 	["note"] = 1,
 	["spraycan"] = 1,
+
+	-- Firearms
+	["ak47"] = 1,
+	["deagle"] = 1,
+	["famas"] = 1,
+	["galil"] = 1,
+	["glock"] = 1,
+	["mac10"] = 1,
+	["p228"] = 1,
+	["p90"] = 1,
+	["sg552"] = 1,
+	["tmp"] = 1,
 }
 
 

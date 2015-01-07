@@ -120,7 +120,7 @@ function SCHEMA:CanGenerateMoney()
 	return true
 end
 
-function SCHEMA:OnGenerateMoney(money)
+function SCHEMA:OnGenerateMoney(printer, money)
 	-- return money itself.
 	return money
 end

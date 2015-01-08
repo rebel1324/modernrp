@@ -8,6 +8,7 @@ ITEM.vehicleData = {
 	model = "models/buggy.mdl",
 	script = "scripts/vehicles/jeep_test.txt",
 }
+
 function ITEM:getDesc()
 	if (self.entity) then
 		return "This is not supposed to happen."

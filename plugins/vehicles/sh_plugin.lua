@@ -5,6 +5,8 @@ PLUGIN.desc = [[Vehicle Item Plugin with pretty good compatibility.
 \nFollowing vehicle mods are supported:
 \nDefault Source Vehicles, SCARS]]
 
+-- Vehicle Plugin Development is pending until Chessnut Fix the Vehicle Problem.
+
 -- Decleared Vehicle Type.
 TYPE_GENERIC = 0
 TYPE_SCAR = 1

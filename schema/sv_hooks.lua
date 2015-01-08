@@ -169,6 +169,25 @@ function SCHEMA:OnCharCreated(client, id)
 	end
 end
 
+-- Give weapons
+function SCHEMA:PostPlayerLoadout(client)
+	local char = client:getChar()
+
+	if (char) then
+		local class = nut.class.list[char:getClass()]
+
+		if (class and class.loadout) then
+			for k, v in pairs(class.loadout) do
+				local weapon = client:Give(k)
+
+				if (isnumber(v)) then
+					client:GiveAmmo(v or 0, weapon:GetPrimaryAmmoType())
+				end
+			end
+		end
+	end
+end
+
 local saveEnts = {
 	["nut_atm"] = true,
 }

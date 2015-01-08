@@ -31,5 +31,4 @@ function SCHEMA:LoadFonts(font)
 		blursize = 6,
 		weight = 1000
 	})
-
 end

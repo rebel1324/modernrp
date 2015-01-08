@@ -116,6 +116,7 @@ else
 		self.screen = nut.screen.new(17, 17, .05)
 		
 		-- Initialize some variables for this Touchable Screen Object.
+		self.screen.noClipping = true
 		self.screen.fadeAlpha = 1
 		self.screen.idxAlpha = {}
 

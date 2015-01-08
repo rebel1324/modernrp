@@ -1,3 +1,5 @@
+-- This file contains all commands and chat types of Modern RP Schema.
+
 nut.command.add("bankdeposit", {
 	syntax = "<amount>",
 	onRun = function(client, arguments)
@@ -124,4 +126,18 @@ nut.command.add("banklongtransfer", {
 			end
 		end
 	end
+})
+
+-- Advert Chat Type
+nut.chat.register("advert", {
+	onCanSay =  function(speaker, text)
+		local char = speaker:getChar()
+		return (char:hasMoney(10) and char:takeMoney(10))
+	end,
+	onCanHear = 1000000,
+	onChatAdd = function(speaker, text)
+		text = "ADVERT: " .. text
+		chat.AddText(Color(180, 255, 10), text)
+	end,
+	prefix = {"/advert", "/ad"}
 })

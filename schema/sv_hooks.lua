@@ -13,7 +13,7 @@ function SCHEMA:SalaryPayload()
 					return false
 				end
 
-				char.player:notify(L("reserveIncreased", v, nut.currency.get(faction.salary)))
+				char.player:notify(L("reserveSalary", v, nut.currency.get(faction.salary)))
 
 				char:addReserve(faction.salary)
 			end
@@ -37,7 +37,7 @@ function SCHEMA:BankIncomePayload()
 
 				local profit = math.Round(char:getReserve() * (math.abs(nut.config.get("incomeRate", 1) / 100)))
 
-				char.player:notify(L("reserveIncreased", v, nut.currency.get(profit)))
+				char.player:notify(L("reserveIncome", v, nut.currency.get(profit)))
 				char:addReserve(profit)
 			end
 		end
@@ -73,7 +73,8 @@ function SCHEMA:CanPlayerInteractItem(client, action, item)
 			for k, v in pairs(reqattribs) do
 				local attrib = client:getChar():getAttrib(k, 0)
 				if (attrib < v) then
-					client:notify(Format("You have to train %s to use this Item. (%s/%s)", nut.attribs.list[k].name, attrib, v))
+					client:notify(L("requireAttrib", client, L(nut.attribs.list[k].name, client), attrib, v))
+
 					return false
 				end
 			end
@@ -84,6 +85,7 @@ end
 -- This hook returns whether player can receive the salary or not.
 function SCHEMA:CanPlayerReceiveSalary(client)
 	local char = client:getChar()
+
 	if (!char.player:Alive()) then
 		return false, char.player:notify(L("salaryRejected", client))	
 	end

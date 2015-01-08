@@ -126,21 +126,25 @@ if (CLIENT) then
 		local cw = right * self.w * .5
 
 		-- Draw the 3D2D Panel.
-		render.PushCustomClipPlane(up, up:Dot( pos-ch ))
-		render.PushCustomClipPlane(-up, (-up):Dot( pos+ch ))
-		render.PushCustomClipPlane(right, right:Dot( pos ))
-		render.PushCustomClipPlane(-right, (-right):Dot( pos+cw*2 ))
-		render.EnableClipping( true )
+		if (!self.noClipping) then
+			render.PushCustomClipPlane(up, up:Dot( pos-ch ))
+			render.PushCustomClipPlane(-up, (-up):Dot( pos+ch ))
+			render.PushCustomClipPlane(right, right:Dot( pos ))
+			render.PushCustomClipPlane(-right, (-right):Dot( pos+cw*2 ))
+			render.EnableClipping( true )
+		end
 
 			cam.Start3D2D(pos, ang, self.scale)		
 				local succ, err = pcall(self.renderCode, self, ent, wide, tall)	
 			cam.End3D2D()
 
-		render.PopCustomClipPlane()
-		render.PopCustomClipPlane()
-		render.PopCustomClipPlane()
-		render.PopCustomClipPlane()
-		render.EnableClipping( false )
+		if (!self.noClipping) then
+			render.PopCustomClipPlane()
+			render.PopCustomClipPlane()
+			render.PopCustomClipPlane()
+			render.PopCustomClipPlane()
+			render.EnableClipping( false )
+		end
 		
 		-- Print the error.
 		if !succ then
@@ -220,6 +224,8 @@ if (CLIENT) then
 		end
 	end
 
+	/*
+	-- Obsolete
 	-- This function enables the clipping of the 3D2D Screen.
 	function SCREEN:enableClipping(state)
 		if (state) then
@@ -247,6 +253,7 @@ if (CLIENT) then
 			render.EnableClipping( self.__bClipping )
 		end
 	end
+	*/
 end
 
 _R.TouchScreen = SCREEN

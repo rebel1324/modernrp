@@ -14,6 +14,7 @@ CLASS.business = {
 	["pistolammo"] = 1,	
 	["shotgunammo"] = 1,	
 	["smg1ammo"] = 1,	
+	["ar2ammo"] = 1,	
 
 	-- Illegal
 	["mlgbot"] = 1,	

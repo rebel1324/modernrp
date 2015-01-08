@@ -6,6 +6,7 @@ ENT.Spawnable = true
 ENT.AdminOnly = false
 ENT.Category = "NutScript"
 ENT.RenderGroup 		= RENDERGROUP_BOTH
+ENT.slotMax = 10
 
 if (SERVER) then
 	function ENT:SpawnFunction(client, trace, className)
@@ -42,12 +43,24 @@ if (SERVER) then
 		--netstream.Start(activator, "nutBank")
 	end
 
-	-- If RECEIVE the slotsignal, oh YEAH!
+	netstream.Hook("requestSlotM", function(client, entity)
+		if (client and entity) then
+			netstream.Start(player.GetAll(), "sendSlotM", client, entity, math.random(0, entity.slotMax))
+		end
+	end)
 else
+	netstream.Hook("sendSlotM", function(client, entity, number)
+		if (client and entity and number) then
+			entity.slotSlide = 0
+			entity.slot = number
+		end
+	end)
+
 	-- Some Local Variables for 3D2D and Think.
 	local gradient = nut.util.getMaterial("vgui/gradient-u")
 
 	-- This fuction is 3D2D Rendering Code.
+	local size = 128
 	local function renderCode(self, ent, w, h)
 		local char = LocalPlayer():getChar()
 
@@ -75,11 +88,30 @@ else
 
 			draw.RoundedBox(0, 0, 0, w, h - 55, Color(0, 0, 0, 255))
 
-			local size = 128
 			local shifts = {}
-			local maxSize = 9 * size/5 + 9 * size
-			for line = 0, 10 do
-				local dax, day = -maxSize + RealTime()*250%maxSize + line * size/5 + line * size, (h - 55)/2 - size/2
+			local maxSize = self.entity.slotMax * size/5 + self.entity.slotMax * size
+			local FT = FrameTime()
+
+			local targetSpin = 
+				-- The position of the slot
+				((self.entity.slot + 1) * size/5 + (self.entity.slot + 1) * size  + size/2) 
+				-- Amount of spins
+				+ maxSize * self.entity.spins
+
+			local spinLeft = self.entity.spins - math.ceil(self.entity.slotSlide/maxSize)
+
+			if (spinLeft < 0) then
+				self.entity.slotSlide = math.ceil(Lerp(FT*2, self.entity.slotSlide, targetSpin))
+			else
+				self.entity.slotSlide = self.entity.slotSlide + FT*2000
+			end
+
+			surface.SetDrawColor(255, 255, 255)
+			surface.SetMaterial(Material("effects/laser1"))
+			surface.DrawTexturedRect(w/2 - 25, 0, 50, h - 50)
+
+			for line = 0, self.entity.slotMax + 1 do
+				local dax, day = -maxSize + self.entity.slotSlide%maxSize + line * size/5 + line * size, (h - 55)/2 - size/2
 				draw.RoundedBox(0, dax, day, size, size, Color(255, 0, 0, 255))
 
 				dax = dax + size/2
@@ -92,6 +124,7 @@ else
 	-- This function called when client clicked(Pressed USE, Primary/Secondary Attack).
 	local function onMouseClick(self, key)
 		if (key) then
+			netstream.Start("requestSlotM", self.entity)
 		end
 	end
 
@@ -108,6 +141,11 @@ else
 
 		-- Make the local "onMouseClick" function as the Touchable Screen Object's Input event.
 		self.screen.onMouseClick = onMouseClick
+
+		self.screen.entity = self
+		self.slot = 4
+		self.spins = 4
+		self.slotSlide = 0
 	end
 	
 	function ENT:Draw()

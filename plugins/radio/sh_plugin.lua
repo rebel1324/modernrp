@@ -3,6 +3,20 @@ PLUGIN.author = "Black Tea"
 PLUGIN.desc = "You can communicate with other people in distance."
 local RADIO_CHATCOLOR = Color(100, 255, 50)
 
+-- This is how initialize Language in Single File.
+local langkey = "english"
+do
+	local langTable = {
+		radioFreq = "Frequency",
+		radioSubmit = "Submit",
+		radioNoRadio = "You don't have any radio to adjust.",
+		radioNoRadioComm = "You don't have any radio to communicate",
+		radioFormat = "%s says in radio: \"%s\"",
+	}
+
+	table.Merge(nut.lang.stored[langkey], langTable)
+end
+
 if (CLIENT) then
 	local PANEL = {}
 	function PANEL:Init()
@@ -41,7 +55,7 @@ if (CLIENT) then
 	PANEL = {}
 
 	function PANEL:Init()
-		self:SetTitle("Radio Dial")
+		self:SetTitle(L("radioFreq"))
 		self:SetSize(330, 220)
 		self:Center()
 		self:MakePopup()
@@ -50,7 +64,7 @@ if (CLIENT) then
 		self.submit:Dock(BOTTOM)
 		self.submit:DockMargin(0, 5, 0, 0)
 		self.submit:SetTall(25)
-		self.submit:SetText("Submit")
+		self.submit:SetText(L("radioSubmit"))
 		self.submit.DoClick = function()
 			local str = ""
 			for i = 1, 5 do
@@ -130,7 +144,7 @@ else
 				(ent or client):EmitSound("buttons/combine_button1.wav", 50, 170)
 				item:setData("freq", freq, player.GetAll(), false, true)
 			else
-				client:notify("You do not have any radio to adjust.")
+				client:notify(L("radioNoRadio"))
 			end
 		end
 	end)
@@ -165,8 +179,7 @@ else
 */
 end
 
-
-	-- Yelling out loud.
+-- Yelling out loud.
 local find = {
 	["radio"] = false,
 	["sradio"] = true
@@ -292,7 +305,7 @@ nut.chat.register("radio", {
 			CURFREQ = freq
 			speaker:EmitSound("npc/metropolice/vo/on"..math.random(1, 2)..".wav", math.random(50, 60), math.random(80, 120))
 		else
-			speaker:notify("You do not have proper object to use this chat.")
+			speaker:notify(L"radioNoRadioComm")
 			return false
 		end
 	end,

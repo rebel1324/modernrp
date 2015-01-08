@@ -1,5 +1,6 @@
 LANGUAGE = {
-	reserveIncreased = "Your Bank Reserve increased by %s for salary",
+	reserveSalary = "Your Bank Reserve increased by %s for Salary",
+	reserveIncome = "Your Bank Reserve increased by %s for Bank Income",
 	salaryRejected = "You couldn't receive the salary",
 	bankMenu = "Bank Menu",
 	bankReserve = "Bank Reserve: %s",
@@ -10,5 +11,12 @@ LANGUAGE = {
 	withdrawMoney = "You took %s from your Bank Reserve",
 	hospitalPrice = "Your Bank Reserve deducted by %s for the Medical Care",
 	provideValidNumber = "You provided wrong number on amount argument.",
-	cantAfford = "You can't afford this"
+	cantAfford = "You can't afford this",
+	enterAmount = "Enter Amount",
+	requireAttrib = "You have to train %s to use this Item. (%s/%s)",
+	["Gun Efficiency"] = "Gun Efficiency",
+	["Medical Knowledge"] = "Medical Knowledge",
+	["Melee Efficiency"] = "Melee Efficiency",
+	["Stamina"] = "Stamina",
+	["Endurance"] = "Endurance",
 }

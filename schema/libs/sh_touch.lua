@@ -96,6 +96,7 @@ if (CLIENT) then
 	SCREEN.mx = -1
 	SCREEN.my = -1
 
+	local glowMaterial = Material("sprites/glow04_noz")
 	-- This function renders the 3D2D Panel. Requires proper Position and Angle, Scale and Good 3D2D Rendering Code.
 	function SCREEN:render()
 		local pos, ang = self.pos, self.ang
@@ -119,10 +120,27 @@ if (CLIENT) then
 		local wide = self.w * (1 / self.scale)
 		local tall = self.h * (1 / self.scale)
 
+		local up = self.ang:Up()
+		local right = self.ang:Forward()
+		local ch = up * self.h * .5
+		local cw = right * self.w * .5
+
 		-- Draw the 3D2D Panel.
-		cam.Start3D2D(pos, ang, self.scale)		
-			local succ, err = pcall(self.renderCode, self, ent, wide, tall)	
-		cam.End3D2D()
+		render.PushCustomClipPlane(up, up:Dot( pos-ch ))
+		render.PushCustomClipPlane(-up, (-up):Dot( pos+ch ))
+		render.PushCustomClipPlane(right, right:Dot( pos ))
+		render.PushCustomClipPlane(-right, (-right):Dot( pos+cw*2 ))
+		render.EnableClipping( true )
+
+			cam.Start3D2D(pos, ang, self.scale)		
+				local succ, err = pcall(self.renderCode, self, ent, wide, tall)	
+			cam.End3D2D()
+
+		render.PopCustomClipPlane()
+		render.PopCustomClipPlane()
+		render.PopCustomClipPlane()
+		render.PopCustomClipPlane()
+		render.EnableClipping( false )
 		
 		-- Print the error.
 		if !succ then

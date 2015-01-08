@@ -147,6 +147,63 @@ function SCHEMA:OnMoneyPrinterSpawned(printer, item)
 	end
 end
 
+-- Don't let them spray thier fucking spray without spraycan
 function SCHEMA:PlayerSpray(client)
-	return (client:getChar():getInv():hasItem("spraycan"))
+	return (client:getChar():getInv():hasItem("spraycan")) or false
+end
+
+-- On character is created, Give him some money and items. 
+function SCHEMA:OnCharCreated(client, id)
+	local char = nut.char.loaded[id]
+
+	if (char) then
+		local inv = char:getInv()
+
+		if (inv) then
+			inv:add("healvial")
+		end
+
+		char:giveMoney(nut.config.get("startMoney", 0))
+	end
+end
+
+local saveEnts = {
+	["nut_atm"] = true,
+}
+function SCHEMA:SaveData()
+	local savedEntities = {}
+
+	for k, v in ipairs(ents.GetAll()) do
+		local class = v:GetClass():lower()
+
+		if (saveEnts[class]) then
+			table.insert(savedEntities, {
+				class = class, 
+				pos = v:GetPos(),
+				ang = v:GetAngles(),
+			})
+		end
+	end
+
+	-- Save Map Entities
+	self:setData(savedEntities)
+
+
+	--self:setData(schemaData, true, true)
+end
+
+function SCHEMA:LoadData()
+	-- Load Map Entities
+	local savedEntities = self:getData() or {}
+	
+	for k, v in ipairs(savedEntities) do
+		local ent = ents.Create(v.class)
+		ent:SetPos(v.pos)
+		ent:SetAngles(v.ang)
+		ent:Spawn()
+		ent:Activate()
+	end
+
+	-- Load Schema Data
+	-- self:loadData(true, true)
 end

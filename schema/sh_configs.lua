@@ -42,7 +42,12 @@ nut.config.add("dpBank", 10, "The Death Penalty: Hospital Cost (x% of Bank Reser
 	category = "schema"
 })
 
-nut.config.add("BankFee", 5, "The Bank Transfer Fee (x% of Transfer Money).", nil, {
+nut.config.add("bankFee", 5, "The Bank Transfer Fee (x% of Transfer Money).", nil, {
 	data = {min = 0, max = 100},
+	category = "schema"
+})
+
+nut.config.add("startMoney", 5, "Start money for new character.", nil, {
+	data = {min = 0, max = 1000},
 	category = "schema"
 })

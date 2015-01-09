@@ -72,18 +72,20 @@ else
 		if (char) then
 			client.deadMaskChar = char:getID()
 
-			for k, v in pairs(char:getInv():getItems()) do
-				local itemTable = nut.item.instances[v.id]
+			if (char:getInv()) then
+				for k, v in pairs(char:getInv():getItems()) do
+					local itemTable = nut.item.instances[v.id]
 
-				if (itemTable.gasMask and itemTable:getData("equip")) then
-					-- SAVE TEMP MASKVARS
-					itemTable:setData("equip", false)
-					itemTable:setData("health", char:getVar("gasMaskHealth", DEFAULT_GASMASK_HEALTH))
-					itemTable:setData("filter", char:getVar("gasMaskFilter", DEFAULT_GASMASK_FILTER))
+					if (itemTable.gasMask and itemTable:getData("equip")) then
+						-- SAVE TEMP MASKVARS
+						itemTable:setData("equip", false)
+						itemTable:setData("health", char:getVar("gasMaskHealth", DEFAULT_GASMASK_HEALTH))
+						itemTable:setData("filter", char:getVar("gasMaskFilter", DEFAULT_GASMASK_FILTER))
 
-					char:setVar("gasMaskHealth", nil)
-					char:setVar("gasMaskFilter", nil)
-					break
+						char:setVar("gasMaskHealth", nil)
+						char:setVar("gasMaskFilter", nil)
+						break
+					end
 				end
 			end
 		end
@@ -111,17 +113,19 @@ else
 		if (char) then
 			local inv = char:getInv()
 
-			for k, v in pairs(inv:getItems()) do
-				local itemTable = nut.item.instances[v.id]
+			if (inv) then
+				for k, v in pairs(inv:getItems()) do
+					local itemTable = nut.item.instances[v.id]
 
-				if (itemTable.gasMask and itemTable:getData("equip")) then
-					-- INITIALIZE TEMP MASKVARS
-					char:setVar("gasMask", true)
-					char:setVar("gasMaskHealth", itemTable:getData("health", DEFAULT_GASMASK_HEALTH))
-					char:setVar("gasMaskFilter", itemTable:getData("filter", DEFAULT_GASMASK_FILTER))
+					if (itemTable.gasMask and itemTable:getData("equip")) then
+						-- INITIALIZE TEMP MASKVARS
+						char:setVar("gasMask", true)
+						char:setVar("gasMaskHealth", itemTable:getData("health", DEFAULT_GASMASK_HEALTH))
+						char:setVar("gasMaskFilter", itemTable:getData("filter", DEFAULT_GASMASK_FILTER))
 
-					netstream.Start(client, "mskInit", char:getVar("gasMaskHealth"))
-					break
+						netstream.Start(client, "mskInit", char:getVar("gasMaskHealth"))
+						break
+					end
 				end
 			end
 		end

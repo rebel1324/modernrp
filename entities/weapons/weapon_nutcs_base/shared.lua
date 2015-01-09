@@ -388,13 +388,6 @@ function SWEP:CSShootBullet( dmg, recoil, numbul, cone )
 	bullet.Tracer	= 4									
 	bullet.Force	= 5									
 	bullet.Damage	= dmg
-	bullet.Callback = function(client, trace, damageInfo)
-		local e = EffectData()
-		e:SetOrigin(trace.HitPos)
-		e:SetNormal(trace.HitNormal)
-		e:SetScale(math.Rand(.4, .5))
-		util.Effect( "btImpact", e )
-	end
 	
 	local recoilAng = Angle(-self.spreadData.incrRecoilRate*math.Rand(.8, 1.1), -self.spreadData.incrSpreadRate*math.Rand(-1, 1), 0)
 	self.spreadData.curRecoilHandle = self.spreadData.curRecoilHandle + self.spreadData.incrRecoilRate

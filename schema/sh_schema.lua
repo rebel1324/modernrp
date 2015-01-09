@@ -50,6 +50,7 @@ if (SERVER) then
 end
 
 nut.util.include("sh_configs.lua")
+nut.util.include("cl_effects.lua")
 nut.util.include("sv_hooks.lua")
 nut.util.include("cl_hooks.lua")
 nut.util.include("sh_hooks.lua")
@@ -58,4 +59,5 @@ nut.util.include("meta/sh_player.lua")
 nut.util.include("meta/sh_entity.lua")
 nut.util.include("meta/sh_character.lua")
 nut.util.include("sh_dev.lua") -- Developer Functions
-nut.dialogue.loadFromDir(SCHEMA.folder .. "/schema/dialogues")
+
+--nut.dialogue.loadFromDir(SCHEMA.folder .. "/schema/dialogues")

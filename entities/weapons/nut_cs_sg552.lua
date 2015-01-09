@@ -46,6 +46,7 @@ SWEP.ShellAng = Angle(-15, -140, 0)
 SWEP.WShellAng = Angle(0, 120, 0)
 SWEP.muzAdjust = Angle(0, 0, 0)
 SWEP.originMod = Vector(0, -7, 0)
+SWEP.muzPattern = 2
 SWEP.WMuzSize = .38
 SWEP.spreadData = {
 	rcvrRecoilRate = .15,

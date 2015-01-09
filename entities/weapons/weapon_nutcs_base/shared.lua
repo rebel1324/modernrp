@@ -149,6 +149,7 @@ if (CLIENT) then
 				e:SetScale(self.MuzSize)
 				e:SetOrigin(atpos.Pos)
 				e:SetNormal(atpos.Ang:Forward())
+				e:SetMagnitude(self.muzPattern or 1)
 				util.Effect("btMuzzleFlash", e)
 			elseif (eventNum == EVENT_WMUZZLE) then
 				if (self.Owner != LocalPlayer() or
@@ -161,6 +162,7 @@ if (CLIENT) then
 					e:SetScale(self.WMuzSize)
 					e:SetOrigin(atpos.Pos)
 					e:SetNormal(atpos.Ang:Forward())
+					e:SetMagnitude(self.muzPattern or 1)
 					util.Effect("btMuzzleFlash", e)
 				end
 			elseif (eventNum == bit.bor(EVENT_SHELL, EVENT_WSHELL)) then

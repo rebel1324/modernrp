@@ -12,7 +12,7 @@ ITEM.content = [[]]
 ITEM.functions.use = { -- sorry, for name order.
 	name = "Use",
 	tip = "useTip",
-	icon = "icon16/world.png",
+	icon = "icon16/book.png",
 	onRun = function(item)
 		if (item.player and IsValid(item.player)) then
 			netstream.Start(item.player, "readBook", item.uniqueID)

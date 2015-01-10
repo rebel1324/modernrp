@@ -47,7 +47,7 @@ end
 ITEM.functions.toggle = { -- sorry, for name order.
 	name = "Toggle",
 	tip = "useTip",
-	icon = "icon16/world.png",
+	icon = "icon16/connect.png",
 	onRun = function(item)
 		item:setData("power", !item:getData("power", false), nil, nil, true)
 		item.player:EmitSound("buttons/button14.wav", 70, 150)
@@ -59,7 +59,7 @@ ITEM.functions.toggle = { -- sorry, for name order.
 ITEM.functions.use = { -- sorry, for name order.
 	name = "Freq",
 	tip = "useTip",
-	icon = "icon16/world.png",
+	icon = "icon16/wrench.png",
 	onRun = function(item)
 		netstream.Start(item.player, "radioAdjust", item:getData("freq", "000,0"), item.id)
 

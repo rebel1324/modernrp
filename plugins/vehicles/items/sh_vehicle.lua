@@ -24,7 +24,7 @@ ITEM.functions = {}
 ITEM.functions._use = { 
 	name = "Spawn",
 	tip = "useTip",
-	icon = "icon16/world.png",
+	icon = "icon16/car_add.png",
 	onRun = function(item)
 		local client = item.player
 		local char = client:getChar()
@@ -72,7 +72,7 @@ ITEM.functions._use = {
 ITEM.functions._store = { 
 	name = "Store",
 	tip = "useTip",
-	icon = "icon16/world.png",
+	icon = "icon16/car_delete.png",
 	onRun = function(item)
 		local client = item.player
 		local char = client:getChar()
@@ -114,7 +114,7 @@ ITEM.functions._store = {
 ITEM.functions.sell = { 
 	name = "Sell",
 	tip = "useTip",
-	icon = "icon16/world.png",
+	icon = "icon16/bin.png",
 	onRun = function(item)
 		-- Sell vehicle and remove the vehicle.
 		return true

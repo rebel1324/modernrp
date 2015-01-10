@@ -49,7 +49,7 @@ end)
 ITEM.functions.use = {
 	name = "Eat",
 	tip = "useTip",
-	icon = "icon16/world.png",
+	icon = "icon16/cup.png",
 	onRun = function(item)
 		local cooked = item:getData("cooked", 1)
 		local quantity = item:getData("quantity", item.quantity)

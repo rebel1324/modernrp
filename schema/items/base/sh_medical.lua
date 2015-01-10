@@ -34,7 +34,7 @@ ITEM:hook("usef", onUse)
 ITEM.functions.use = { -- sorry, for name order.
 	name = "Use",
 	tip = "useTip",
-	icon = "icon16/world.png",
+	icon = "icon16/add.png",
 	onRun = function(item)
 		if (item.player:Alive()) then
 			healPlayer(item.player, item.player, item.healAmount, item.healSeconds)
@@ -46,7 +46,7 @@ ITEM.functions.use = { -- sorry, for name order.
 ITEM.functions.usef = { -- sorry, for name order.
 	name = "Use Forward",
 	tip = "useTip",
-	icon = "icon16/world.png",
+	icon = "icon16/arrow_up.png",
 	onRun = function(item)
 		local client = item.player
 		local trace = client:GetEyeTraceNoCursor() -- We don't need cursors.

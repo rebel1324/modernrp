@@ -150,7 +150,7 @@ end)
 ITEM.functions.EquipUn = { -- sorry, for name order.
 	name = "Unequip",
 	tip = "equipTip",
-	icon = "icon16/world.png",
+	icon = "icon16/cross.png",
 	onRun = function(item)
 		local char = item.player:getChar()
 		-- REMOVE TEMP VARS
@@ -176,7 +176,7 @@ ITEM.functions.EquipUn = { -- sorry, for name order.
 ITEM.functions.Equip = {
 	name = "Equip",
 	tip = "equipTip",
-	icon = "icon16/world.png",
+	icon = "icon16/tick.png",
 	onRun = function(item)
 		local char = item.player:getChar()
 		local inv = char:getInv()

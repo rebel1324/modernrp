@@ -228,3 +228,18 @@ function SCHEMA:LoadData()
 	-- Load Schema Data
 	-- self:loadData(true, true)
 end
+
+local lotteryProfits = {
+	1,
+	2,
+	4,
+	16,
+	32,
+	128,
+	512,
+	2048,
+}
+
+function SCHEMA:LotteryEvent(client, item)
+	return (item.price or 100) * lotteryProfits[2]
+end

@@ -6,10 +6,21 @@ local function addRequire(itemID, reqAttribs)
 end
 
 -- Adding Weapon Requirements.
-addRequire("357", {gunskill = 7})
-addRequire("ar2", {gunskill = 10})
-addRequire("smg1", {gunskill = 5})
-addRequire("pistol", {gunskill = 1})
+addRequire("ak47", {gunskill = 3})
+addRequire("aug", {gunskill = 5})
+addRequire("deagle", {gunskill = 5})
+addRequire("famas", {gunskill = })
+addRequire("fiveseven", {gunskill = 2})
+addRequire("galil", {gunskill = 3})
+addRequire("m4a1", {gunskill = 5})
+addRequire("mac10", {gunskill = 3})
+addRequire("mp5", {gunskill = 4})
+addRequire("p228", {gunskill = 1})
+addRequire("p90", {gunskill = 4})
+addRequire("sg552", {gunskill = 5})
+addRequire("tmp", {gunskill = 3})
+addRequire("ump", {gunskill = 3})
+addRequire("usp", {gunskill = 2})
 
 -- Adding Schema Specific Configs.
 nut.config.add("wageInterval", 180, "The Interval of distrubution of salary money.", 

@@ -9,7 +9,7 @@ end
 addRequire("ak47", {gunskill = 3})
 addRequire("aug", {gunskill = 5})
 addRequire("deagle", {gunskill = 5})
-addRequire("famas", {gunskill = })
+addRequire("famas", {gunskill = 3})
 addRequire("fiveseven", {gunskill = 2})
 addRequire("galil", {gunskill = 3})
 addRequire("m4a1", {gunskill = 5})

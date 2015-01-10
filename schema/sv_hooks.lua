@@ -229,17 +229,37 @@ function SCHEMA:LoadData()
 	-- self:loadData(true, true)
 end
 
-local lotteryProfits = {
-	1,
-	2,
-	4,
-	16,
-	32,
-	128,
-	512,
+/*
+	Modifying the lottery chance requires bit knowledge of Programming.
+	Before modifying the rate of lottery, you just keep that in your mind.
+	With .01 change of difficultyFactor, The Return rate could be increased for like 400%.
+
+	The result: http://i.imgur.com/tPqoF0r.png
+	The Simulation was ran 1,000,000 times.
+	700,000 failure made and 300,000 profits were made in that simulation.
+	The Rate of Return is 93% with graph x^.155.
+
+	You can examine the probability simulation code in here: http://pastebin.com/VA4WXCQT
+	If you can't manage this code, You can replace it to your own code.
+*/
+
+local difficultyFactor = .155
+local lotteryPrize = {
 	2048,
+	512,
+	128,
+	64,
+	16,
+	2,
+	1,
+	0,
+	0,
 }
 
 function SCHEMA:LotteryEvent(client, item)
-	return (item.price or 100) * lotteryProfits[2]
+	local value = math.random()^difficultyFactor
+	value = value * #lotteryPrize
+	value = math.ceil(value)
+
+	return (item.price or 100) * lotteryPrize[value]
 end

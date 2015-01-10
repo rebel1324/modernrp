@@ -12,8 +12,12 @@ ITEM.functions._use = {
 		local char = client:getChar()
 		local money = hook.Run("LotteryEvent", client, item) or item.price
 
-		client:notify("Get Rekt " .. money)
-		char:giveMoney(money)
+		if (money <= 0) then
+			client:notify(L("lotteryFail", client))
+		else
+			client:notify(L("lotteryProfit", client, nut.currency.get(money)))
+			char:giveMoney(money)
+		end
 
 		return true
 	end,

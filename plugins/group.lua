@@ -100,6 +100,7 @@ if (SERVER) then
 				self:setData("groupID", groupID)
 				group = nut.group.list[groupID]
 				client:notify(L("groupCreated", client, group.name))
+				hook.Run("OnCharCreateGroup", client, groupID)
 
 				return true
 			else
@@ -130,6 +131,7 @@ if (SERVER) then
 					end
 
 					nut.group.delete(groupID)
+					hook.Run("OnCharCreateGroup", client, groupID)
 					return true
 				else
 					if (!silent) then client:notify(L("groupPermission", client)) end
@@ -304,10 +306,14 @@ do
 				if (groupName != "" and groupName:utf8len() > 3) then
 					char:createGroup(groupName)
 				else
+					if (groupName:utf8len() == 0) then
+						return client:requestString("@chgName", "@chgNameDesc", function(text)
+							nut.command.run(client, "groupcreate", {text})
+						end, "")
+					end
+
 					if (groupName:utf8len() <= 3) then
 						client:notify(L("groupShort", client))
-					else
-						client:notify(L("invalidArg", client, 1))
 					end
 				end
 			end
@@ -319,7 +325,7 @@ do
 		onRun = function(client, arguments)
 			local char = client:getChar()
 
-			if (char and hook.Run("CanCharCreateGroup", char) != false) then				
+			if (char and hook.Run("CanCharDismissGroup", char) != false) then				
 				char:dismissGroup()
 			end
 		end

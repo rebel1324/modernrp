@@ -12,5 +12,9 @@ if (SERVER) then
 	 -- When Character is deleted, delete that stashinv. 
 	 -- Works like normal storage. 
 	 -- I think this size limitation will help the oneself being big ass one man army.
+	local charMeta = FindMetaTable("Character")
+
+	function charMeta:getStash()
+	end
 else
 end

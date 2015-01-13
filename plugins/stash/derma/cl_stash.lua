@@ -10,19 +10,19 @@ local PANEL = {}
 		self:MakePopup()
 		self:Center()
 
-		self.selling = self:Add("nutVendorItemList")
-		self.selling:Dock(LEFT)
-		self.selling:SetWide(self:GetWide() * 0.5 - 7)
-		self.selling:SetDrawBackground(true)
-		self.selling:DockMargin(0, 0, 5, 0)
-		self.selling.action:SetText(L"buy")
+		self.stash = self:Add("nutStashItemList")
+		self.stash:Dock(LEFT)
+		self.stash:SetWide(self:GetWide() * 0.5 - 7)
+		self.stash:SetDrawBackground(true)
+		self.stash:DockMargin(0, 0, 5, 0)
+		self.stash.action:SetText(L"stashOut")
 
-		self.buying = self:Add("nutVendorItemList")
-		self.buying:Dock(RIGHT)
-		self.buying:SetWide(self:GetWide() * 0.5 - 7)
-		self.buying:SetDrawBackground(true)
-		self.buying.title:SetText(LocalPlayer():Name())
-		self.buying.action:SetText(L"sell")
+		self.inv = self:Add("nutStashItemList")
+		self.inv:Dock(RIGHT)
+		self.inv:SetWide(self:GetWide() * 0.5 - 7)
+		self.inv:SetDrawBackground(true)
+		self.inv.title:SetText(LocalPlayer():Name())
+		self.inv.action:SetText(L"stashIn")
 
 		self.tally = {}
 
@@ -34,81 +34,33 @@ local PANEL = {}
 			self.tally[v.uniqueID] = (self.tally[v.uniqueID] or 0) + 1
 		end
 
-		self.selling.action.DoClick = function()
+		self.stash.action.DoClick = function()
 			if (self.entity) then
 				local selectedItem = nut.gui.vendor.activeItem
-				netstream.Start("ventorItemTrade", self.entity, selectedItem.uniqueID, false)
+
+				if (IsValid(selectedItem) and !selectedItem.isstash) then
+					-- transfer items.
+					--netstream.Start("ventorItemTrade", self.entity, selectedItem.uniqueID)
+				end
 			end
 		end
 
-		self.buying.action.DoClick = function()
+		self.inv.action.DoClick = function()
 			if (self.entity) then
 				local selectedItem = nut.gui.vendor.activeItem
-				netstream.Start("ventorItemTrade", self.entity, selectedItem.uniqueID, true)
+
+				if (IsValid(selectedItem) and selectedItem.isstash) then
+					--netstream.Start("ventorItemTrade", self.entity, selectedItem.uniqueID, true)
+				end
 			end
 		end
 	end
 
-	function PANEL:setVendor(entity, items, rates, money, stocks)
-		entity = entity or self.entity
-		items = items or self.items or {}
-		rates = rates or self.rates or {1, 1}
-		money = money or self.rates or 0
-		stocks = stocks or self.stocks or {}
+	function PANEL:setVendor(entity, items, money, stocks)
+	end
 
-		self.selling.items:Clear()
-		self.buying.items:Clear()
-
-		if (IsValid(entity)) then
-			self.selling.title:SetText(entity:getNetVar("name"))
-			self:SetTitle(entity:getNetVar("name"))
-
-			local count = 0
-
-			for k, v in SortedPairs(self.tally) do
-				local mode = items[k] and items[k][2]
-
-				if (!mode or mode == VENDOR_SELL) then
-					continue
-				end
-				
-				self.buying:addItem(k, v)
-				count = count + 1
-			end
-
-			if (count == 0) then
-				local fault = self.buying.items:Add("DLabel")
-				fault:SetText(L"vendorNoSellItems")
-				fault:SetContentAlignment(5)
-				fault:Dock(FILL)
-				fault:SetFont("nutChatFont")
-			end
-
-			count = 0
-
-			for k, v in SortedPairs(items) do
-				if (items[k] and items[k][2] and items[k][2] > 0) then
-					local amount = stocks and stocks[k] and stocks[k][1] or nil
-
-					self.selling:addItem(k, amount)
-					count = count + 1
-				end
-			end
-
-			if (count == 0) then
-				local fault = self.selling.items:Add("DLabel")
-				fault:SetText(L"vendorNoBuyItems")
-				fault:SetContentAlignment(5)
-				fault:Dock(FILL)
-				fault:SetFont("nutChatFont")
-			end
-
-			self.entity = entity
-			self.items = items
-			self.rates = rates
-			self.money = money
-			self.stocks = stocks
-		end
+	function PANEL:OnRemove()
+		--netstream.Start("vendorExit")
 	end
 vgui.Register("nutStash", PANEL, "DFrame")
 
@@ -138,13 +90,28 @@ PANEL = {}
 		self.action:SetTall(32)
 		self.action:SetFont("nutMediumFont")
 		self.action:SetExpensiveShadow(1, Color(0, 0, 0, 150))
+
+		self.itemPanels = {}
 	end
 
-	function PANEL:addItem(uniqueID, count)
+	function PANEL:addItem(uniqueID, count, isinv)
 		local itemTable = nut.item.list[uniqueID]
 
 		if (!itemTable) then
 			return
+		end
+
+		local oldPanel = self.itemPanels[uniqueID]
+
+		if (IsValid(oldPanel)) then
+			count = count or (oldPanel.count + 1)
+
+			oldPanel.count = count
+			oldPanel.name:SetText(itemTable.name..(count and " ("..count..")" or ""))
+
+			return oldPanel
+		elseif (isinv) then
+			count = count or 1
 		end
 
 		local color_dark = Color(0, 0, 0, 80)
@@ -158,6 +125,7 @@ PANEL = {}
 			surface.DrawRect(0, 0, w, h)
 		end
 		panel.uniqueID = itemTable.uniqueID
+		panel.count = count
 
 		panel.icon = panel:Add("SpawnIcon")
 		panel.icon:SetPos(2, 2)
@@ -180,9 +148,14 @@ PANEL = {}
 		panel.overlay.DoClick = function(this)
 			nut.gui.vendor.activeItem = panel
 		end
-	end
 
-	function PANEL:OnRemove()
-		netstream.Start("vendorExit")
+		local items = nut.gui.vendor.items
+		local price = items[uniqueID] and items[uniqueID][1] or itemTable.price or 0
+		local price2 = math.Round(price * 0.5)
+
+		panel.overlay:SetToolTip(L("itemPriceInfo", nut.currency.get(price), nut.currency.get(price2)))
+		self.itemPanels[uniqueID] = panel
+
+		return panel
 	end
-vgui.Register("nutStashList", PANEL, "DPanel")
+vgui.Register("nutStashItemList", PANEL, "DPanel")

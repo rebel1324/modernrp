@@ -23,8 +23,37 @@ function dev.printInv(client)
 	if (!client) then return end
 	local inv = client:getChar():getInv()
 	print("[DEV] CLINT INV ".. tostring(inv))
-	print("[DEV] CLINT INV ".. tostring(inv.slots))
-	PrintTable(inv)
+
+	inv:print()
+end
+
+function dev.invTest(client)
+	if (!client) then return end
+	local inv = client:getChar():getInv()
+	print("[DEV] CLINT INV ".. tostring(inv))
+
+	local randomItem = table.Random(inv:getItems())
+
+	print(randomItem.name)
+	local a, b = randomItem:transfer(nil, nil, nil, client, nil, true)
+
+	if (a) then
+		print("SUCESS")
+	else
+		print("FAIL", b)
+		return
+	end
+	
+	timer.Simple(10, function()
+		a, b = randomItem:transfer(inv:getID(), nil, nil, client)
+
+		if (a) then
+			print("SUCESS")
+		else
+			print("FAIL")
+			return
+		end
+	end)
 end
 
 function dev.printInvs()

@@ -9,14 +9,14 @@ RECIPE.desc = "A Test Recipe that does not requires any blueprints."
 -- This recipe requires 2 "test" items.
 -- This is must be filled. 
 RECIPE.requiredItems = {
-	{itemID = "test", data = {}},
-	{itemID = "test", data = {}},
+	{itemID = "healvial", data = {}},
+	{itemID = "healvial", data = {}},
 }
 
 -- Using this recipe will give you "test2" item in your inventory.
 -- This is must be filled. 
 RECIPE.resultItems = {
-	{itemID = "test2", data = {}}
+	{itemID = "healthkit", data = {}}
 }
 
 -- This item does not requires Craft Table.

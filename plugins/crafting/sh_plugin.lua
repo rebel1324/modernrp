@@ -68,30 +68,39 @@ if (SERVER) then
 
 			-- Check If inventory has enough items.
 			-- 'craftedItems' collects the items that will be crafted with.
-			local craftedItems = {}
-			for k, v in ipairs(recipe.requiredItems) do
-				local item = self:hasItem(v.itemID, v.data)
-				if (item == false) then
-					return false, "not enough items"
-				else
-					table.insert(craftedItems, item)
-					
-					item:transfer(0, nil, nil, nil, nil, true)
-					print(item, "transfered")
+			local craftItem = table.Copy(recipe.requiredItems)
+
+			for _, item in pairs(self:getItems()) do
+				for _, craftDat in ipairs(craftItem) do
+					if (!craftDat.targetItem) then
+						if (item.uniqueID == craftDat.itemID) then
+							craftDat.targetItem = item
+
+							break
+						end
+					else
+						continue
+					end
+				end
+			end
+
+			for _, craftDat in ipairs(craftItem) do
+				if (!craftDat.targetItem) then
+					return false, "not enough item"
 				end
 			end
 
 			-- Check recipe custom canCraft.
 			-- The Developer/User can put custom condition on this.
 			if (recipe.canCraft) then
-				local bool, reason = recipe:canCraft(crafter, craftedItems) == false
+				local bool, reason = recipe:canCraft(crafter, craftedItems)
 
 				if (bool == false) then
-					return bool, reason, craftedItems
+					return false, reason, craftedItems
 				end
 			end
 
-			return true, nil, craftedItems
+			return true, nil, craftItem
 		end
 
 		return false, "recipe data is not present"
@@ -100,9 +109,9 @@ if (SERVER) then
 	-- This means you can craft an item inside of other container/inventory.
 	function inventoryMeta:craftItem(recipeID, crafter)
 		-- Check if player can craft the item.
-		local resultItems = {}
+		local char = crafter:getChar()
 		local recipe = nut.item.recipes[recipeID]
-		local canCraft, failReason, craftedItems = self:canCraft(recipeID)
+		local canCraft, failReason, craftItem = self:canCraft(recipeID)
 
 		-- TODO: Gotta figure out space problem
 		-- 1. Proceed Crafting
@@ -110,11 +119,34 @@ if (SERVER) then
 		-- 3. Give player result items (recursive)
 		-- 4. If there is no space for it, drop it on the ground
 		-- 5. Oky, We have plenty of profit 
-		if (craftedItems) then 
-			for k, v in pairs(craftedItems) do
-				print(v.invID, self:getID())
-				print(v:transfer(self:getID()))
-				print(v, "transfered back to,", self:getID())
+		print(canCraft, failReason, craftItem)
+		if (char and canCraft and craftItem) then 
+			for k, v in pairs(craftItem) do
+				local item = v.targetItem
+
+				if (item) then
+					item:transfer(nil, nil, nil, crafter, nil, true)
+				end
+			end
+
+			local addedItems = {}
+			local inv = char:getInv()
+			local abort = false
+			for k, v in pairs(recipe.resultItems) do
+				local x, y, bag = inv:add(v.itemID)
+
+				if (x and y and bag) then
+					table.insert(addedItems, {x, y, bag})
+				else
+					abort = true
+					break
+				end
+			end
+
+			for k, v in pairs(craftItem) do
+				local item = v.targetItem
+
+				item:remove()
 			end
 		end
 		/*
@@ -189,7 +221,7 @@ if (true) then
 				local inv = char:getInv()
 
 				-- craftitem in the inventory
-				inv:craftItem("test")
+				inv:craftItem("test", client)
 			end
 		end
 	})

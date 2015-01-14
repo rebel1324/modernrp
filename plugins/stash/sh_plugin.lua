@@ -4,17 +4,33 @@ PLUGIN.author = "Black Tea"
 PLUGIN.desc = "You save your stuffs in the stash."
 PLUGIN.stashData = PLUGIN.stashData or {}
 
-nut.item.registerInv("stashInv", 8, 8)
-
 if (SERVER) then
-	 -- Create New Inventory when Character is Created
-	 -- Set "stashinv" value to New Inventory's Index Value
-	 -- When Character is deleted, delete that stashinv. 
-	 -- Works like normal storage. 
-	 -- I think this size limitation will help the oneself being big ass one man army.
+	/*
+		There is one big virtual inventory.
+		Player has a table of stored item.
+	*/
+
+	/*
+		When player requests the stash menu:
+		1. Get player's stored item.
+		2. Load all item data of stored item.
+		3. Send all item data of stored item.
+		4. Now he has, the stored item menu.
+	*/
+
+	/*
+		Networking list.
+		1. Sync stash items.
+	*/
 	local charMeta = FindMetaTable("Character")
 
 	function charMeta:getStash()
+
 	end
+
+	function charMeta:stash()
+
+	end
+
 else
 end

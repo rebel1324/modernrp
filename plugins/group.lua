@@ -22,11 +22,12 @@ do
 		groupExists = "You're already assinged on group.",
 		groupInvalid = "Group is not valid",
 		groupHUDLeader = "You're already assinged on group.",
-		groupHUD = "The memeber of '%s'.",
+		groupHUD = "The member of '%s'.",
 		groupGotKicked = "You're kicked from the group.",
 		groupNotMember = "Target is not on your group.",
 		groupKicked = "You kicked %s from the group.",
 		groupShort = "Group's Name is too short.",
+		groupChar = "You're the %s of %s."
 	}
 
 	table.Merge(nut.lang.stored[langkey], langTable)
@@ -265,6 +266,20 @@ else
 
 		return x, y
 	end
+
+	function PLUGIN:CreateCharInfoText(self)
+		local group = LocalPlayer():getChar():getGroup()
+
+		if (nut.group.list[group]) then
+			self.group = self.info:Add("DLabel")
+			self.group:Dock(TOP)
+			self.group:SetFont("nutMediumFont")
+			self.group:SetTextColor(color_white)
+			self.group:SetExpensiveShadow(1, Color(0, 0, 0, 150))
+			self.group:DockMargin(0, 10, 0, 0)
+			self.group:SetText(L("groupChar", "member", nut.group.list[group].name or "ERROR"))
+		end
+	end
 end
 
 function charMeta:getGroup()
@@ -357,7 +372,7 @@ do
 			if (!arguments[1]) then
 				return client:notify(L("invalidArg", client, 1))
 			end
-			
+
 			local target = nut.command.findPlayer(client, arguments[1])
 
 			if (IsValid(target) and target:getChar()) then

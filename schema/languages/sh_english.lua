@@ -21,4 +21,10 @@ LANGUAGE = {
 	["Melee Efficiency"] = "Melee Efficiency",
 	["Stamina"] = "Stamina",
 	["Endurance"] = "Endurance",
+
+	-- BAR LANGUAGES
+	stm = "STAMINA",
+	health = "HEALTH",
+	armor = "ARMOR",
+	hunger = "HUNGER",
 }

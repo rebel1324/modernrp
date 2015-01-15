@@ -334,6 +334,10 @@ do
 	nut.command.add("groupinvite", {
 		syntax = "<string name>",
 		onRun = function(client, arguments)
+			if (!arguments[1]) then
+				return client:notify(L("invalidArg", client, 1))
+			end
+
 			local target = nut.command.findPlayer(client, arguments[1])
 
 			if (IsValid(target) and target:getChar()) then
@@ -350,6 +354,10 @@ do
 	nut.command.add("groupkick", {
 		syntax = "<string name>",
 		onRun = function(client, arguments)
+			if (!arguments[1]) then
+				return client:notify(L("invalidArg", client, 1))
+			end
+			
 			local target = nut.command.findPlayer(client, arguments[1])
 
 			if (IsValid(target) and target:getChar()) then

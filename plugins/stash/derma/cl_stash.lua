@@ -25,23 +25,19 @@ local PANEL = {}
 		self.inv.action:SetText(L"stashIn")
 
 		self.stash.action.DoClick = function()
-			if (self.entity) then
-				local selectedItem = nut.gui.stash.activeItem
+			local selectedItem = nut.gui.stash.activeItem
 
-				if (IsValid(selectedItem) and !selectedItem.isstash) then
-					-- transfer items.
-					--netstream.Start("ventorItemTrade", self.entity, selectedItem.uniqueID)
-				end
+			if (IsValid(selectedItem)) then
+				-- transfer items.
+				netstream.Start("stashOut", selectedItem.indexID)
 			end
 		end
 
 		self.inv.action.DoClick = function()
-			if (self.entity) then
-				local selectedItem = nut.gui.stash.activeItem
+			local selectedItem = nut.gui.stash.activeItem
 
-				if (IsValid(selectedItem) and selectedItem.isstash) then
-					--netstream.Start("ventorItemTrade", self.entity, selectedItem.uniqueID, true)
-				end
+			if (IsValid(selectedItem)) then
+				netstream.Start("stashIn", selectedItem.indexID, true)
 			end
 		end
 	end
@@ -59,7 +55,15 @@ local PANEL = {}
 				continue
 			end
 
-			self.inv:addItem(v.uniqueID, v).isSelling = true
+			self.inv:addItem(v.uniqueID, v)
+		end
+
+		for k, v in pairs(LocalPlayer():getChar():getStash()) do
+			if (v.base == "base_bags") then
+				continue
+			end
+			
+			self.stash:addItem(v.uniqueID, v)
 		end
 	end
 
@@ -98,7 +102,7 @@ PANEL = {}
 		self.itemPanels = {}
 	end
 
-	function PANEL:addItem(uniqueID, isinv)
+	function PANEL:addItem(uniqueID, itemObject)
 		local itemTable = nut.item.list[uniqueID]
 
 		if (!itemTable) then
@@ -117,7 +121,7 @@ PANEL = {}
 			surface.SetDrawColor(nut.gui.stash.activeItem == this and nut.config.get("color") or color_dark)
 			surface.DrawRect(0, 0, w, h)
 		end
-		panel.uniqueID = itemTable.uniqueID
+		panel.indexID = itemObject:getID()
 		panel.count = count
 
 		panel.icon = panel:Add("SpawnIcon")
@@ -147,4 +151,10 @@ PANEL = {}
 
 		return panel
 	end
-vgui.Register("nutStashItemList", PANEL, "DPanel")
+vgui.Register("nutStashItemList", PANEL, "DPanel") 
+
+netstream.Hook("stashUpdate", function()
+	if (nut.gui.stash and nut.gui.stash:IsVisible()) then
+		print("UPDATE REQUEST")
+	end
+end)

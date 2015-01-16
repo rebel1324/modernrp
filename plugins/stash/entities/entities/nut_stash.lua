@@ -20,7 +20,7 @@ if (SERVER) then
 	end
 
 	function ENT:Initialize()
-		self:SetModel("models/props_wasteland/controlroom_storagecloset001b.mdl")
+		self:SetModel("models/props_c17/Lockers001a.mdl")
 		self:PhysicsInit(SOLID_VPHYSICS)
 		self:SetMoveType(MOVETYPE_VPHYSICS)
 		self:SetUseType(SIMPLE_USE)

@@ -4,6 +4,12 @@ PLUGIN.author = "Black Tea"
 PLUGIN.desc = "You save your stuffs in the stash."
 PLUGIN.stashData = PLUGIN.stashData or {}
 
+local charMeta = FindMetaTable("Character")
+
+function charMeta:getStash()
+	return self:getData("stash", {})
+end
+
 if (SERVER) then
 	/*
 		There is one big virtual inventory.
@@ -22,14 +28,9 @@ if (SERVER) then
 		Networking list.
 		1. Sync stash items.
 	*/
-	local charMeta = FindMetaTable("Character")
 
-	function charMeta:getStash()
-
-	end
-
-	function charMeta:stash()
-
+	function charMeta:setStash(tbl)
+		self:setData("stash", tbl)
 	end
 
 	function requestStash(client)
@@ -38,8 +39,8 @@ if (SERVER) then
 		for k, v in pairs(stashItems) do
 			if (!nut.item.inventories[0][v]) then
 				--nut.item.loadItemByID loads item data and syncs item data with the client.
-				--itemID, targetInventory
-				--nut.item.loadItemByID(v, 0)
+				--itemID, targetInventory, recipient
+				--nut.item.loadItemByID(v, 0, client)
 			end
 		end
 
@@ -47,11 +48,31 @@ if (SERVER) then
 	end
 
 	netstream.Hook("stashIn", function(client, itemID)
+		local char = client:getChar()
+		local item = nut.item.instances[itemID]
+		if (item) then
+			local clientStash = char:getStash()
 
+			item:transfer(nil, nil, nil, client, nil, true)
+			clientStash[itemID] = nut.item.instances[itemID]
+			PrintTable(clientStash)
+
+			char:setStash(clientStash)
+		end
 	end)
 
 	netstream.Hook("stashOut", function(client, itemID)
+		local char = client:getChar()
+		local item = nut.item.instances[itemID]
+		if (item) then
+			local clientStash = char:getStash()
 
+			clientStash[itemID] = nil
+			item:transfer(char:getInv():getID(), nil, nil, client)
+			PrintTable(clientStash)
+
+			char:setStash(clientStash)
+		end
 	end)
 else
 	netstream.Hook("stashMenu", function(items)

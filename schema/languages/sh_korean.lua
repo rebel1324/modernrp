@@ -20,6 +20,18 @@ LANGUAGE = {
 	["Stamina"] = "지구력",
 	["Endurance"] = "체력",
 
+	-- ITEM CATEGORY TRANSLATION
+	["Ammunition"] = "탄약",
+	["Communication"] = "통신",
+	["Female Clothes"] = "여성복",
+	["Male Clothes"] = "남성복",
+	["Medical"] = "의료 물품",
+	["Outfit"] = "착용품",
+	["Illegal"] = "불법 물품",
+	["Consumeable"] = "일용품",
+	["Storage"] = "가방",
+	["Education"] = "교육 물품",
+
 	-- BAR LANGUAGES
 	stm = "기력",
 	health = "체력",
@@ -41,8 +53,10 @@ LANGUAGE = {
 	groupShort = "단체의 이름이 매우 짧습니다.",
 	groupChar = "당신은 다음 단체의 %s 입니다:  %s.",
 
+	-- FIRST PERSON PLUGIN TRANSLATION
 	toggleEffects = "1인칭 이펙트 사용",
 
+	-- RADIO PLUGIN TRANSLATION
 	radioFreq = "주파수",
 	radioSubmit = "설정",
 	radioNoRadio = "라디오를 가지고 있지 않습니다.",

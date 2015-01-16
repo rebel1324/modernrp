@@ -1,10 +1,10 @@
 local PANEL = {}
 	function PANEL:Init()
-		if (IsValid(nut.gui.vendor)) then
-			nut.gui.vendor:Remove()
+		if (IsValid(nut.gui.stash)) then
+			nut.gui.stash:Remove()
 		end
 
-		nut.gui.vendor = self
+		nut.gui.stash = self
 
 		self:SetSize(ScrW() * 0.5, 680)
 		self:MakePopup()
@@ -24,19 +24,9 @@ local PANEL = {}
 		self.inv.title:SetText(LocalPlayer():Name())
 		self.inv.action:SetText(L"stashIn")
 
-		self.tally = {}
-
-		for k, v in pairs(LocalPlayer():getChar():getInv():getItems()) do
-			if (v.base == "base_bags") then
-				continue
-			end
-
-			self.tally[v.uniqueID] = (self.tally[v.uniqueID] or 0) + 1
-		end
-
 		self.stash.action.DoClick = function()
 			if (self.entity) then
-				local selectedItem = nut.gui.vendor.activeItem
+				local selectedItem = nut.gui.stash.activeItem
 
 				if (IsValid(selectedItem) and !selectedItem.isstash) then
 					-- transfer items.
@@ -47,7 +37,7 @@ local PANEL = {}
 
 		self.inv.action.DoClick = function()
 			if (self.entity) then
-				local selectedItem = nut.gui.vendor.activeItem
+				local selectedItem = nut.gui.stash.activeItem
 
 				if (IsValid(selectedItem) and selectedItem.isstash) then
 					--netstream.Start("ventorItemTrade", self.entity, selectedItem.uniqueID, true)
@@ -56,7 +46,21 @@ local PANEL = {}
 		end
 	end
 
-	function PANEL:setVendor(entity, items, money, stocks)
+	function PANEL:setStash(items)
+		self.stash.title:SetText(L("stash", 0, 50))
+
+		self.stash.items:Clear()
+		self.inv.items:Clear()
+
+		self:SetTitle(L("stashMenu"))
+
+		for k, v in pairs(LocalPlayer():getChar():getInv():getItems()) do
+			if (v.base == "base_bags") then
+				continue
+			end
+
+			self.inv:addItem(v.uniqueID, v).isSelling = true
+		end
 	end
 
 	function PANEL:OnRemove()
@@ -94,7 +98,7 @@ PANEL = {}
 		self.itemPanels = {}
 	end
 
-	function PANEL:addItem(uniqueID, count, isinv)
+	function PANEL:addItem(uniqueID, isinv)
 		local itemTable = nut.item.list[uniqueID]
 
 		if (!itemTable) then
@@ -103,17 +107,6 @@ PANEL = {}
 
 		local oldPanel = self.itemPanels[uniqueID]
 
-		if (IsValid(oldPanel)) then
-			count = count or (oldPanel.count + 1)
-
-			oldPanel.count = count
-			oldPanel.name:SetText(itemTable.name..(count and " ("..count..")" or ""))
-
-			return oldPanel
-		elseif (isinv) then
-			count = count or 1
-		end
-
 		local color_dark = Color(0, 0, 0, 80)
 
 		local panel = self.items:Add("DPanel")
@@ -121,7 +114,7 @@ PANEL = {}
 		panel:Dock(TOP)
 		panel:DockMargin(5, 5, 5, 0)
 		panel.Paint = function(this, w, h)
-			surface.SetDrawColor(nut.gui.vendor.activeItem == this and nut.config.get("color") or color_dark)
+			surface.SetDrawColor(nut.gui.stash.activeItem == this and nut.config.get("color") or color_dark)
 			surface.DrawRect(0, 0, w, h)
 		end
 		panel.uniqueID = itemTable.uniqueID
@@ -146,14 +139,10 @@ PANEL = {}
 		panel.overlay:SetText("")
 		panel.overlay.Paint = function() end
 		panel.overlay.DoClick = function(this)
-			nut.gui.vendor.activeItem = panel
+			nut.gui.stash.activeItem = panel
 		end
 
-		local items = nut.gui.vendor.items
-		local price = items[uniqueID] and items[uniqueID][1] or itemTable.price or 0
-		local price2 = math.Round(price * 0.5)
-
-		panel.overlay:SetToolTip(L("itemPriceInfo", nut.currency.get(price), nut.currency.get(price2)))
+		//panel.overlay:SetToolTip(L("itemPriceInfo", nut.currency.get(price), nut.currency.get(price2)))
 		self.itemPanels[uniqueID] = panel
 
 		return panel

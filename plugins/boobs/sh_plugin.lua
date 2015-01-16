@@ -1,7 +1,7 @@
 local PLUGIN = PLUGIN
 PLUGIN.name = "Books"
 PLUGIN.author = "Black Tea"
-PLUGIN.desc = "The Books that you can read."
+PLUGIN.desc = "The Books that you can read. Only for RP Purpose."
 
 if (CLIENT) then
 	local PANEL = {}

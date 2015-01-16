@@ -23,6 +23,8 @@ addRequire("ump", {gunskill = 3})
 addRequire("usp", {gunskill = 2})
 
 -- Adding Schema Specific Configs.
+nut.config.setDefault("font", "Bitstream Vera Sans")
+
 nut.config.add("wageInterval", 180, "The Interval of distrubution of salary money.", 
 	function(oldValue, newValue)
 		if (timer.Exists("nutSalary")) then

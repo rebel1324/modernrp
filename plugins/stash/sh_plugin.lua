@@ -32,5 +32,30 @@ if (SERVER) then
 
 	end
 
+	function requestStash(client)
+		local stashItems = client:getChar():getData("stashItems", {})
+
+		for k, v in pairs(stashItems) do
+			if (!nut.item.inventories[0][v]) then
+				--nut.item.loadItemByID loads item data and syncs item data with the client.
+				--itemID, targetInventory
+				--nut.item.loadItemByID(v, 0)
+			end
+		end
+
+		netstream.Start(client, "stashMenu", stashItems)
+	end
+
+	netstream.Hook("stashIn", function(client, itemID)
+
+	end)
+
+	netstream.Hook("stashOut", function(client, itemID)
+
+	end)
 else
+	netstream.Hook("stashMenu", function(items)
+		local stash = vgui.Create("nutStash")
+		stash:setStash(items)
+	end)
 end

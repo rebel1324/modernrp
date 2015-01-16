@@ -18,6 +18,13 @@ CLASS.business = {
 	["note"] = 1,
 	["spraycan"] = 1,
 
+	-- Educational
+	["endbook"] = 1,
+	["gunskillbook"] = 1,
+	["medicalbook"] = 1,
+	["meleeskillbook"] = 1,
+	["stmbook"] = 1,
+
 	-- Outfit
 	["pot"] = 1,
 	["skullmask"] = 1,

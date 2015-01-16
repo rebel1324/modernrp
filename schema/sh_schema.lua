@@ -47,6 +47,17 @@ if (SERVER) then
 	resource.AddFile("materials/effects/fas_muzzle6.png")
 	resource.AddFile("materials/effects/fas_muzzle7.png")
 	resource.AddFile("materials/effects/fas_muzzle8.png")
+	resource.AddFile("sound/ui/bad.wav")
+	resource.AddFile("sound/ui/bip.wav")
+	resource.AddFile("sound/ui/boop.wav")
+	resource.AddFile("sound/ui/charged.wav")
+	resource.AddFile("sound/ui/confirm.wav")
+	resource.AddFile("sound/ui/deny.wav")
+	resource.AddFile("sound/ui/extended.wav")
+	resource.AddFile("sound/ui/good.wav")
+	resource.AddFile("sound/ui/notify.wav")
+	resource.AddFile("sound/ui/okay.wav")
+	resource.AddFile("sound/ui/welcome.wav")
 end
 
 nut.util.include("sh_configs.lua")

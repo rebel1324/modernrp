@@ -1,5 +1,5 @@
 CLASS.name = "Police Supply Manager"
-CLASS.faction = FACTION_CP
+CLASS.faction = FACTION_LAW
 CLASS.loadout = {
 	["nut_cs_fiveseven"] = 40,
 }

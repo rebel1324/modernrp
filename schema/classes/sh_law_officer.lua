@@ -1,5 +1,5 @@
 CLASS.name = "Police Officer"
-CLASS.faction = FACTION_CP
+CLASS.faction = FACTION_LAW
 CLASS.isDefault = true
 CLASS.loadout = {
 	["nut_cs_usp"] = 50,

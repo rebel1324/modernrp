@@ -108,6 +108,11 @@ else
 			end
 		end
 	end
+
+	-- Generate Bad airs
+	function PLUGIN:Think()
+		-- Insert bad air detection
+	end
 end
 
 -- This hook is for my other plugin, "Grenade" Plugin.
@@ -129,3 +134,17 @@ function PLUGIN:EntityEmitSound(sndTable)
 		return true
 	end
 end
+
+nut.command.add("badairadd", {
+	syntax = "",
+	onRun = function(client, arguments)
+		
+	end
+})
+
+nut.command.add("badairremove", {
+	syntax = "",
+	onRun = function(client, arguments)
+
+	end
+})

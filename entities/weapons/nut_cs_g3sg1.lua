@@ -3,7 +3,7 @@ if ( SERVER ) then
 end
 
 if ( CLIENT ) then
-	SWEP.PrintName			= "9MM HK MP5"			
+	SWEP.PrintName			= "G3/SG1"			
 	SWEP.Author				= "Black Tea"
 	SWEP.Slot				= 3
 	SWEP.SlotPos			= 1
@@ -11,48 +11,50 @@ if ( CLIENT ) then
 	SWEP.SwayScale = 0
 end
 
-SWEP.HoldType			= "smg"
+SWEP.HoldType			= "ar2"
 SWEP.Base				= "weapon_nutcs_base"
 SWEP.Category			= "NutScript 1.1 Weapons"
 
 SWEP.Spawnable			= true
 SWEP.AdminSpawnable		= true
 
-SWEP.ViewModel			= "models/weapons/cstrike/c_smg_mp5.mdl"
-SWEP.WorldModel			= "models/weapons/w_smg_mp5.mdl"
+SWEP.ViewModel			= "models/weapons/cstrike/c_snip_g3sg1.mdl"
+SWEP.WorldModel			= "models/weapons/w_snip_g3sg1.mdl"
 
 SWEP.Weight				= 5
 SWEP.AutoSwitchTo		= false
 SWEP.AutoSwitchFrom		= false
 
-SWEP.Primary.Sound			= Sound( "Weapon_MP5Navy.Single" )
-SWEP.Primary.Recoil			= .5
-SWEP.Primary.Damage			= 20
+SWEP.Primary.Sound			= Sound( "Weapon_g3sg1.Single" )
+SWEP.Primary.Recoil			= 1.1
+SWEP.Primary.Damage			= 30
 SWEP.Primary.NumShots		= 1
-SWEP.Primary.Cone			= 0.02
+SWEP.Primary.Cone			= 0.015
 SWEP.Primary.ClipSize		= 30
-SWEP.Primary.Delay			= 0.09
+SWEP.Primary.Delay			= 0.3
 SWEP.Primary.DefaultClip	= 0
 SWEP.Primary.Automatic		= true
-SWEP.Primary.Ammo			= "smg1"
+SWEP.Primary.Ammo			= "ar2"
 
 SWEP.Secondary.ClipSize		= -1
 SWEP.Secondary.DefaultClip	= -1
 SWEP.Secondary.Automatic	= false
 SWEP.Secondary.Ammo			= "none"
 
-SWEP.ShellType = 0
-SWEP.ShellAng = Angle(-15, 0, 0)
+SWEP.ShellType = 1
+SWEP.ShellAng = Angle(-15, -140, 0)
+SWEP.WShellAng = Angle(0, 120, 0)
 SWEP.muzAdjust = Angle(0, 0, 0)
-SWEP.originMod = Vector(-2, -7, 1)
-SWEP.MuzSize = .3
+SWEP.originMod = Vector(-3, -9, 2)
+SWEP.muzPattern = 2
+SWEP.WMuzSize = .38
 SWEP.spreadData = {
 	rcvrRecoilRate = .15,
-	incrRecoilRate = 1,
-	maxRecoil = 3,
+	incrRecoilRate = 2,
+	maxRecoil = 7,
 
-	rcvrSpreadRate = .05,
-	incrSpreadRate = 1,
-	maxSpread = 4,
-	minSpread = 0,
+	rcvrSpreadRate = .1,
+	incrSpreadRate = .9,
+	maxSpread = 5,
+	minSpread = .2,
 }

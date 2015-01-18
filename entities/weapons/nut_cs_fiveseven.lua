@@ -44,5 +44,5 @@ SWEP.Secondary.Ammo			= "none"
 SWEP.ShellType = 0
 SWEP.ShellAng = Angle(0, 30, 0)
 SWEP.WShellAng = Angle(0, 90, 0)
-SWEP.originMod = Vector(0, -5, 0)
+SWEP.originMod = Vector(-3, -5, 0)
 SWEP.MuzSize = .3

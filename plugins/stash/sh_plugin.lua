@@ -53,11 +53,12 @@ if (SERVER) then
 		if (item) then
 			local clientStash = char:getStash()
 
-			item:transfer(nil, nil, nil, client, nil, true)
-			clientStash[itemID] = nut.item.instances[itemID]
-			PrintTable(clientStash)
+			if (item:transfer(nil, nil, nil, client, nil, true)) then
+				clientStash[itemID] = nut.item.instances[itemID]
+				PrintTable(clientStash)
 
-			char:setStash(clientStash)
+				char:setStash(clientStash)
+			end
 		end
 	end)
 
@@ -67,11 +68,12 @@ if (SERVER) then
 		if (item) then
 			local clientStash = char:getStash()
 
-			clientStash[itemID] = nil
-			item:transfer(char:getInv():getID(), nil, nil, client)
-			PrintTable(clientStash)
+			if (item:transfer(char:getInv():getID(), nil, nil, client)) then
+				clientStash[itemID] = nil
+				PrintTable(clientStash)
 
-			char:setStash(clientStash)
+				char:setStash(clientStash)
+			end
 		end
 	end)
 else

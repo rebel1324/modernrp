@@ -42,8 +42,8 @@ SWEP.Secondary.Automatic	= false
 SWEP.Secondary.Ammo			= "none"
 
 SWEP.ShellType = 1
-SWEP.ShellAng = Angle(-15, -140, 0)
-SWEP.WShellAng = Angle(0, 120, 0)
+SWEP.ShellAng = Angle(15, -20, 0)
+SWEP.WShellAng = Angle(0, 40, 0)
 SWEP.muzAdjust = Angle(0, 0, 0)
 SWEP.originMod = Vector(-3, -9, 2)
 SWEP.muzPattern = 2

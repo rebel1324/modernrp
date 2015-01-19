@@ -8,8 +8,6 @@ end
 
 if ( CLIENT ) then
 	include("effect.lua")
-	SWEP.BobScale = 0
-	SWEP.SwayScale = 0
 	SWEP.DrawAmmo			= true
 	SWEP.DrawCrosshair		= false
 	SWEP.ViewModelFOV		= 70
@@ -57,6 +55,8 @@ SWEP.MuzSize = .5
 SWEP.WMuzSize = .3
 SWEP.muzAdjust = Angle(0, 0, 0)
 SWEP.originMod = Vector(0, 0, 0)
+SWEP.weaponLength = 8
+SWEP.LowerAngles = Angle(35, -5, -15)
 SWEP.spreadData = {
 	rcvrRecoilRate = .15,
 	incrRecoilRate = 3,
@@ -68,6 +68,7 @@ SWEP.spreadData = {
 	minSpread = 0,
 }
 
+local swayLimit = 11
 if (CLIENT) then
 	function SWEP:PostDrawViewModel()
 		if (!LocalPlayer():ShouldDrawLocalPlayer()) then
@@ -203,7 +204,7 @@ if (CLIENT) then
 	local swayPos = Vector()
 	local lateBobPos = Vector()
 	local restPos = Vector()
-	local swayLimit = 5
+	local bobAng = Angle()
 	SWEP.aimAngle = Angle()
 	SWEP.oldAimAngle = Angle()
 	SWEP.aimDiff = Angle()
@@ -217,54 +218,41 @@ if (CLIENT) then
 		local PA = owner:GetViewPunchAngles()
 		local vel = clamp(owner:GetVelocity():Length2D()/owner:GetWalkSpeed(), 0, 1.5)
 		local rest = 1 - clamp(owner:GetVelocity():Length2D()/20, 0, 1)
-		local DIFFB = ((1 - DIFF)*.02)
+		local DIFFB = ((1 - DIFF)*.05)
 
 		posOutput = Vector(0, 0, 0)
-		curStep = curStep + (vel/math.pi) * (DIFFB)
+		curStep = curStep + (vel/math.pi) * (FT * 10)
 		local ws = owner:GetWalkSpeed()
-
-		self.aimAngle = owner:EyeAngles()	
-		self.aimDiff = self.aimAngle - self.oldAimAngle
-		for i = 1, 3 do
-			if (360 - math.abs(self.aimDiff[i]) < 180) then
-				if (self.aimDiff[i] < 0) then
-					self.aimDiff[i] = self.aimDiff[i] + 360
-				else
-					self.aimDiff[i] = self.aimDiff[i] - 360
-				end
-			end
-		end
-		self.oldAimAngle = self.aimAngle
+		
 		self.ironMul = int(.1, self.ironMul, (!self.Owner:OnGround()) and (!self.Owner:OnGround() and 0 or .1) or 1)
-		self.aimDiff = self.aimDiff
-
-		local Right 	= EA:Right()
-		local Up 		= EA:Up()
-		local Forward 	= EA:Forward()	
 
 		bobPos[1] = -sin(curStep/2)*vel
 		bobPos[2] = sin(curStep/4)*vel*1.5
 		bobPos[3] = sin(curStep)/1.5*vel
 		restPos[3] = sin(CT*2)*4
 		restPos[1] = cos(CT*1)*3
-		swayPos[1] = clamp(int(.1, swayPos[1], self.aimDiff[2]), -swayLimit, swayLimit)
-		swayPos[3] = clamp(int(.1, swayPos[3], -self.aimDiff[1]), -swayLimit, swayLimit)
-		for i = 1, 3 do
-			self.aimDiff[i] = clamp(self.aimDiff[i], -swayLimit, swayLimit)
+
+		if (self.Owner:isWepRaised()) then
+			swayPos[1] = clamp(int(.1, swayPos[1], self.aimDiff[2]), -swayLimit, swayLimit)
+			swayPos[3] = clamp(int(.1, swayPos[3], -self.aimDiff[1]), -swayLimit, swayLimit)
+
+			angTarget = self.aimDiff*self.ironMul
 		end
 
-		posTarget = bobPos*5*self.ironMul + restPos*rest*self.ironMul + swayPos*10*self.ironMul
-		posOutput = LerpVector(.05, posOutput, posTarget)
+		posTarget = bobPos*5*self.ironMul + restPos*rest*self.ironMul + swayPos*(self.weaponLength or 8)*self.ironMul
 		posOutput = posOutput + self.originMod
-
-		angTarget = self.aimDiff*self.ironMul
+		posOutput = LerpVector(.05, posOutput, posTarget)
 		angOutput = LerpAngle(.1, angOutput, angTarget)
+
+		local Right 	= ang:Right()
+		local Up 		= ang:Up()
+		local Forward 	= ang:Forward()	
 
 		ang:RotateAroundAxis(ang:Right(), angOutput[1])
 		ang:RotateAroundAxis(ang:Up(), angOutput[2])
 		ang:RotateAroundAxis(ang:Forward(), angOutput[3])
 
-		pos = pos + posOutput.x * Right 
+		pos = pos + posOutput.x * Right
 		pos = pos + posOutput.y * Forward
 		pos = pos + posOutput.z * Up
 
@@ -321,6 +309,23 @@ function SWEP:Think()
 				self.Owner:setWepRaised(true)
 				self.Raised = false
 			end
+		end
+	else
+		self.aimAngle = self.Owner:EyeAngles()	
+		self.aimDiff = self.aimAngle - self.oldAimAngle
+		for i = 1, 3 do
+			if (360 - math.abs(self.aimDiff[i]) < 180) then
+				if (self.aimDiff[i] < 0) then
+					self.aimDiff[i] = self.aimDiff[i] + 360
+				else
+					self.aimDiff[i] = self.aimDiff[i] - 360
+				end
+			end
+		end
+		self.oldAimAngle = self.aimAngle
+		self.aimDiff = self.aimDiff
+		for i = 1, 3 do
+			self.aimDiff[i] = math.Clamp(self.aimDiff[i], -swayLimit, swayLimit)
 		end
 	end
 end

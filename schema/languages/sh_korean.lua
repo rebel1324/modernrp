@@ -62,4 +62,19 @@ LANGUAGE = {
 	radioNoRadio = "라디오를 가지고 있지 않습니다.",
 	radioNoRadioComm = "라디오를 가지고 있지 않습니다",
 	radioFormat = "(라디오) %s: \"%s\"",
+
+	-- ITEM INTERACTION TRANSLATION
+	Unequip = "장착 해제",
+	Equip = "장착",
+	Preview = "미리 보기",
+	Use = "사용",
+	["Use Forward"] = "앞에 사용",
+	Load = "사용",
+	Eat = "먹기",
+	Examine = "조사",
+	View = "보기",
+	Read = "읽기",
+	Drink = "마시기",
+	Toggle = "사용",
+	Freq = "주파수",
 }

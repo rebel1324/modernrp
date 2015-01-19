@@ -409,3 +409,69 @@ function EFFECT:Init( data )
 end
 
 effects.Register( EFFECT, "btImpact" )
+
+
+local EFFECT = {}
+function EFFECT:Init( data ) 
+	self.tOrigin = data:GetStart()	
+	self.tEnd = data:GetOrigin()
+	self.tWeapon = data:GetEntity()
+	self.tAtt = data:GetAttachment()
+	self.tOrigin = self:GetTracerShootPos( self.tOrigin, self.tWeapon, self.tAtt )
+	self.tDir = self.tEnd - self.tOrigin
+	self.tDir:Normalize()
+
+	self:SetRenderBoundsWS( self.tOrigin, self.tEnd )
+	self.Length = .1
+	
+	-- Die when it reaches its target
+	self.life = .2
+	self.lifeTime = CurTime() + self.life
+	self.trav = 0
+end
+
+local tracerLength = 150
+function EFFECT:Think( )
+	if (self.lifeTime < CurTime()) then
+		return false
+	end
+
+	local dir2 = self.tEnd - (self.tOrigin + self.tDir * (self.trav + tracerLength))
+	dir2:Normalize()
+
+	if (self.tDir:Dot(dir2) < 0) then
+		self.impact = true
+	end
+	
+	return true
+end
+
+local tracerMats = {
+	Material("effects/spark"),
+	Material("effects/gunshiptracer"),
+	Material("effects/bluespark"),
+	Material("effects/tool_tracer"),
+	Material("effects/bloodstream"),
+	Material("effects/laser_tracer"),
+}
+local smokeTrail = Material("trails/smoke")
+function EFFECT:Render( )	
+	render.SetMaterial(tracerMats[1])
+	
+	local factor = 1 - ((self.lifeTime - CurTime()) / self.life)
+	if (!self.impact) then
+		local pos = self.tDir * (self.trav)
+
+		render.DrawBeam( self.tOrigin + self.tDir * (self.trav + tracerLength*.7), 		
+						 self.tOrigin + self.tDir * (self.trav),
+						 5,					
+						 1,					
+						 0,				
+						 Color( 255, 255, 255, 255 ) )
+
+		self.trav = self.trav + FrameTime() * 8000 * math.Rand(.9, 1)
+	end
+					 
+end
+
+effects.Register( EFFECT, "btTracer" )

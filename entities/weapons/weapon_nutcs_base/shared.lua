@@ -392,7 +392,8 @@ function SWEP:CSShootBullet( dmg, recoil, numbul, cone )
 						-self.spreadData.curRecoilHandle, 0, 0
 						)):Forward()
 	bullet.Spread 	= Vector(cone, cone*.5, 0) * (velMul + 1)	
-	bullet.Tracer	= 4									
+	bullet.Tracer	= 2		
+	bullet.TracerName = "btTracer"						
 	bullet.Force	= 5									
 	bullet.Damage	= dmg
 	

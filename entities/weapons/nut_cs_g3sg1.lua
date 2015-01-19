@@ -27,10 +27,10 @@ SWEP.AutoSwitchFrom		= false
 
 SWEP.Primary.Sound			= Sound( "Weapon_g3sg1.Single" )
 SWEP.Primary.Recoil			= 1.1
-SWEP.Primary.Damage			= 30
+SWEP.Primary.Damage			= 50
 SWEP.Primary.NumShots		= 1
 SWEP.Primary.Cone			= 0.015
-SWEP.Primary.ClipSize		= 30
+SWEP.Primary.ClipSize		= 20
 SWEP.Primary.Delay			= 0.3
 SWEP.Primary.DefaultClip	= 0
 SWEP.Primary.Automatic		= true

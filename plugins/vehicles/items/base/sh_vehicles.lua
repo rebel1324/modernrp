@@ -77,6 +77,12 @@ ITEM.functions._use = {
 					ent:setNetVar("carPhysDesc", item:getData("physDesc"))
 				end
 
+				if (item.onVehicleSpawned) then
+					item:onVehicleSpawned(ent, client)
+				end
+
+				hook.Run("OnPlayerSpawnedVehicle", vehicle, item, client)
+
 				client:notify(L("vehicleSpawned", client))
 			end
 		else
@@ -115,6 +121,13 @@ ITEM.functions._store = {
 					item:setData("spawned", nil)
 					item:setData("gas", vehicle:getNetVar("gas"))
 					char:setVar("curVehicle", nil, nil, client)
+
+					if (item.onVehicleStored) then
+						item:onVehicleStored(vehicle, client)
+					end
+
+					hook.Run("OnPlayerStoredVehicle", vehicle, item, client)
+
 					vehicle:Remove()
 					client:notify(L("vehicleStored", client))
 				else

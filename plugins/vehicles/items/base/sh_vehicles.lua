@@ -36,6 +36,13 @@ ITEM.functions._use = {
 	onRun = function(item)
 		local client = item.player
 		local char = client:getChar()
+		local vehicle = char:getVar("curVehicle")
+
+		-- If character's current vehicle is valid?
+		if (vehicle and IsValid(vehicle)) then
+			client:notify(L("vehicleExists", client))
+			return false
+		end
 			
 		-- Check if the player is outside or inside.
 		local traceData = {}
@@ -69,7 +76,7 @@ ITEM.functions._use = {
 					ent:setNetVar("carPhysDesc", item:getData("physDesc"))
 				end
 
-				client:notify("You spawned the vehicle.")
+				client:notify(L("vehicleSpawned", client))
 			end
 		else
 			client:notify(L("notSky", client))
@@ -108,16 +115,16 @@ ITEM.functions._store = {
 					item:setData("gas", vehicle:getNetVar("gas"))
 					char:setVar("curVehicle", nil, nil, client)
 					vehicle:Remove()
-					client:notify("You successfully stored your vehicle in virtual garage.")
+					client:notify(L("vehicleStored", client))
 				else
-					client:notify("You need to be closer to your vehicle.")
+					client:notify(L("vehicleCloser", client))
 				end
 			else
 				--If vehicle is not valid, Set all item variables to zero or invalid. (For preventing exploit.)
 				char:setVar("curVehicle", nil, nil, client)
 				item:setData("spawned", nil)
 				item:setData("gas", 0)
-				client:notify("Your vehicle is destoryed or removed. But stored successfully.")
+				client:notify(L("vehicleStoredDestroyed", client))
 			end
 		end
 

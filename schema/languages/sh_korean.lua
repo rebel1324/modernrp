@@ -63,6 +63,15 @@ LANGUAGE = {
 	radioNoRadioComm = "라디오를 가지고 있지 않습니다",
 	radioFormat = "(라디오) %s: \"%s\"",
 
+	-- VEHICLE PLUGIN TRANSLATION
+	vehicleDesc = "당신은 당신의 차의 정보를 변경했습니다: %s.",
+	vehicleExists = "당신은 이미 하나 이상의 차량을 밖에 두고 있습니다.",
+	vehicleStored = "당신은 당신의 차량을 가상 차고에 보관했습니다.",
+	notSky = "차를 소환하기 위해서는 밖으로 나와야 합니다.",
+	vehicleSpawned = "당신은 당신의 차량을 밖에 소환하였습니다.",
+	vehicleCloser = "당신은 당신의 차량에 더 가까이 다가가야 합니다.",
+	vehicleStoredDestroyed = "당신의 차량이 존재하지 않습니만, 보관에는 성공했습니다.",
+
 	-- ITEM INTERACTION TRANSLATION
 	Unequip = "장착 해제",
 	Equip = "장착",
@@ -77,4 +86,5 @@ LANGUAGE = {
 	Drink = "마시기",
 	Toggle = "사용",
 	Freq = "주파수",
+
 }

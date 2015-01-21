@@ -11,6 +11,12 @@ local langkey = "english"
 do
 	local langTable = {
 		vehicleDesc = "You changed your vehicle's desc to %s.",
+		vehicleExists = "You already have at least one vehicle outside.",
+		vehicleStored = "You stored your vehicles into your virtual garage.",
+		notSky = "You need to be outside to bring your vehicle out.",
+		vehicleSpawned = "You spawned your vehicle on the world.",
+		vehicleCloser = "You need to be closer to your vehicle.",
+		vehicleStoredDestroyed = "Your vehicle is destoryed or removed. But stored successfully.",
 	}
 
 	table.Merge(nut.lang.stored[langkey], langTable)

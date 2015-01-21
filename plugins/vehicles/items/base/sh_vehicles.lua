@@ -1,12 +1,13 @@
 TYPE_GENERIC = 0
 TYPE_SCAR = 1
-TYPE_TDM = 2
 
 ITEM.name = "Car"
 ITEM.model = "models/buggy.mdl"
 ITEM.width = 1
 ITEM.height = 1
 ITEM.maxGas = 1000
+ITEM.price = 35000
+ITEM.category = "Vehicles"
 ITEM.vehicleData = {
 	type = TYPE_GENERIC,
 	model = "models/buggy.mdl",

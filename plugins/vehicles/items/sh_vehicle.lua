@@ -1,3 +1,7 @@
+TYPE_GENERIC = 0
+TYPE_SCAR = 1
+TYPE_TDM = 2
+
 ITEM.name = "Car"
 ITEM.model = "models/buggy.mdl"
 ITEM.width = 1
@@ -15,8 +19,8 @@ function ITEM:getDesc()
 	else
 		return Format(
 			[[A Jeep car.
-			Current Gas: %s]]
-		, math.Round(self:getData("gas", self.maxGas)))
+			Current Gas: %s%%]]
+		, math.Round(self:getData("gas", self.maxGas)/self.maxGas * 100))
 	end
 end
 
@@ -54,8 +58,9 @@ ITEM.functions._use = {
 				-- Set some initial variables for the vehicles.
 				ent:setNetVar("gas", item:getData("gas", item.maxGas))
 				ent:setNetVar("owner", char:getID())
-				char:setVar("curVehicle", ent, nil, client)
 				item:setData("spawned", true)
+				char:setVar("curVehicle", ent, nil, client)
+
 				client:notify("You spawned the vehicle.")
 			end
 		else

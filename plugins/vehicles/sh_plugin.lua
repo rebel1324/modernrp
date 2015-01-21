@@ -7,11 +7,6 @@ PLUGIN.desc = [[Vehicle Item Plugin with pretty good compatibility.
 
 -- Vehicle Plugin Development is pending until Chessnut Fix the Vehicle Problem.
 
--- Decleared Vehicle Type.
-TYPE_GENERIC = 0
-TYPE_SCAR = 1
-TYPE_TDM = 2
-
 if (SERVER) then
 	-- If player disconnects from the server, remove all the vehicles on the server.
 	function PLUGIN:PlayerDisconnected(client)
@@ -71,7 +66,6 @@ if (SERVER) then
 			vehicleEnt:SetKeyValue("vehiclescript", spawnInfo.script) 
 			vehicleEnt:SetPos(pos)
 			vehicleEnt:Spawn()
-			vehicleEnt.preSpawn = true
 			vehicleEnt:SetRenderMode(1)
 			vehicleEnt:SetColor(spawnInfo.color or color_white)
 			
@@ -93,23 +87,37 @@ if (SERVER) then
 		return false
 	end
 
-	-- Calculate fuel.
-	/*
-		function PLUGIN:Think()
-			for k, v in ipairs(player.GetAll()) do
+	local function gasCalc()
+		for k, v in ipairs(ents.GetAll()) do
+			local class = v:GetClass():lower()
 
+			if (class:find("prop_vehicle")) then
+				local gas = v:getNetVar("gas")
+
+				if (gas and IsValid(v:GetDriver())) then
+					if (gas < 0) then
+						v:Fire("TurnOff")
+						v.ranOut = true
+					else
+						v:setNetVar("gas", math.max(gas - 1, 0))
+
+						if (v.ranOut) then
+							v:Fire("TurnOn")
+							v.ranOut = false
+						end
+					end
+				end
 			end
 		end
-	*/
-end
-
-function PLUGIN:VehicleMove(client, vehicle, moveData)
-	if (client and client:getChar() and vehicle) then
-		local gas = vehicle:getNetVar("gas")
-
-		if (gas and gas <= 0) then
-			moveData:SetForwardSpeed(0)
-			moveData:SetSideSpeed(0)
-		end
 	end
+
+	-- Calculate fuel.
+	timer.Create("ServerFuelEffects", 1, 0, function()
+		local succ, err = pcall(gasCalc)	
+		
+		if (!succ) then
+			print("VEHICLE: ")
+			print(err)
+		end
+	end)
 end

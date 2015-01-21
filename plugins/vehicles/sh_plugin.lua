@@ -118,9 +118,8 @@ if (SERVER) then
 		local vehicleEnt
 
 		if (spawnInfo.type == TYPE_GENERIC) then
-			local solid, entIndex, color, physObj
-
-			vehicleEnt = ents.Create("prop_vehicle_jeep")
+			--Spawn function for the generic source vehicles
+			vehicleEnt = ents.Create("prop_vehicle_jeep")			
 			vehicleEnt:SetModel(spawnInfo.model)
 			vehicleEnt:SetKeyValue("vehiclescript", spawnInfo.script) 
 			vehicleEnt:SetPos(pos)
@@ -150,7 +149,14 @@ if (SERVER) then
 				vehicleEnt.kickPassengers = kickPassengersGeneric
 			end
 		elseif (spawnInfo.type == TYPE_SCAR) then
+			-- Spawn function for SCARs
 			vehicleEnt = ents.Create(spawnInfo.class)
+			if (!IsValid(vehicleEnt)) then
+				print("Scar entity does not exists.")
+
+				return
+			end
+
 			vehicleEnt:SetPos(pos)
 			vehicleEnt:Spawn()
 			vehicleEnt.hasFuel = scarFuel
@@ -167,6 +173,7 @@ if (SERVER) then
 
 			vehicleEnt.kickPassengers = kickPassengersSCAR
 		else
+			-- If the type is not provided, cancel the spawn function
 			print("Tried call NutSpawnVehicle without vehicleType.")
 
 			return
@@ -192,7 +199,7 @@ if (SERVER) then
 				local gas = v:getNetVar("gas")
 
 				if (gas and IsValid(v:GetDriver())) then
-					
+
 					if (gas <= 0) then
 						-- If gas is ran out, Turn off the vehicle.
 						if (v.IsScar) then
@@ -259,7 +266,7 @@ else
 			return true
 		end
 	end
-
+	
 	function SCHEMA:DrawEntityInfo(vehicle, alpha)
 		if (vehicle:IsVehicle() and vehicle:getNetVar("carName")) then
 			local vh = LocalPlayer():GetVehicle()

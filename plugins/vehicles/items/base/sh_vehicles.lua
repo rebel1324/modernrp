@@ -53,12 +53,12 @@ ITEM.functions._use = {
 			trace = util.TraceLine(traceData)
 
 			local a, b = trace.HitPos + trace.HitNormal * 100, client:GetPos()
-			a[3] = math.Clamp(a[3], b[3] - 16, b[3] + 4)
+			a[3] = math.Clamp(a[3], b[3] - 16, b[3] + (item.vehicleData.type == TYPE_SCAR and 64 or 32))
 
 			local ent = NutSpawnVehicle(a, Angle(), item.vehicleData, item)
 
 			-- If the vehicle is successfully spawned
-			if (ent) then
+			if (ent and IsValid(ent)) then
 				-- Set some initial variables for the vehicles.
 				ent:setNetVar("gas", item:getData("gas", item.maxGas))
 				ent:setNetVar("owner", char:getID())

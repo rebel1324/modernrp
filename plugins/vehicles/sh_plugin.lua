@@ -67,12 +67,36 @@ if (SERVER) then
 
 	-- Kick all passengers in Generic Vehicles.
 	local function kickPassengersGeneric(vehicle)
+		for k, v in ipairs(vehicle.seats) do
+			if (v and IsValid(v)) then
+				local driver = v:GetDriver()
 
+				if (driver and IsValid(driver)) then
+					driver:ExitVehicle()
+				end
+			end
+		end
 	end
 
 	-- Kick all passengers in SCAR
 	local function kickPassengersSCAR(vehicle)
+		for k, v in ipairs(vehicle.Seats) do
+			if (k == 1) then
+				continue 
+			end
 
+			if (v and IsValid(v)) then
+				local driver = v:GetDriver()
+
+				if (driver and IsValid(driver)) then
+					driver:ExitVehicle()
+				end
+			end
+		end
+	end
+	
+	local function scarFuel(vehicle)
+		return (!vehicle.ranOut)
 	end
 
 	-- Spawn the vehicle with certain format.
@@ -115,6 +139,7 @@ if (SERVER) then
 			vehicleEnt = ents.Create(spawnInfo.class)
 			vehicleEnt:SetPos(pos)
 			vehicleEnt:Spawn()
+			vehicleEnt.hasFuel = scarFuel
 		else
 			print("Tried call NutSpawnVehicle without vehicleType.")
 
@@ -133,14 +158,17 @@ if (SERVER) then
 		for k, v in ipairs(ents.GetAll()) do
 			local class = v:GetClass():lower()
 
-			if (class:find("prop_vehicle")) then
+			-- vehicle or driveable vehicle.
+			if (v:IsVehicle()) then
 				local gas = v:getNetVar("gas")
 
 				if (gas and IsValid(v:GetDriver())) then
-					if (gas < 0) then
+					if (gas <= 0) then
 						-- If gas is ran out, Turn off the vehicle.
-						if (false) then
+						if (v.IsScar) then
 							-- SCARs
+							v.ranOut = true
+							v:TurnOffCar()
 						else
 							-- Generic Vehicles
 							v:Fire("TurnOff")
@@ -150,8 +178,12 @@ if (SERVER) then
 						v:setNetVar("gas", math.max(gas - 1, 0))
 
 						-- If gas filled, Make it run again.
-						if (false) then
+						if (v.IsScar) then
 							-- SCARs
+							if (v.ranOut) then
+								v.ranOut = false
+								v:TurnOnCar()
+							end
 						else
 							-- Generic Vehicles
 							if (v.ranOut) then

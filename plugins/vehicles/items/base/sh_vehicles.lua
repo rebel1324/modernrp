@@ -8,10 +8,13 @@ ITEM.height = 1
 ITEM.maxGas = 1000
 ITEM.price = 35000
 ITEM.category = "Vehicles"
+ITEM.physDesc = "An Object that has 4 wheels and rolls forward."
 ITEM.vehicleData = {
 	type = TYPE_GENERIC,
 	model = "models/buggy.mdl",
 	script = "scripts/vehicles/jeep_test.txt",
+	name = ITEM.name,
+	physDesc = ITEM.physDesc
 }
 
 function ITEM:getDesc()
@@ -19,9 +22,9 @@ function ITEM:getDesc()
 		return "This is not supposed to happen."
 	else
 		return Format(
-			[[A Jeep car.
+			[[%s
 			Current Gas: %s%%]]
-		, math.Round(self:getData("gas", self.maxGas)/self.maxGas * 100))
+		, self.physDesc, math.Round(self:getData("gas", self.maxGas)/self.maxGas * 100))
 	end
 end
 
@@ -49,10 +52,10 @@ ITEM.functions._use = {
 			traceData.filter = client
 			trace = util.TraceLine(traceData)
 
-			local a, b = trace.HitPos, client:GetPos()
+			local a, b = trace.HitPos + trace.HitNormal * 100, client:GetPos()
 			a[3] = math.Clamp(a[3], b[3] - 16, b[3] + 4)
 
-			local ent = NutSpawnVehicle(a, Angle(), item.vehicleData)
+			local ent = NutSpawnVehicle(a, Angle(), item.vehicleData, item)
 
 			-- If the vehicle is successfully spawned
 			if (ent) then
@@ -61,6 +64,10 @@ ITEM.functions._use = {
 				ent:setNetVar("owner", char:getID())
 				item:setData("spawned", true)
 				char:setVar("curVehicle", ent, nil, client)
+
+				if (item:getData("physDesc")) then
+					ent:setNetVar("carPhysDesc", item:getData("physDesc"))
+				end
 
 				client:notify("You spawned the vehicle.")
 			end
@@ -93,6 +100,10 @@ ITEM.functions._store = {
 				-- If player is near the vehicle.
 				if (dist < 512) then
 					-- Save variables of the car.
+					if (vehicle:getNetVar("carPhysDesc") != item.vehicleData.physDesc) then
+						item:setData("physDesc", vehicle:getNetVar("carPhysDesc"))	
+					end
+
 					item:setData("spawned", nil)
 					item:setData("gas", vehicle:getNetVar("gas"))
 					char:setVar("curVehicle", nil, nil, client)

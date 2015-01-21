@@ -6,6 +6,15 @@ PLUGIN.desc = [[Vehicle Item Plugin with pretty good compatibility.
 \nDefault Source Vehicles, SCARS]]
 
 -- Vehicle Plugin Development is pending until Chessnut Fix the Vehicle Problem.
+-- This is how initialize Language in Single File.
+local langkey = "english"
+do
+	local langTable = {
+		vehicleDesc = "You changed your vehicle's desc to %s.",
+	}
+
+	table.Merge(nut.lang.stored[langkey], langTable)
+end
 
 if (SERVER) then
 	-- If player disconnects from the server, remove all the vehicles on the server.
@@ -56,12 +65,24 @@ if (SERVER) then
 		end
 	end
 
+	-- Kick all passengers in Generic Vehicles.
+	local function kickPassengersGeneric(vehicle)
+
+	end
+
+	-- Kick all passengers in SCAR
+	local function kickPassengersSCAR(vehicle)
+
+	end
+
 	-- Spawn the vehicle with certain format.
 	function NutSpawnVehicle(pos, ang, spawnInfo)
+		local vehicleEnt
+
 		if (spawnInfo.type == TYPE_GENERIC) then
 			local solid, entIndex, color, physObj
-			local vehicleEnt = ents.Create("prop_vehicle_jeep")
 
+			vehicleEnt = ents.Create("prop_vehicle_jeep")
 			vehicleEnt:SetModel(spawnInfo.model)
 			vehicleEnt:SetKeyValue("vehiclescript", spawnInfo.script) 
 			vehicleEnt:SetPos(pos)
@@ -69,24 +90,45 @@ if (SERVER) then
 			vehicleEnt:SetRenderMode(1)
 			vehicleEnt:SetColor(spawnInfo.color or color_white)
 			
-			return vehicleEnt
+			if (spawnInfo.seatInfo) then
+				vehicleEnt.seats = {}
+
+				for k, v in ipairs(seatInfo) do
+					local pos, ang = LocalToWorld(vehicleEnt:GetPos(), vehicleEnt:GetAngles(), v.pos, v.ang)
+					local seatEnt = ents.Create("prop_vehicle_jeep")
+					seatEnt:SetModel(v.model)
+					seatEnt:SetKeyValue("vehiclescript", v.script or "scripts/vehicles/prisoner_pod.txt") 
+					seatEnt:SetPos(pos)
+					seatEnt:SetAngles(ang)
+					seatEnt:Spawn()
+					seatEnt:SetParent(vehicleEnt)
+					if (v.visible) then
+						seatEnt:SetNoDraw(true)
+					end
+					
+					seats[k] = seatEnt
+				end
+
+				vehicleEnt.kickPassengers = kickPassengersGeneric
+			end
 		elseif (spawnInfo.type == TYPE_SCAR) then
-			local vehicleEnt  = ents.Create("prop_vehicle_jeep")
-			vehicleEnt:SetModel(spawnInfo.model)
-			vehicleEnt:SetKeyValue("vehiclescript", spawnInfo.script) 
+			vehicleEnt = ents.Create(spawnInfo.class)
 			vehicleEnt:SetPos(pos)
 			vehicleEnt:Spawn()
-			
-			return vehicleEnt
-		elseif (spawnInfo.type == TYPE_TDM) then
-			
 		else
 			print("Tried call NutSpawnVehicle without vehicleType.")
+
+			return
 		end
 
-		return false
+		-- Set vehicle's name and physical description
+		vehicleEnt:setNetVar("carName", spawnInfo.name)
+		vehicleEnt:setNetVar("carPhysDesc", spawnInfo.physDesc)
+
+		return vehicleEnt
 	end
 
+	-- A function for gas
 	local function gasCalc()
 		for k, v in ipairs(ents.GetAll()) do
 			local class = v:GetClass():lower()
@@ -96,14 +138,26 @@ if (SERVER) then
 
 				if (gas and IsValid(v:GetDriver())) then
 					if (gas < 0) then
-						v:Fire("TurnOff")
-						v.ranOut = true
+						-- If gas is ran out, Turn off the vehicle.
+						if (false) then
+							-- SCARs
+						else
+							-- Generic Vehicles
+							v:Fire("TurnOff")
+							v.ranOut = true
+						end
 					else
 						v:setNetVar("gas", math.max(gas - 1, 0))
 
-						if (v.ranOut) then
-							v:Fire("TurnOn")
-							v.ranOut = false
+						-- If gas filled, Make it run again.
+						if (false) then
+							-- SCARs
+						else
+							-- Generic Vehicles
+							if (v.ranOut) then
+								v:Fire("TurnOn")
+								v.ranOut = false
+							end
 						end
 					end
 				end
@@ -115,9 +169,48 @@ if (SERVER) then
 	timer.Create("ServerFuelEffects", 1, 0, function()
 		local succ, err = pcall(gasCalc)	
 		
+		-- To make timer not get removed for the error.
 		if (!succ) then
 			print("VEHICLE: ")
 			print(err)
 		end
 	end)
+else
+	-- Draw vehicle's name and physical description
+	function SCHEMA:ShouldDrawEntityInfo(vehicle)
+		return (vehicle:IsVehicle())
+	end
+
+	function SCHEMA:DrawEntityInfo(vehicle, alpha)
+		if (vehicle:IsVehicle() and vehicle:getNetVar("carName")) then
+			local position = vehicle:LocalToWorld(vehicle:OBBCenter()):ToScreen()
+			local x, y = position.x, position.y
+			
+			nut.util.drawText(vehicle:getNetVar("carName", "gay car"), x, y, ColorAlpha(nut.config.get("color"), alpha), 1, 1, nil, alpha * 0.65)
+			nut.util.drawText(vehicle:getNetVar("carPhysDesc", "faggy car"), x, y + 16, ColorAlpha(color_white, alpha), 1, 1, "nutSmallFont", alpha * 0.65)
+		end	
+	end
 end
+
+-- A Command for changing the vehicle's physical description.
+nut.command.add("vehicledesc", {
+	syntax = "<string text>",
+	onRun = function(client, arguments)
+		if (!arguments[1]) then
+			return L("invalidArg", client, 1)
+		end
+
+		local phyDesc = table.concat(arguments, " ")
+		local trace = client:GetEyeTraceNoCursor()
+
+		local ent = trace.Entity
+		if (ent and IsValid(ent)) then
+			local char = client:getChar()
+
+			if (ent:getNetVar("owner", 0) == char:getID()) then
+				ent:setNetVar("carPhysDesc", phyDesc)
+				client:notify(L("vehicleDesc", client, phyDesc))
+			end
+		end
+	end
+})

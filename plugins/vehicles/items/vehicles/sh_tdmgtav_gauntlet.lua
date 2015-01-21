@@ -12,4 +12,6 @@ ITEM.vehicleData = {
 	type = TYPE_GENERIC,
 	model = ITEM.model,
 	script = "scripts/vehicles/TDMCars/gtav/gauntlet.txt",
+	name = ITEM.name,
+	physDesc = ITEM.physDesc
 }

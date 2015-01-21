@@ -86,5 +86,8 @@ LANGUAGE = {
 	Drink = "마시기",
 	Toggle = "사용",
 	Freq = "주파수",
+	Spawn = "소환",
+	Sell = "판매",
+	Store = "보관",
 
 }

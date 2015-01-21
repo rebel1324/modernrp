@@ -103,7 +103,7 @@ function recoverCloth(client, target)
 	end
 end
 
-function PLUGIN:PlayerSpawn(client)
+function PLUGIN:PostPlayerLoadout(client)
 	local mats = client:GetMaterials()
 	
 	-- You have to reset entity texture replacement if you don't want texture fuckups.

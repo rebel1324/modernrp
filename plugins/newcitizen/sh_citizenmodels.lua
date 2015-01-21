@@ -7,6 +7,7 @@ RESKINDATA = {
 			"facemaps/zombie/van_facemap",
 			"facemaps/rusty/van_facemap",
 			"facemaps/rusty/van_facemap2",
+			"facemaps/ffactory/van_facemap",
 			"facemaps/van_facemap",
 			"facemaps/van_facemap2",
 			"facemaps/van_facemap3",
@@ -20,6 +21,7 @@ RESKINDATA = {
 		facemaps = {
 			"facemaps/zombie/ted_facemap",
 			"facemaps/freshman/ted_facemap",
+			"facemaps/ffactory/ted_facemap",
 			"facemaps/rusty/ted_facemap",
 			"facemaps/rusty/ted_facemap3",
 			"facemaps/rusty/ted_facemap4",
@@ -37,6 +39,7 @@ RESKINDATA = {
 		facemaps = {
 			"facemaps/zombie/joe_facemap",
 			"facemaps/newface1/joe_facemap",
+			"facemaps/ffactory/joe_facemap",
 			"facemaps/rusty/joe_facemap",
 			"facemaps/rusty/joe_facemap2",
 			"facemaps/rusty/joe_facemap3",
@@ -54,6 +57,7 @@ RESKINDATA = {
 		facemaps = {
 			"facemaps/zombie/eric_facemap",
 			"facemaps/freshman/eric_facemap",
+			"facemaps/ffactory/eric_facemap",
 			"facemaps/eric_facemap",
 			"facemaps/eric_facemap2",
 			"facemaps/eric_facemap3",
@@ -67,6 +71,7 @@ RESKINDATA = {
 		facemaps = {
 			"facemaps/zombie/art_facemap",
 			"facemaps/newface1/art_facemap",
+			"facemaps/ffactory/art_facemap",
 			"facemaps/art_facemap",
 			"facemaps/art_facemap2",
 			"facemaps/art_facemap3",
@@ -81,6 +86,7 @@ RESKINDATA = {
 			"facemaps/zombie/sandro_facemap",
 			"facemaps/mafia/sandro_facemap",
 			"facemaps/newface1/sandro_facemap",
+			"facemaps/ffactory/sandro_facemap",
 			"facemaps/rusty/sandro_facemap",
 			"facemaps/rusty/sandro_facemap2",
 			"facemaps/rusty/sandro_facemap3",
@@ -98,6 +104,7 @@ RESKINDATA = {
 		facemaps = {
 			"facemaps/zombie/mike_facemap",
 			"facemaps/rusty/mike_facemap",
+			"facemaps/ffactory/mike_facemap",
 			"facemaps/mike_facemap",
 			"facemaps/mike_facemap2",
 			"facemaps/mike_facemap3",
@@ -112,6 +119,7 @@ RESKINDATA = {
 			"facemaps/zombie/vance_facemap",
 			"facemaps/freshman/vance_facemap",
 			"facemaps/mafia/vance_facemap",
+			"facemaps/ffactory/vance_facemap",
 			"facemaps/newface1/vance_facemap",
 			"facemaps/rusty/vance_facemap",
 			"facemaps/rusty/vance_facemap2",
@@ -131,6 +139,7 @@ RESKINDATA = {
 			"facemaps/zombie/erdim_facemap",
 			"facemaps/freshman/erdim_facemap",
 			"facemaps/rusty/erdim_facemap",
+			"facemaps/ffactory/erdim_facemap",
 			"facemaps/rusty/erdim_facemap2",
 			"facemaps/erdim_facemap",
 			"facemaps/erdim_facemap2",
@@ -146,6 +155,7 @@ RESKINDATA = {
 		[2] = 5, -- facemap
 		facemaps = {
 			"facemaps/joey_facemap",
+			"facemaps/ffactory/joey_facemap",
 			"facemaps/joey_facemap2",
 			"facemaps/joey_facemap3",
 			"facemaps/joey_facemap4",
@@ -157,6 +167,7 @@ RESKINDATA = {
 		[2] = 3, -- facemap
 		facemaps = {
 			"facemaps/kanisha_cylmap",
+			"facemaps/ffactory/kanisha_cylmap",
 			"facemaps/kanisha_cylmap2",
 			"facemaps/kanisha_cylmap3",
 			"facemaps/kanisha_cylmap4",
@@ -168,6 +179,7 @@ RESKINDATA = {
 		[2] = 1, -- facemap
 		facemaps = {
 			"facemaps/kim_facemap",
+			"facemaps/ffactory/kim_facemap",
 			"facemaps/kim_facemap2",
 			"facemaps/kim_facemap3",
 			"facemaps/kim_facemap4",
@@ -179,6 +191,7 @@ RESKINDATA = {
 		[2] = 1, -- facemap
 		facemaps = {
 			"facemaps/chau_facemap",
+			"facemaps/ffactory/chau_facemap",
 			"facemaps/chau_facemap2",
 			"facemaps/chau_facemap3",
 			"facemaps/chau_facemap4",
@@ -190,6 +203,7 @@ RESKINDATA = {
 		[2] = 4, -- facemap
 		facemaps = {
 			"facemaps/naomi_facemap",
+			"facemaps/ffactory/naomi_facemap",
 			"facemaps/naomi_facemap2",
 			"facemaps/naomi_facemap3",
 			"facemaps/naomi_facemap4",
@@ -201,6 +215,7 @@ RESKINDATA = {
 		[2] = 5, -- facemap
 		facemaps = {
 			"facemaps/lakeetra_facemap",
+			"facemaps/ffactory/lakeetra_facemap",
 			"facemaps/lakeetra_facemap2",
 			"facemaps/lakeetra_facemap3",
 			"facemaps/lakeetra_facemap4",

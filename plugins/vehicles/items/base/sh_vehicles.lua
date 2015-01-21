@@ -9,12 +9,14 @@ ITEM.maxGas = 1000
 ITEM.price = 35000
 ITEM.category = "Vehicles"
 ITEM.physDesc = "An Object that has 4 wheels and rolls forward."
+ITEM.noDrop = true
 ITEM.vehicleData = {
 	type = TYPE_GENERIC,
 	model = "models/buggy.mdl",
 	script = "scripts/vehicles/jeep_test.txt",
 	name = ITEM.name,
-	physDesc = ITEM.physDesc
+	physDesc = ITEM.physDesc,
+	maxGas = ITEM.maxGas,
 }
 
 function ITEM:getDesc()
@@ -28,7 +30,6 @@ function ITEM:getDesc()
 	end
 end
 
-ITEM.functions = {}
 ITEM.functions._use = { 
 	name = "Spawn",
 	tip = "useTip",

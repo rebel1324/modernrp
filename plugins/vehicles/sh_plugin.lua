@@ -17,6 +17,8 @@ do
 		vehicleSpawned = "You spawned your vehicle on the world.",
 		vehicleCloser = "You need to be closer to your vehicle.",
 		vehicleStoredDestroyed = "Your vehicle is destoryed or removed. But stored successfully.",
+		vehicleGasFilled = "The vehicle now filled to %d%%.",
+		vehicleGasLook = "You must look at the vehicle that you can fill the gas.",
 	}
 
 	table.Merge(nut.lang.stored[langkey], langTable)
@@ -101,8 +103,14 @@ if (SERVER) then
 		end
 	end
 	
+	-- Check function for SCAR vehicle.
 	local function scarFuel(vehicle)
 		return (!vehicle.ranOut)
+	end
+
+	-- Common function for filling the gas out.
+	local function fillGas(vehicle, amount)
+		vehicle:setNetVar("gas", math.min(vehicle:getNetVar("gas") + amount, vehicle.maxGas))
 	end
 
 	-- Spawn the vehicle with certain format.
@@ -146,6 +154,18 @@ if (SERVER) then
 			vehicleEnt:SetPos(pos)
 			vehicleEnt:Spawn()
 			vehicleEnt.hasFuel = scarFuel
+
+			-- Scar is just an entity. So it requires some touches.
+			if (vehicleEnt.Seats) then
+				local mainSeat = vehicleEnt.Seats[1]
+
+				if (mainSeat and IsValid(mainSeat)) then
+					vehicleEnt.scarDriverSeat = mainSeat
+					mainSeat.actualVehicle = vehicleEnt
+				end
+			end
+
+			vehicleEnt.kickPassengers = kickPassengersSCAR
 		else
 			print("Tried call NutSpawnVehicle without vehicleType.")
 
@@ -155,6 +175,9 @@ if (SERVER) then
 		-- Set vehicle's name and physical description
 		vehicleEnt:setNetVar("carName", spawnInfo.name)
 		vehicleEnt:setNetVar("carPhysDesc", spawnInfo.physDesc)
+		vehicleEnt.maxGas = spawnInfo.maxGas
+		vehicleEnt.spawnedVehicle = true
+		vehicleEnt.fillGas = fillGas
 
 		return vehicleEnt
 	end
@@ -165,10 +188,11 @@ if (SERVER) then
 			local class = v:GetClass():lower()
 
 			-- vehicle or driveable vehicle.
-			if (v:IsVehicle()) then
+			if (v:IsVehicle() and v.spawnedVehicle) then
 				local gas = v:getNetVar("gas")
 
 				if (gas and IsValid(v:GetDriver())) then
+					
 					if (gas <= 0) then
 						-- If gas is ran out, Turn off the vehicle.
 						if (v.IsScar) then
@@ -213,6 +237,21 @@ if (SERVER) then
 			print(err)
 		end
 	end)
+
+	function SCHEMA:PlayerLeaveVehicle(client, vehicle)
+		if (vehicle.spawnedVehicle or vehicle.actualVehicle) then
+			if (vehicle.actualVehicle and IsValid(vehicle.actualVehicle)) then
+				vehicle = vehicle.actualVehicle	
+			end
+
+			local owner = vehicle:getNetVar("owner")
+			local charID = client:getChar():getID()
+
+			if (owner and charID and owner == charID) then
+				vehicle:kickPassengers()
+			end
+		end
+	end
 else
 	-- Draw vehicle's name and physical description
 	function SCHEMA:ShouldDrawEntityInfo(vehicle)

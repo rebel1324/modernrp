@@ -13,5 +13,6 @@ ITEM.vehicleData = {
 	model = ITEM.model,
 	script = "scripts/vehicles/TDMCars/gtav/rebel.txt",
 	name = ITEM.name,
-	physDesc = ITEM.physDesc
+	physDesc = ITEM.physDesc,
+	maxGas = ITEM.maxGas,
 }

@@ -12,5 +12,6 @@ ITEM.vehicleData = {
 	type = TYPE_SCAR,
 	class = "sent_sakarias_car_junker1",
 	name = ITEM.name,
-	physDesc = ITEM.physDesc
+	physDesc = ITEM.physDesc,
+	maxGas = ITEM.maxGas,
 }

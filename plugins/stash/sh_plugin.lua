@@ -36,11 +36,12 @@ if (SERVER) then
 	function requestStash(client)
 		local stashItems = client:getChar():getData("stashItems", {})
 
+		nut.item.loadItemByID(table.SortByKey(stashItems), 0, nil)
 		for k, v in pairs(stashItems) do
-			if (!nut.item.inventories[0][v]) then
-				--nut.item.loadItemByID loads item data and syncs item data with the client.
-				--itemID, targetInventory, recipient
-				--nut.item.loadItemByID(v, 0, client)
+			local item = nut.item.instances[k]
+
+			if (item) then
+				netstream.Start(client, "item", item.uniqueID, k, item.data, 0)
 			end
 		end
 
@@ -54,8 +55,7 @@ if (SERVER) then
 			local clientStash = char:getStash()
 
 			if (item:transfer(nil, nil, nil, client, nil, true)) then
-				clientStash[itemID] = nut.item.instances[itemID]
-				PrintTable(clientStash)
+				clientStash[itemID] = true
 
 				char:setStash(clientStash)
 			end
@@ -70,7 +70,6 @@ if (SERVER) then
 
 			if (item:transfer(char:getInv():getID(), nil, nil, client)) then
 				clientStash[itemID] = nil
-				PrintTable(clientStash)
 
 				char:setStash(clientStash)
 			end

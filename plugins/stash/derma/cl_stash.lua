@@ -58,12 +58,13 @@ local PANEL = {}
 			self.inv:addItem(v.uniqueID, v)
 		end
 
-		for k, v in pairs(LocalPlayer():getChar():getStash()) do
-			if (v.base == "base_bags") then
+		for k, _ in pairs(LocalPlayer():getChar():getStash()) do
+			local item = nut.item.instances[k]
+			if (item.base == "base_bags") then
 				continue
 			end
 			
-			self.stash:addItem(v.uniqueID, v)
+			self.stash:addItem(item.uniqueID, item)
 		end
 	end
 

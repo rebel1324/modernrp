@@ -76,8 +76,12 @@ function SCHEMA:PostDrawTranslucentRenderables()
 					local glowPerc = math.abs(math.sin((CurTime() + v:EntIndex())*30))
 
 					-- We need to create sound for all clients :((
+					if (!v.pixHandle) then
+						v.pixHandle = util.GetPixelVisibleHandle()
+					end
+
 					if (!v.loopSound) then
-						v.loopSound = CreateSound(v, "ambient/alarms/siren.wav")
+						v.loopSound = CreateSound(v, "policesiren.wav")
 					end
 
 					if (!v.loopSound:IsPlaying()) then
@@ -104,7 +108,8 @@ function SCHEMA:PostDrawTranslucentRenderables()
 							end
 						end
 
-						render.DrawSprite(pos, 32, 32, ColorAlpha(glowColor[lightCycle], glowPerc*255))
+						local visibleFactor = util.PixelVisible(pos, 32, v.pixHandle)	
+						render.DrawSprite(pos, 32, 32, ColorAlpha(glowColor[lightCycle], visibleFactor*glowPerc*255))
 					end
 				else
 					if (v.loopSound and v.loopSound:IsPlaying()) then

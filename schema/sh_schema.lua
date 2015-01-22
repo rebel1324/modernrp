@@ -58,6 +58,7 @@ if (SERVER) then
 	resource.AddFile("sound/ui/notify.wav")
 	resource.AddFile("sound/ui/okay.wav")
 	resource.AddFile("sound/ui/welcome.wav")
+	resource.AddFile("sound/policesiren.wav")
 end
 
 nut.util.include("sh_configs.lua")

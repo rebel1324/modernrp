@@ -63,7 +63,8 @@ ITEM.functions._use = {
 			local a, b = trace.HitPos + trace.HitNormal * 100, client:GetPos()
 			a[3] = math.Clamp(a[3], b[3] - 16, b[3] + (item.vehicleData.type == TYPE_SCAR and 64 or 32))
 
-			local ent = NutSpawnVehicle(a, Angle(), item.vehicleData, item)
+			local itemTable = nut.item.list[item.uniqueID]
+			local ent = NutSpawnVehicle(a, Angle(), itemTable.vehicleData, item)
 
 			-- If the vehicle is successfully spawned
 			if (ent and IsValid(ent)) then

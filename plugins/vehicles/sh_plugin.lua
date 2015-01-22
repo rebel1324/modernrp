@@ -131,23 +131,24 @@ if (SERVER) then
 			vehicleEnt:SetRenderMode(1)
 			vehicleEnt:SetColor(spawnInfo.color or color_white)
 			
-			if (spawnInfo.seatInfo) then
+			PrintTable(spawnInfo.seats)
+			if (spawnInfo.seats) then
 				vehicleEnt.seats = {}
 
-				for k, v in ipairs(seatInfo) do
-					local pos, ang = LocalToWorld(vehicleEnt:GetPos(), vehicleEnt:GetAngles(), v.pos, v.ang)
+				for k, v in ipairs(spawnInfo.seats) do
 					local seatEnt = ents.Create("prop_vehicle_jeep")
-					seatEnt:SetModel(v.model)
+					seatEnt:SetModel(v.model or "models/nova/jeep_seat.mdl")
 					seatEnt:SetKeyValue("vehiclescript", v.script or "scripts/vehicles/prisoner_pod.txt") 
-					seatEnt:SetPos(pos)
-					seatEnt:SetAngles(ang)
 					seatEnt:Spawn()
+					seatEnt:SetNotSolid(true)
 					seatEnt:SetParent(vehicleEnt)
-					if (v.visible) then
+					seatEnt:SetLocalPos(v.pos)
+					seatEnt:SetLocalAngles(v.ang)
+					if (!v.visible) then
 						seatEnt:SetNoDraw(true)
 					end
 					
-					seats[k] = seatEnt
+					vehicleEnt.seats[k] = seatEnt
 				end
 			end
 
@@ -260,6 +261,16 @@ if (SERVER) then
 
 			if (owner and charID and owner == charID) then
 				vehicle:kickPassengers()
+			end
+		end
+	end
+
+	function SCHEMA:FindUseEntity(client, vehicle) 
+		if (vehicle:IsValid() and vehicle:IsVehicle() and IsValid(vehicle:GetDriver()) and vehicle.seats) then
+			for k, v in ipairs(vehicle.seats) do
+				if (!vehicle.seats[k]:GetDriver()) then
+					return vehicle.seats[k]
+				end
 			end
 		end
 	end

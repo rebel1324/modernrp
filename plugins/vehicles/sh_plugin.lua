@@ -75,12 +75,14 @@ if (SERVER) then
 
 	-- Kick all passengers in Generic Vehicles.
 	local function kickPassengersGeneric(vehicle)
-		for k, v in ipairs(vehicle.seats) do
-			if (v and IsValid(v)) then
-				local driver = v:GetDriver()
+		if (vehicle.seats) then
+			for k, v in ipairs(vehicle.seats) do
+				if (v and IsValid(v)) then
+					local driver = v:GetDriver()
 
-				if (driver and IsValid(driver)) then
-					driver:ExitVehicle()
+					if (driver and IsValid(driver)) then
+						driver:ExitVehicle()
+					end
 				end
 			end
 		end
@@ -88,16 +90,18 @@ if (SERVER) then
 
 	-- Kick all passengers in SCAR
 	local function kickPassengersSCAR(vehicle)
-		for k, v in ipairs(vehicle.Seats) do
-			if (k == 1) then
-				continue 
-			end
+		if (vehicle.Seats) then
+			for k, v in ipairs(vehicle.Seats) do
+				if (k == 1) then
+					continue 
+				end
 
-			if (v and IsValid(v)) then
-				local driver = v:GetDriver()
+				if (v and IsValid(v)) then
+					local driver = v:GetDriver()
 
-				if (driver and IsValid(driver)) then
-					driver:ExitVehicle()
+					if (driver and IsValid(driver)) then
+						driver:ExitVehicle()
+					end
 				end
 			end
 		end
@@ -145,9 +149,9 @@ if (SERVER) then
 					
 					seats[k] = seatEnt
 				end
-
-				vehicleEnt.kickPassengers = kickPassengersGeneric
 			end
+
+			vehicleEnt.kickPassengers = kickPassengersGeneric
 		elseif (spawnInfo.type == TYPE_SCAR) then
 			-- Spawn function for SCARs
 			vehicleEnt = ents.Create(spawnInfo.class)

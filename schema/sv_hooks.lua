@@ -263,3 +263,25 @@ function SCHEMA:LotteryEvent(client, item)
 
 	return (item.price or 100) * lotteryPrize[value]
 end
+
+function SCHEMA:OnPlayerSpawnedVehicle(vehicle, item, client)
+	-- for fast dev
+	item = nut.item.list[item.uniqueID]
+
+	if (item.policeCar) then
+		vehicle:setNetVar("policeCar", item.uniqueID)
+	end
+end
+
+netstream.Hook("carLightToggle", function(client)
+	local vehicle = client:GetVehicle()
+
+	if (vehicle and IsValid(vehicle)) then
+		if (vehicle:getNetVar("policeCar")) then
+			local light = vehicle:getNetVar("lightOn", false)
+			
+			vehicle:setNetVar("lightOn", !light)
+			vehicle:EmitSound("buttons/lightswitch2.wav")
+		end
+	end
+end)

@@ -81,7 +81,7 @@ ITEM.functions._use = {
 					item:onVehicleSpawned(ent, client)
 				end
 
-				hook.Run("OnPlayerSpawnedVehicle", vehicle, item, client)
+				hook.Run("OnPlayerSpawnedVehicle", ent, item, client)
 
 				client:notify(L("vehicleSpawned", client))
 			end

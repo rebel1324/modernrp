@@ -5,6 +5,8 @@ PLUGIN.desc = [[Vehicle Item Plugin with pretty good compatibility.
 \nFollowing vehicle mods are supported:
 \nDefault Source Vehicles, SCARS]]
 
+-- Vehicle Plugin Tutorial is here.
+-- https://docs.google.com/document/d/1m-9H4MCWo4Fgvg9rw9WRIrPXkTpmFaVqldycQiXx8TQ/edit?usp=sharing
 -- Vehicle Plugin Development is pending until Chessnut Fix the Vehicle Problem.
 -- This is how initialize Language in Single File.
 local langkey = "english"
@@ -131,7 +133,7 @@ if (SERVER) then
 			vehicleEnt:SetRenderMode(1)
 			vehicleEnt:SetColor(spawnInfo.color or color_white)
 			
-			if (spawnInfo.seats) then
+			if (spawnInfo.seats and hook.Run("CanSpawnPassengerSeats") != false) then
 				vehicleEnt.seats = {}
 
 				for k, v in ipairs(spawnInfo.seats) do
@@ -272,6 +274,13 @@ if (SERVER) then
 					return vehicle.seats[k]
 				end
 			end
+		end
+	end
+
+	function SCHEMA:CanSpawnPassengerSeats()
+		-- VC Mod has it's own shits.
+		if (VCMod1) then
+			return false
 		end
 	end
 else

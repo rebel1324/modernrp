@@ -131,14 +131,13 @@ if (SERVER) then
 			vehicleEnt:SetRenderMode(1)
 			vehicleEnt:SetColor(spawnInfo.color or color_white)
 			
-			PrintTable(spawnInfo.seats)
 			if (spawnInfo.seats) then
 				vehicleEnt.seats = {}
 
 				for k, v in ipairs(spawnInfo.seats) do
-					local seatEnt = ents.Create("prop_vehicle_jeep")
-					seatEnt:SetModel(v.model or "models/nova/jeep_seat.mdl")
-					seatEnt:SetKeyValue("vehiclescript", v.script or "scripts/vehicles/prisoner_pod.txt") 
+					local seatEnt = ents.Create("prop_vehicle_prisoner_pod")
+					seatEnt:SetModel("models/nova/jeep_seat.mdl")
+					seatEnt:SetKeyValue("vehiclescript", "scripts/vehicles/prisoner_pod.txt") 
 					seatEnt:Spawn()
 					seatEnt:SetNotSolid(true)
 					seatEnt:SetParent(vehicleEnt)
@@ -268,7 +267,8 @@ if (SERVER) then
 	function SCHEMA:FindUseEntity(client, vehicle) 
 		if (vehicle:IsValid() and vehicle:IsVehicle() and IsValid(vehicle:GetDriver()) and vehicle.seats) then
 			for k, v in ipairs(vehicle.seats) do
-				if (!vehicle.seats[k]:GetDriver()) then
+				if (!IsValid(vehicle.seats[k]:GetDriver())) then
+					print(vehicle.seats[k])
 					return vehicle.seats[k]
 				end
 			end

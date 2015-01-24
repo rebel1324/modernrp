@@ -15,4 +15,10 @@ ITEM.vehicleData = {
 	name = ITEM.name,
 	physDesc = ITEM.physDesc,
 	maxGas = ITEM.maxGas,
+	seats = {
+		{
+			pos = Vector(24.720136642456, 36.258457183838, 28.553546905518),
+			ang = Angle(0, 0, 0),
+		}
+	}
 }

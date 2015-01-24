@@ -71,6 +71,8 @@ LANGUAGE = {
 	vehicleSpawned = "당신은 당신의 차량을 밖에 소환하였습니다.",
 	vehicleCloser = "당신은 당신의 차량에 더 가까이 다가가야 합니다.",
 	vehicleStoredDestroyed = "당신의 차량이 존재하지 않습니만, 보관에는 성공했습니다.",
+	vehicleGasFilled = "The vehicle now filled to %d%%.",
+	vehicleGasLook = "You must look at the vehicle that you can fill the gas.",
 
 	-- ITEM INTERACTION TRANSLATION
 	Unequip = "장착 해제",

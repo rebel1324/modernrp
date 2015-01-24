@@ -57,6 +57,7 @@ function nut.bar.draw(x, y, w, h, value, color, barInfo)
 	nut.util.drawText(L(barInfo.identifier or "noname"), x + bw/2, y + h/2, ColorAlpha(color_white, color.a), 1, 1, nil, color.a)
 end	
 
+local sin = math.sin
 local glowMaterial = Material("sprites/glow04_noz")
 local glowColor = {
 	[0] = Color(55, 0, 255),
@@ -73,7 +74,7 @@ function SCHEMA:PostDrawTranslucentRenderables()
 
 				if (vehicleData.lights and light) then
 					local lightCycle = math.Round(CurTime()%1)
-					local glowPerc = math.abs(math.sin((CurTime() + v:EntIndex())*30))
+					local glowPerc = math.abs(sin((CurTime() + v:EntIndex())*30))
 
 					-- We need to create sound for all clients :((
 					if (!v.pixHandle) then
@@ -108,8 +109,9 @@ function SCHEMA:PostDrawTranslucentRenderables()
 							end
 						end
 
+						local wowHell = sin(RealTime()*20 + lightIdx)*16
 						local visibleFactor = util.PixelVisible(pos, 32, v.pixHandle)	
-						render.DrawSprite(pos, 32, 32, ColorAlpha(glowColor[lightCycle], visibleFactor*glowPerc*255))
+						render.DrawSprite(pos, 32 + wowHell, 32 + wowHell, ColorAlpha(glowColor[lightCycle], visibleFactor*glowPerc*255))
 					end
 				else
 					if (v.loopSound and v.loopSound:IsPlaying()) then

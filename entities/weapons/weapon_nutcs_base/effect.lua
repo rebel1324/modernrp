@@ -425,7 +425,7 @@ function EFFECT:Init( data )
 	self.Length = .1
 	
 	-- Die when it reaches its target
-	self.life = .2
+	self.life = 1
 	self.lifeTime = CurTime() + self.life
 	self.trav = 0
 end

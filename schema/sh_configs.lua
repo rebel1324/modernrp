@@ -22,6 +22,10 @@ addRequire("tmp", {gunskill = 3})
 addRequire("ump", {gunskill = 3})
 addRequire("usp", {gunskill = 2})
 
+-- Adding Medical Requirements
+addRequire("healthkit", {medical = 7})
+addRequire("healvial", {medical = 3})
+
 -- Adding Schema Specific Configs.
 nut.config.setDefault("font", "Bitstream Vera Sans")
 

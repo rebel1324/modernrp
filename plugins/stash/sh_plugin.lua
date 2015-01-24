@@ -13,6 +13,7 @@ do
 		stashOut = "Pick Item",
 		stashError = "An error occured while processing stash trasfer",
 		stashDesc = "You can store your items safe in here",
+		stashFar = "You're too far away from the stash",
 	}
 
 	table.Merge(nut.lang.stored[langkey], langTable)
@@ -82,6 +83,18 @@ if (SERVER) then
 	function requestStash(client)
 		local stashItems = client:getChar():getStash()
 		local queryTable = {}
+		local nearStash = false
+
+		for k, v in ipairs(ents.FindInSphere(client:GetPos(), 128)) do
+			if (v:GetClass() == "nut_stash") then
+				neatStash = true
+			end
+		end
+
+		if (!nearStash) then
+			client:notify(L("stashFar", client))
+		end
+
 		for k, v in pairs(stashItems) do
 			table.insert(queryTable, k)
 		end
@@ -101,6 +114,13 @@ if (SERVER) then
 	netstream.Hook("stashIn", function(client, itemID)
 		local char = client:getChar()
 		local item = nut.item.instances[itemID]
+		local nearStash = false
+
+		for k, v in ipairs(ents.FindInSphere(client:GetPos(), 128)) do
+			if (v:GetClass() == "nut_stash") then
+				neatStash = true
+			end
+		end
 
 		if (item) then
 			local clientStash = char:getStash()
@@ -108,6 +128,10 @@ if (SERVER) then
 			if (item.base == "base_bags" or clientStash[itemID] or item:getOwner() != client) then
 				client:notify(L("stashError", client))
 				return
+			end
+
+			if (!nearStash) then
+				client:notify(L("stashFar", client))
 			end
 
 			if (item:transfer(nil, nil, nil, client, nil, true)) then

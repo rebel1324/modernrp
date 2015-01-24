@@ -23,6 +23,26 @@ function charMeta:getStash()
 end
 
 if (SERVER) then
+    function PLUGIN:PreCharDelete(client, char)
+    	-- get character stash items and eradicate item data from the DATABASE.
+    	if (char) then
+			local stashItems = char:getStash()
+			local queryTable = {}
+			for k, v in pairs(stashItems) do
+				table.insert(queryTable, k)
+			end
+
+			nut.item.loadItemByID(queryTable, 0, nil)
+			for k, v in pairs(stashItems) do
+				local item = nut.item.instances[k]
+
+				if (item) then
+					item:remove()
+				end
+			end
+		end
+    end
+
 	function PLUGIN:LoadData()
 		local savedTable = self:getData() or {}
 
@@ -67,7 +87,7 @@ if (SERVER) then
 		nut.item.loadItemByID(queryTable, 0, nil)
 		for k, v in pairs(stashItems) do
 			local item = nut.item.instances[k]
-			print(item)
+
 			if (item) then
 				netstream.Start(client, "item", item.uniqueID, k, item.data, 0)
 			end
@@ -93,6 +113,8 @@ if (SERVER) then
 
 				char:setStash(clientStash)
 				netstream.Start(client, "stashIn")
+			else
+				client:notify(L("stashError", client))
 			end
 		end
 	end)
@@ -113,6 +135,8 @@ if (SERVER) then
 
 				char:setStash(clientStash)
 				netstream.Start(client, "stashOut")
+			else
+				client:notify(L("stashError", client))
 			end
 		end
 	end)

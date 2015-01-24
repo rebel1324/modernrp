@@ -165,7 +165,7 @@ ITEM.functions.sell = {
 
 -- Don't ever think about it.
 function ITEM:onCanBeTransfered(oldInventory, newInventory)
-	return (!newInventory or oldInventory:getID() == newInventory:getID())
+	return ((!newInventory or oldInventory:getID() == newInventory:getID()) and (newInventory:getID() != 0))
 end
 
 -- Called when a new instance of this item has been made.

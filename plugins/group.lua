@@ -230,10 +230,10 @@ if (SERVER) then
 		nut.group.syncAll(client)
 	end
 
-	function PLUGIN:OnCharDelete(client, id, isCurrentChar)
-		local char = client:getChar()
-
-		char:dismissGroup(true)
+	function PLUGIN:PreCharDelete(client, char)
+		if (char) then
+			char:dismissGroup(true)
+		end
 	end
 
 	function PLUGIN:PlayerDisconnected(client)

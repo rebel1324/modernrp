@@ -425,7 +425,7 @@ function EFFECT:Init( data )
 	self.Length = .1
 	
 	-- Die when it reaches its target
-	self.life = 1
+	self.life = 10
 	self.lifeTime = CurTime() + self.life
 	self.trav = 0
 end
@@ -464,7 +464,7 @@ function EFFECT:Render( )
 
 		render.DrawBeam( self.tOrigin + self.tDir * (self.trav + tracerLength*.7), 		
 						 self.tOrigin + self.tDir * (self.trav),
-						 5,					
+						 9,					
 						 1,					
 						 0,				
 						 Color( 255, 255, 255, 255 ) )

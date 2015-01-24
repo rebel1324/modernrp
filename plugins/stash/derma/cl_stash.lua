@@ -42,7 +42,7 @@ local PANEL = {}
 		end
 	end
 
-	function PANEL:setStash(items)
+	function PANEL:setStash()
 		self.stash.title:SetText(L("stash", 0, 50))
 
 		self.stash.items:Clear()

@@ -71,8 +71,14 @@ LANGUAGE = {
 	vehicleSpawned = "당신은 당신의 차량을 밖에 소환하였습니다.",
 	vehicleCloser = "당신은 당신의 차량에 더 가까이 다가가야 합니다.",
 	vehicleStoredDestroyed = "당신의 차량이 존재하지 않습니만, 보관에는 성공했습니다.",
-	vehicleGasFilled = "The vehicle now filled to %d%%.",
-	vehicleGasLook = "You must look at the vehicle that you can fill the gas.",
+	vehicleGasFilled = "당신은 차량의 연료를 %d%% 만큼 채웠습니다.",
+	vehicleGasLook = "연료를 채우기 위해서는 차량을 바라보고 있어야합니다.",
+
+	-- STASH PLUGIN TRANSLATION\
+	stash = "창고",
+	stashIn = "보관",
+	stashOut = "꺼내기",
+	stashError = "물건을 창고에 보관하는데 실패하였습니다.",
 
 	-- ITEM INTERACTION TRANSLATION
 	Unequip = "장착 해제",

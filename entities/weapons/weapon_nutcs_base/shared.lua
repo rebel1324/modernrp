@@ -228,7 +228,7 @@ if (CLIENT) then
 
 		bobPos[1] = -sin(curStep/2)*vel
 		bobPos[2] = sin(curStep/4)*vel*1.5
-		bobPos[3] = sin(curStep)/1.5*vel - clamp(vel, 0, 1)*2
+		bobPos[3] = sin(curStep)/1.5*vel - clamp(vel, 0, 1)*5
 		restPos[3] = sin(CT*2)*4
 		restPos[1] = cos(CT*1)*3
 

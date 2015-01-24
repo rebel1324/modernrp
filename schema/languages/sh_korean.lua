@@ -79,6 +79,8 @@ LANGUAGE = {
 	stashIn = "보관",
 	stashOut = "꺼내기",
 	stashError = "물건을 창고에 보관하는데 실패하였습니다.",
+	stashMenu = "창고 메뉴",
+	stashDesc = "당신의 아이템을 이곳에 안전히 보관할 수 있습니다.",
 
 	-- ITEM INTERACTION TRANSLATION
 	Unequip = "장착 해제",

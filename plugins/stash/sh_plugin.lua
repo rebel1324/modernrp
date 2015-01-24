@@ -8,9 +8,11 @@ local langkey = "english"
 do
 	local langTable = {
 		stash = "Stash",
+		stashMenu = "Stash Menu",
 		stashIn = "Store Item",
 		stashOut = "Pick Item",
-		stashError = "An error occured while processing stash trasfer"
+		stashError = "An error occured while processing stash trasfer",
+		stashDesc = "You can store your items safe in here",
 	}
 
 	table.Merge(nut.lang.stored[langkey], langTable)
@@ -103,7 +105,7 @@ if (SERVER) then
 		if (item) then
 			local clientStash = char:getStash()
 
-			if (clientStash[itemID] or item:getOwner() != client) then
+			if (item.base == "base_bags" or clientStash[itemID] or item:getOwner() != client) then
 				client:notify(L("stashError", client))
 				return
 			end

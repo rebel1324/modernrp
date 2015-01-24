@@ -90,8 +90,8 @@ nut.command.add("banktransfer", {
 
 				if (amount and isnumber(amount) and amount > 0 and char) then
 					if (char:hasReserve(amount)) then
-						tChar:addReserve(amount)
-						char:takeReserve(amount + amount*.05)
+						tChar:addReserve(amount*.95)
+						char:takeReserve(amount)
 					end
 				else
 					client:notify(L("provideValidNumber", client))

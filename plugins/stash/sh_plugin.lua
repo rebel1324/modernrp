@@ -58,12 +58,16 @@ if (SERVER) then
 	end
 
 	function requestStash(client)
-		local stashItems = client:getChar():getData("stashItems", {})
+		local stashItems = client:getChar():getStash()
+		local queryTable = {}
+		for k, v in pairs(stashItems) do
+			table.insert(queryTable, k)
+		end
 
-		nut.item.loadItemByID(table.SortByKey(stashItems), 0, nil)
+		nut.item.loadItemByID(queryTable, 0, nil)
 		for k, v in pairs(stashItems) do
 			local item = nut.item.instances[k]
-
+			print(item)
 			if (item) then
 				netstream.Start(client, "item", item.uniqueID, k, item.data, 0)
 			end

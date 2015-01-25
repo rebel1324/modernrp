@@ -87,12 +87,14 @@ if (SERVER) then
 
 		for k, v in ipairs(ents.FindInSphere(client:GetPos(), 128)) do
 			if (v:GetClass() == "nut_stash") then
-				neatStash = true
+				nearStash = true
+				break
 			end
 		end
 
-		if (!nearStash) then
+		if (nearStash == false) then
 			client:notify(L("stashFar", client))
+			return
 		end
 
 		for k, v in pairs(stashItems) do
@@ -118,8 +120,14 @@ if (SERVER) then
 
 		for k, v in ipairs(ents.FindInSphere(client:GetPos(), 128)) do
 			if (v:GetClass() == "nut_stash") then
-				neatStash = true
+				nearStash = true
+				break
 			end
+		end
+
+		if (nearStash == false) then
+			client:notify(L("stashFar", client))
+			return
 		end
 
 		if (item) then
@@ -148,6 +156,20 @@ if (SERVER) then
 	netstream.Hook("stashOut", function(client, itemID)
 		local char = client:getChar()
 		local item = nut.item.instances[itemID]
+		local nearStash = false
+
+		for k, v in ipairs(ents.FindInSphere(client:GetPos(), 128)) do
+			if (v:GetClass() == "nut_stash") then
+				nearStash = true
+				break
+			end
+		end
+
+		if (nearStash == false) then
+			client:notify(L("stashFar", client))
+			return
+		end
+
 		if (item) then
 			local clientStash = char:getStash()
 

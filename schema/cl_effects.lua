@@ -208,3 +208,99 @@ function EFFECT:Init( data )
 end
 
 effects.Register( EFFECT, "btImpact" )
+
+
+local EFFECT = {}
+function EFFECT:Init( data ) 
+	self:SetNoDraw(true)
+	local pos = data:GetOrigin()
+	local dir = data:GetNormal()
+	local scale = data:GetScale() or 1
+	WORLDEMITTER = WORLDEMITTER or ParticleEmitter(Vector(0, 0, 0))
+	self.emitter = WORLDEMITTER
+	local scol = 55
+
+	local dang = dir:Angle()
+	local a1= dang:Forward()
+	local smi = 2
+	dang:RotateAroundAxis(a1, math.random(10, 40))
+
+	for i = 0, smi do
+		dang:RotateAroundAxis(a1, 360/smi)
+
+		local smoke = self.emitter:Add( "particle/smokesprites_000"..math.random(1,9), pos + VectorRand()*10)
+		smoke:SetVelocity(dang:Right()*math.random(250, 290)*scale)
+		smoke:SetDieTime(math.Rand(.2,.4))
+		smoke:SetStartAlpha(math.Rand(188,211))
+		smoke:SetEndAlpha(0)
+		smoke:SetStartSize(math.random(0,5)*scale)
+		smoke:SetEndSize(math.random(55,66)*scale)
+		smoke:SetRoll(math.Rand(180,480))
+		smoke:SetRollDelta(math.Rand(-3,3))
+		smoke:SetColor(scol, scol, scol)
+		smoke:SetGravity( Vector( 0, 0, 20 ) )
+		smoke:SetAirResistance(450)
+	end
+
+	local spi = 8 * math.max(scale, .5) * math.Rand(.8, 1)
+	for i = 0, spi do
+		local mid = (math.max(spi, spi/2)/spi)
+		local dang = dir:Angle()
+		local a1, a2, a3 = dang:Right(), dang:Up(), dang:Forward()
+		dang:RotateAroundAxis(a1, math.random(-66, 66))
+		dang:RotateAroundAxis(a2, math.random(-66, 66))
+
+		local adf = dang:Forward()
+		local dt = a3:Dot(adf)
+		local smoke = self.emitter:Add( "effects/yellowflare", pos + VectorRand()*1)
+		smoke:SetVelocity(adf*math.random(444, 666)*scale*mid*dt)
+		smoke:SetDieTime(math.Rand(.1,.3))
+		smoke:SetStartAlpha(255)
+		smoke:SetEndAlpha(0)
+		smoke:SetEndLength(math.random(1, 2)*mid*dt)
+		smoke:SetStartLength(math.random(8, 16)*dt)
+		smoke:SetStartSize(math.random(8,12)*scale)
+		smoke:SetEndSize(0)
+		smoke:SetGravity(Vector(0, 0, -600)*1)
+	end
+
+	spi = 2 * math.max(scale, .5) * math.Rand(.8, 1)
+	for i = 0, spi do
+		local mid = (math.max(spi, spi/2)/spi)
+		local dang = dir:Angle()
+		local a1, a2, a3 = dang:Right(), dang:Up(), dang:Forward()
+		dang:RotateAroundAxis(a1, math.random(-66, 66))
+		dang:RotateAroundAxis(a2, math.random(-66, 66))
+
+		local adf = dang:Forward()
+		local dt = a3:Dot(adf)
+		local smoke = self.emitter:Add( "effects/yellowflare", pos + VectorRand()*1)
+		smoke:SetVelocity(adf*math.random(222, 444)*scale*mid*dt)
+		smoke:SetDieTime(math.Rand(.5,1))
+		smoke:SetStartAlpha(255)
+		smoke:SetEndAlpha(0)
+		smoke:SetCollide(true)
+		smoke:SetEndLength(math.random(1, 2)*mid*dt)
+		smoke:SetStartLength(math.random(8, 16)*dt)
+		smoke:SetStartSize(math.random(5,11)*scale)
+		smoke:SetEndSize(0)
+		smoke:SetGravity(Vector(0, 0, -600)*1)
+	end
+
+	local smoke = self.emitter:Add( "particle/Particle_Glow_04_Additive", pos + dir * 1)
+	smoke:SetVelocity(dir*400*scale)
+	smoke:SetDieTime(math.Rand(.05,.1))
+	smoke:SetStartAlpha(44)
+	smoke:SetEndAlpha(11)
+	smoke:SetStartSize(math.random(5,8)*scale)
+	smoke:SetEndSize(math.random(44,55)*scale)
+	smoke:SetRoll(math.Rand(180,480))
+	smoke:SetRollDelta(math.Rand(-3,3))
+	smoke:SetGravity(Vector(0, 0, 20))
+	smoke:SetColor(255, 255, 211)
+	smoke:SetAirResistance(250)
+
+	sound.Play("weapons/fx/rics/ric" .. math.random(1, 4) .. ".wav", pos, 50, math.random(90, 110))
+end
+
+effects.Register( EFFECT, "btMetal" )

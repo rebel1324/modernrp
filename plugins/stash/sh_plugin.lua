@@ -35,10 +35,12 @@ if (SERVER) then
 				table.insert(queryTable, k)
 			end
 
+			-- Check all stash items of the character.
 			nut.item.loadItemByID(queryTable, 0, nil)
 			for k, v in pairs(stashItems) do
 				local item = nut.item.instances[k]
 
+				-- Remove all items in stash.
 				if (item) then
 					item:remove()
 				end
@@ -85,6 +87,7 @@ if (SERVER) then
 		local queryTable = {}
 		local nearStash = false
 
+		-- Check if the client is near the stash.
 		for k, v in ipairs(ents.FindInSphere(client:GetPos(), 128)) do
 			if (v:GetClass() == "nut_stash") then
 				nearStash = true
@@ -97,11 +100,15 @@ if (SERVER) then
 			return
 		end
 
+		-- Insert items to load.
 		for k, v in pairs(stashItems) do
 			table.insert(queryTable, k)
 		end
 
+		-- Load item informations.
 		nut.item.loadItemByID(queryTable, 0, nil)
+
+		-- Check if item's information is loaded, if does not, do not load the item.
 		for k, v in pairs(stashItems) do
 			local item = nut.item.instances[k]
 
@@ -110,6 +117,7 @@ if (SERVER) then
 			end
 		end
 
+		-- Send stash menu to the client.
 		netstream.Start(client, "stashMenu", stashItems)
 	end
 
@@ -118,6 +126,7 @@ if (SERVER) then
 		local item = nut.item.instances[itemID]
 		local nearStash = false
 
+		-- Check if the client is near the stash.
 		for k, v in ipairs(ents.FindInSphere(client:GetPos(), 128)) do
 			if (v:GetClass() == "nut_stash") then
 				nearStash = true
@@ -125,23 +134,23 @@ if (SERVER) then
 			end
 		end
 
+		-- If client is far away from the stash, don't do any interaction.
 		if (nearStash == false) then
 			client:notify(L("stashFar", client))
 			return
 		end
 
+		-- If item information is valid.
 		if (item) then
 			local clientStash = char:getStash()
 
+			-- If client is trying to put bag in the stash, reject the request.
 			if (item.base == "base_bags" or clientStash[itemID] or item:getOwner() != client) then
 				client:notify(L("stashError", client))
 				return
 			end
 
-			if (!nearStash) then
-				client:notify(L("stashFar", client))
-			end
-
+			-- Make an attempt to put item into the stash.
 			if (item:transfer(nil, nil, nil, client, nil, true)) then
 				clientStash[itemID] = true
 
@@ -158,6 +167,7 @@ if (SERVER) then
 		local item = nut.item.instances[itemID]
 		local nearStash = false
 
+		-- Check if the client is near the stash.
 		for k, v in ipairs(ents.FindInSphere(client:GetPos(), 128)) do
 			if (v:GetClass() == "nut_stash") then
 				nearStash = true
@@ -165,19 +175,23 @@ if (SERVER) then
 			end
 		end
 
+		-- If client is far away from the stash, don't do any interaction.
 		if (nearStash == false) then
 			client:notify(L("stashFar", client))
 			return
 		end
 
+		-- If item information is valid.
 		if (item) then
 			local clientStash = char:getStash()
 
+			-- If the activator does not owns the item, reject request.
 			if (!clientStash[itemID]) then
 				client:notify(L("stashError", client))
 				return
 			end
 
+			-- Make an attempt to take item from the stash.
 			if (item:transfer(char:getInv():getID(), nil, nil, client)) then
 				clientStash[itemID] = nil
 

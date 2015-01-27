@@ -33,6 +33,7 @@ function SCHEMA:CanPlayerUseBusiness(client, id)
 	return (false)
 end
 
+-- Emit Effects.
 local flesh = {
 	[MAT_FLESH] = 1,
 	[MAT_ALIENFLESH] = 0,

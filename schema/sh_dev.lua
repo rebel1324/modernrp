@@ -163,14 +163,6 @@ nut.command.add("giveitemmenu", {
 	end
 })
 
-nut.command.add("checkmoney", {
-	syntax = "<string name> <string item>",
-	onRun = function(client, arguments)
-		client:notify(nut.currency.get(client:getChar():getMoney()))
-	end
-})
-
-
 if (CLIENT) then
 	local PANEL = {}
 
@@ -227,8 +219,7 @@ if (CLIENT) then
 end
 
 if (CLIENT) then
-	PANEL = {}
-
+PANEL = {}
 AccessorFunc( PANEL, "m_strModel", 		"Model" )
 AccessorFunc( PANEL, "m_pOrigin", 		"Origin" )
 AccessorFunc( PANEL, "m_bCustomIcon", 	"CustomIcon" )

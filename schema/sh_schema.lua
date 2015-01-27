@@ -24,6 +24,10 @@ SCHEMA.helps = {
 }
 
 if (SERVER) then
+	-- http://steamcommunity.com/sharedfiles/filedetails/?id=170149842
+	-- NYPD Male Models
+	resource.AddWorkshop(170149842)
+
 	-- Adding Gasmask Resources
 	resource.AddFile("sound/gasmaskon.wav")
 	resource.AddFile("sound/gasmaskoff.wav")

@@ -3,6 +3,12 @@
 
 nut.screen = nut.screen or {}
 
+-- This function is default unassinged renderscreen for Touch Screen.
+local function defaultRender(scr, ent, wide, tall)
+	draw.RoundedBox(0, 0, 0, wide, tall, Color(255, 0, 0, 255))
+	draw.SimpleText("MISSING RENDERCODE", "ChatFont", wide/2, tall/2, color_white, 1, 1)
+end
+
 -- This function creates new Touchable Screen Object.
 function nut.screen.new(w, h, scale)
 	local screen = setmetatable(
@@ -14,12 +20,11 @@ function nut.screen.new(w, h, scale)
 			scale = scale or 1,
 		}, 
 		FindMetaTable("TouchScreen"))
-	screen.renderCode = function(scr, ent, wide, tall)
-		draw.RoundedBox(0, 0, 0, wide, tall, Color(255, 0, 0, 255))
-		draw.SimpleText("MISSING RENDERCODE", "ChatFont", wide/2, tall/2, color_white, 1, 1)
-	end
+	screen.renderCode = defaultRender
+
 	return screen
 end
+LuaScreen = nut.screen.new
 
 -- The code below is Touchable Screen Metatable function.
 local _R = debug.getregistry()

@@ -19,7 +19,7 @@ function nut.screen.new(w, h, scale)
 			h = h or 100,
 			scale = scale or 1,
 		}, 
-		FindMetaTable("TouchScreen"))
+		{__index = FindMetaTable("TouchScreen")})
 	screen.renderCode = defaultRender
 
 	return screen

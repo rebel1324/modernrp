@@ -24,6 +24,7 @@ function nut.screen.new(w, h, scale)
 
 	return screen
 end
+-- With this, you can create new lua touchscrren with LuaScreen(w, h, scale)
 LuaScreen = nut.screen.new
 
 -- The code below is Touchable Screen Metatable function.
@@ -125,15 +126,15 @@ if (CLIENT) then
 		local wide = self.w * (1 / self.scale)
 		local tall = self.h * (1 / self.scale)
 
-		local up = self.ang:Up()
+		local up = self.ang:Right()
 		local right = self.ang:Forward()
 		local ch = up * self.h * .5
 		local cw = right * self.w * .5
 
 		-- Draw the 3D2D Panel.
 		if (!self.noClipping) then
-			render.PushCustomClipPlane(up, up:Dot( pos-ch ))
-			render.PushCustomClipPlane(-up, (-up):Dot( pos+ch ))
+			render.PushCustomClipPlane(up, up:Dot( pos))
+			render.PushCustomClipPlane(-up, (-up):Dot( pos+ch*2 ))
 			render.PushCustomClipPlane(right, right:Dot( pos ))
 			render.PushCustomClipPlane(-right, (-right):Dot( pos+cw*2 ))
 			render.EnableClipping( true )
@@ -192,7 +193,6 @@ if (CLIENT) then
 	function SCREEN:think()
 		local client = LocalPlayer()
 		local mx, my = self:isAccessible()
-
 		-- If the screen can calculate the Position of the cursor.
 		if mx then
 			-- If the screen can calculate, The screen has the focus.

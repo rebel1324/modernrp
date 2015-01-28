@@ -1,7 +1,10 @@
+-- EXAMPLE MAP ADDRESS
+-- http://www.mediafire.com/download/g3tdrirnczg2t1n/gm_test_v2.bsp
+
 do
 	if (SERVER) then
-		netstream.Hook("feedbackScreen", function()
-
+		netstream.Hook("feedbackScreen", function(client)
+			client:ConCommand("say I read this!")
 		end)
 	else
 		local scrSize = 5
@@ -12,6 +15,7 @@ do
 		SCREEN_1.h = 9*scrSize
 		SCREEN_1.scale = .17
 
+		-- Create Text Markup Object.
 		MRKPOBJ = nut.markup.parse(
 [[
 <font=nutBigFont><color=200, 200, 80>THIS SCREEN IS EXAMPLE WORLD SCREEN</font>
@@ -58,6 +62,11 @@ So, I gotta get back to my army. Good luck, fellas.
 
 			scrollPos = Lerp(FrameTime()*7, scrollPos, scrollTargetPos)
 			MRKPOBJ:draw(15, scrollPos + 10, 3, 2)
+		end
+		SCREEN_1.onMouseClick = function(self, key)
+			if (key) then
+				netstream.Start("feedbackScreen")
+			end
 		end
 
 		hook.Add("Think", "aaoa", function()

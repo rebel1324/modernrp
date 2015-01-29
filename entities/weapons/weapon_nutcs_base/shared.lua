@@ -221,7 +221,8 @@ if (CLIENT) then
 		local DIFFB = ((1 - DIFF)*.05)
 
 		posOutput = Vector(0, 0, 0)
-		curStep = curStep + (vel/math.pi) * (FT * 10)
+		--curStep = curStep + (vel/math.pi) * (FT * 10)
+		curStep = CT * ((vel < .5) and 5 or 15)
 		local ws = owner:GetWalkSpeed()
 		
 		self.ironMul = int(.1, self.ironMul, (!self.Owner:OnGround()) and (!self.Owner:OnGround() and 0 or .1) or 1)

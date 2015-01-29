@@ -2,7 +2,7 @@ local PLUGIN = PLUGIN
 PLUGIN.name = "Bad Air"
 PLUGIN.author = "Black Tea"
 PLUGIN.desc = "Fuck the air mate."
-PLUGIN.toxicAreas = {}
+PLUGIN.toxicAreas = PLUGIN.toxicAreas or {}
 
 DEFAULT_GASMASK_HEALTH = 100
 DEFAULT_GASMASK_FILTER = 600
@@ -89,6 +89,24 @@ if (CLIENT) then
 		addCrack()
 	end)
 else
+	-- gets two vector and gives min and max vector for Vector:WithinAA(min, max)
+	local function sortVector(vector1, vector2)
+		local minVector = Vector(0, 0, 0)
+		local maxVector = Vector(0, 0, 0)
+
+		for i = 1, 3 do
+			if (vector1[i] >= vector2[i]) then
+				maxVector[i] = vector1[i]
+				minVector[i] = vector2[i]
+			else
+				maxVector[i] = vector2[i]
+				minVector[i] = vector1[i]
+			end
+		end
+
+		return minVector, maxVector
+	end
+
 	nut.badair = nut.badair or {}
 
 	-- get all bad air area.
@@ -98,9 +116,12 @@ else
 
 	-- Add toxic bad air area.
 	function nut.badair.addArea(vMin, vMax)
-		vMin, vMax = OrderVectors(vMin, vMax)
+		print(vMin, vMax)
+		vMin, vMax = sortVector(vMin, vMax)
 
-		table.insert(PLUGIN.toxicAreas, vMin, vMax)
+		if (vMin and vMax) then
+			table.insert(PLUGIN.toxicAreas, {vMin, vMax})
+		end
 	end
 
 	-- This hook simulates the damage of the Gas Mask.
@@ -133,21 +154,31 @@ else
 	end
 
 	-- This timer does the effect of bad air.
-	timer.Create("badairTick", 1.5, 0, function()
+	timer.Create("badairTick", 1, 0, function()
 		for _, client in ipairs(player.GetAll()) do
+			local char = client:getChar()
 			local clientPos = client:GetPos() + client:OBBCenter()
 			client.currentArea = nil
 
-			for index, vec in ipairs(nut.badair.getAll()) do
+			for index, vec in ipairs((nut.badair.getAll() or {})) do
 				if (clientPos:WithinAABox(vec[1], vec[2])) then
-					-- alive and check filter
 					if (client:IsAdmin()) then
 						client.currentArea = index
 					end
 
-					if (client:Alive()) then
-						client:TakeDamage(3)
-						client:ScreenFade(1, color_white, 1, 0)
+					if (client:Alive() and char) then
+						local gasFilter = char:getVar("gasMaskFilter")
+						local gasHealth = char:getVar("gasMaskHealth")
+						local bool = (gasFilter and gasHealth) and (gasFilter > 0 and gasHealth > 0)
+
+						if (bool) then
+							char:setVar("gasMaskFilter", math.min(gasFilter - 1, 0))
+						else
+							client:TakeDamage(3)
+							client:ScreenFade(1, ColorAlpha(color_white, 100), .5, 0)
+						end		
+
+						break
 					end
 				end
 			end
@@ -190,21 +221,20 @@ nut.command.add("badairadd", {
 	syntax = "",
 	onRun = function(client, arguments)
 		local pos = client:GetEyeTraceNoCursor().HitPos
-		
+
 		if (!client:getNetVar("badairMin")) then
 			netstream.Start(client, "displayPosition", pos)
 
 			client:setNetVar("badairMin", pos, client)
 			client:notify(L("badairCommand", client))
 		else
-			local data = {}
 			local vMin = client:getNetVar("badairMin")
 			local vMax = pos
 
 			netstream.Start(client, "displayPosition", pos)
-			client:setNetVar("badairMin", nil, client)
 			nut.badair.addArea(vMin, vMax)
 
+			client:setNetVar("badairMin", nil, client)
 			client:notify(L("badairAdded", client))
 		end
 	end

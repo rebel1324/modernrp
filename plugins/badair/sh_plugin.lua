@@ -2,6 +2,7 @@ local PLUGIN = PLUGIN
 PLUGIN.name = "Bad Air"
 PLUGIN.author = "Black Tea"
 PLUGIN.desc = "Fuck the air mate."
+PLUGIN.toxicAreas = {}
 
 DEFAULT_GASMASK_HEALTH = 100
 DEFAULT_GASMASK_FILTER = 600
@@ -88,6 +89,20 @@ if (CLIENT) then
 		addCrack()
 	end)
 else
+	nut.badair = nut.badair or {}
+
+	-- get all bad air area.
+	function nut.badair.getAll()
+		return PLUGIN.toxicAreas
+	end
+
+	-- Add toxic bad air area.
+	function nut.badair.addArea(vMin, vMax)
+		vMin, vMax = OrderVectors(vMin, vMax)
+
+		table.insert(PLUGIN.toxicAreas, vMin, vMax)
+	end
+
 	-- This hook simulates the damage of the Gas Mask.
 	function PLUGIN:EntityTakeDamage(client, dmgInfo)
 		if (client and client:IsPlayer()) then
@@ -109,21 +124,57 @@ else
 		end
 	end
 
-	-- Generate Bad airs
-	function PLUGIN:Think()
-		-- Insert bad air detection
+	function PLUGIN:SaveData()
+		self:setData(nut.badair.getAll())
 	end
+	
+	function PLUGIN:LoadData()
+		PLUGIN.toxicAreas = self:getData()
+	end
+
+	-- This timer does the effect of bad air.
+	timer.Create("badairTick", 1.5, 0, function()
+		for _, client in ipairs(player.GetAll()) do
+			local clientPos = client:GetPos() + client:OBBCenter()
+			client.currentArea = nil
+
+			for index, vec in ipairs(nut.badair.getAll()) do
+				if (clientPos:WithinAABox(vec[1], vec[2])) then
+					-- alive and check filter
+					if (client:IsAdmin()) then
+						client.currentArea = index
+					end
+
+					if (client:Alive()) then
+						client:TakeDamage(3)
+						client:ScreenFade(1, color_white, 1, 0)
+					end
+				end
+			end
+		end
+	end)
+
+	netstream.Start("addArea", function(client, v1, v2)
+		if (!client:IsAdmin()) then
+			client:notify("no permission")	
+		end
+
+		client:notify("added new toxic area")
+		nut.badair.addArea(v1, v2)
+	end)
 end
 
 -- This hook is for my other plugin, "Grenade" Plugin.
 function PLUGIN:CanPlayerTearGassed(client)
 	local char = client:getChar()
+
 	return (!char:getVar("gasMask") or char:getVar("gasMaskHealth") <= 0)
 end
 
 -- If the player is wearing Gas Mask, His some voice should be muffled a bit.
 function PLUGIN:EntityEmitSound(sndTable)
 	local ent = sndTable.Entity
+
 	if (ent and IsValid(ent) and ent:IsPlayer() and ent:getChar() and ent:getChar():getVar("gasMask")) then
 		local sndName = sndTable.SoundName:lower()
 		
@@ -138,13 +189,34 @@ end
 nut.command.add("badairadd", {
 	syntax = "",
 	onRun = function(client, arguments)
+		local pos = client:GetEyeTraceNoCursor().HitPos
 		
+		if (!client:getNetVar("badairMin")) then
+			netstream.Start(client, "displayPosition", pos)
+
+			client:setNetVar("badairMin", pos, client)
+			client:notify(L("badairCommand", client))
+		else
+			local data = {}
+			local vMin = client:getNetVar("badairMin")
+			local vMax = pos
+
+			netstream.Start(client, "displayPosition", pos)
+			client:setNetVar("badairMin", nil, client)
+			nut.badair.addArea(vMin, vMax)
+
+			client:notify(L("badairAdded", client))
+		end
 	end
 })
 
 nut.command.add("badairremove", {
 	syntax = "",
 	onRun = function(client, arguments)
+		if (client.currentArea) then
+			client:notify(L("badairRemove", client))
 
+			table.remove(PLUGIN.toxicAreas, client.currentArea)	
+		end
 	end
 })

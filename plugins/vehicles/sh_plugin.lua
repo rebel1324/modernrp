@@ -7,8 +7,9 @@ PLUGIN.desc = [[Vehicle Item Plugin with pretty good compatibility.
 
 -- Vehicle Plugin Tutorial is here.
 -- https://docs.google.com/document/d/1m-9H4MCWo4Fgvg9rw9WRIrPXkTpmFaVqldycQiXx8TQ/edit?usp=sharing
--- Vehicle Plugin Development is pending until Chessnut Fix the Vehicle Problem.
 -- This is how initialize Language in Single File.
+-- TODO: Vehicle should not be in the bag.
+
 local langkey = "english"
 do
 	local langTable = {

@@ -45,12 +45,19 @@ function ITEM:getDesc()
 	
 	if (!self.entity or !IsValid(self.entity)) then
 		local health = self:getData("health", DEFAULT_GASMASK_HEALTH)
+		local filter = self:getData("filter", DEFAULT_GASMASK_HEALTH)
 		str = defaultDesc
 
 		if (health <= 0) then
 			str = str .. "\nThis mask is broken."
 		elseif (health < DEFAULT_GASMASK_HEALTH * .2) then
 			str = str .. "\nThis mask is barely functional."
+		end
+
+		if (filter <= 0) then
+			str = str .. "\nThis mask's filter is not functional."
+		elseif (filter < DEFAULT_GASMASK_FILTER * .3) then
+			str = str .. "\nThis mask's filter is barely functional."
 		end
 
 		return str
@@ -149,7 +156,7 @@ end)
 
 ITEM.functions.EquipUn = { -- sorry, for name order.
 	name = "Unequip",
-	tip = "equipTip",
+	tip = "unequipTip",
 	icon = "icon16/cross.png",
 	onRun = function(item)
 		local char = item.player:getChar()
@@ -210,6 +217,42 @@ ITEM.functions.Equip = {
 	end,
 	onCanRun = function(item)
 		return (!IsValid(item.entity) and item:getData("equip") != true)
+	end
+}
+
+ITEM.functions.Filter = {
+	name = "Change Filter",
+	tip = "filterTip",
+	icon = "icon16/wrench.png",
+	onRun = function(item)
+		local char = item.player:getChar()
+		local inv = char:getInv()
+		local filterItem 
+
+		for k, v in pairs(inv:getItems()) do
+			if (v.uniqueID == "gasmfilter") then
+				filterItem = v
+			end
+		end
+
+		if (filterItem) then
+			filterItem:remove()
+
+			if (item:getData("equip")) then
+				char:setVar("gasMaskFilter", DEFAULT_GASMASK_FILTER)
+			end
+
+			item:setData("filter", DEFAULT_GASMASK_FILTER)
+			item.player:notify(L("gmskFilter", item.player))
+			item.player:EmitSound("gasmaskon.wav", 80)
+		else
+			item.player:notify(L("gmskNeedFilter", item.player))
+		end
+
+		return false
+	end,
+	onCanRun = function(item)
+		return (!IsValid(item.entity))
 	end
 }
 

@@ -7,6 +7,21 @@ PLUGIN.toxicAreas = PLUGIN.toxicAreas or {}
 DEFAULT_GASMASK_HEALTH = 100
 DEFAULT_GASMASK_FILTER = 600
 
+local langkey = "english"
+do
+	local langTable = {
+		gmskNeedFilter = "You don't have any filter to exchange.",
+		gmskFilter = "You exchanged the filter.",
+		badairAdded = "You added new Toxic Air Area",
+		badairCommand = "Run the command again at a different position to set a maximum point.",
+		badairRemoved = "Toxic Air Area is removed.",
+		badairBeArea = "You need to be in Toxic Air Area to remove.",
+		filterTip = "Changes the filter to make it functional again.",
+	}
+
+	table.Merge(nut.lang.stored[langkey], langTable)
+end
+
 if (CLIENT) then
 	local gasmaskTexture2 = Material("gasmask_fnl")
 	local gasmaskTexture = Material("shtr_01")
@@ -116,7 +131,6 @@ else
 
 	-- Add toxic bad air area.
 	function nut.badair.addArea(vMin, vMax)
-		print(vMin, vMax)
 		vMin, vMax = sortVector(vMin, vMax)
 
 		if (vMin and vMax) then
@@ -172,7 +186,7 @@ else
 						local bool = (gasFilter and gasHealth) and (gasFilter > 0 and gasHealth > 0)
 
 						if (bool) then
-							char:setVar("gasMaskFilter", math.min(gasFilter - 1, 0))
+							char:setVar("gasMaskFilter", math.max(gasFilter - 1, 0))
 						else
 							client:TakeDamage(3)
 							client:ScreenFade(1, ColorAlpha(color_white, 100), .5, 0)
@@ -187,10 +201,10 @@ else
 
 	netstream.Start("addArea", function(client, v1, v2)
 		if (!client:IsAdmin()) then
-			client:notify("no permission")	
+			client:notify(L("notAllowed", client))
 		end
 
-		client:notify("added new toxic area")
+		client:notify(L("badairAdded", client))
 		nut.badair.addArea(v1, v2)
 	end)
 end
@@ -219,6 +233,7 @@ end
 
 nut.command.add("badairadd", {
 	syntax = "",
+	adminOnly = true,
 	onRun = function(client, arguments)
 		local pos = client:GetEyeTraceNoCursor().HitPos
 
@@ -242,11 +257,14 @@ nut.command.add("badairadd", {
 
 nut.command.add("badairremove", {
 	syntax = "",
+	adminOnly = true,
 	onRun = function(client, arguments)
 		if (client.currentArea) then
-			client:notify(L("badairRemove", client))
+			client:notify(L("badairRemoved", client))
 
 			table.remove(PLUGIN.toxicAreas, client.currentArea)	
+		else
+			client:notify(L("badairBeArea", client))
 		end
 	end
 })

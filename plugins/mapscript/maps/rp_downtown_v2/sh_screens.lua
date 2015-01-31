@@ -91,7 +91,6 @@ else
 		local gradient = nut.util.getMaterial("vgui/gradient-d")
 		local gradient2 = nut.util.getMaterial("vgui/gradient-u")
 		SCREEN_1.renderCode = function(scr, ent, wide, tall)
-			SCREEN_1.ang = Angle(WEAPONFACTORY_ANG[1], WEAPONFACTORY_ANG[2], WEAPONFACTORY_ANG[3])
 			draw.RoundedBox(0, 0, 0, wide, tall, Color(50, 50, 50))
 
 			local wm = wide/10
@@ -143,8 +142,6 @@ else
 		end
 
 		SCREEN_2.renderCode = function(scr, ent, wide, tall)
-			SCREEN_2.ang = Angle(JAILMANAGER_ANG[1], JAILMANAGER_ANG[2], JAILMANAGER_ANG[3])
-
 			local btnTall = tall*.1
 			local btnMargin = 10
 			local drawPos = (tall/2) - (btnTall*3 - btnMargin*3)
@@ -185,7 +182,10 @@ else
 
 	hook.Add("Think", "aaoa", function()
 		if (LocalPlayer():getChar()) then
+			SCREEN_1.ang = Angle(WEAPONFACTORY_ANG[1], WEAPONFACTORY_ANG[2], WEAPONFACTORY_ANG[3])
 			SCREEN_1:think()
+			
+			SCREEN_2.ang = Angle(JAILMANAGER_ANG[1], JAILMANAGER_ANG[2], JAILMANAGER_ANG[3])
 			SCREEN_2:think()
 		end
 	end)

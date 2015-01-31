@@ -16,7 +16,8 @@ do
 		SCREEN_1.scale = .17
 
 		-- Create Text Markup Object.
-		MRKPOBJ = nut.markup.parse(
+		timer.Simple(1, function()
+			MRKPOBJ = nut.markup.parse(
 [[
 <font=nutBigFont><color=200, 200, 80>THIS SCREEN IS EXAMPLE WORLD SCREEN</font>
 <font=nutMediumFont>This screen example created by the Black Tea za rebel1324</color>
@@ -41,13 +42,13 @@ I didn't made some kind of scroller but hey, it works :DD
 So, I gotta get back to my army. Good luck, fellas.
 <color=80, 255, 80>Cheers for very good schema of NutScript 1.1.</color>
 ]]
-		, SCREEN_1:getWide() - 20)
+			, SCREEN_1:getWide() - 20)
+		end)
 
 		local scrollAmount
 		local scrollPos = 0
 		local scrollTargetPos
 		SCREEN_1.renderCode = function(scr, ent, wide, tall)
-			SCREEN_1.ang = Angle(180, 0, 180)
 			draw.RoundedBox(0, 0, 0, wide, tall, Color(0, 0, 0, 150))
 
 			scrollAmount = math.max(MRKPOBJ:getHeight() - tall + 20, 0)
@@ -61,7 +62,9 @@ So, I gotta get back to my army. Good luck, fellas.
 			end
 
 			scrollPos = Lerp(FrameTime()*7, scrollPos, scrollTargetPos)
-			MRKPOBJ:draw(15, scrollPos + 10, 3, 2)
+			if (MRKPOBJ) then
+				MRKPOBJ:draw(15, scrollPos + 10, 3, 2)
+			end
 		end
 		SCREEN_1.onMouseClick = function(self, key)
 			if (key) then
@@ -70,6 +73,7 @@ So, I gotta get back to my army. Good luck, fellas.
 		end
 
 		hook.Add("Think", "aaoa", function()
+			SCREEN_1.ang = Angle(180, 0, 180)
 			SCREEN_1:think()
 		end)
 		

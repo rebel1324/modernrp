@@ -10,6 +10,7 @@ do
 		local scrSize = 5
 		SCREEN_1 = SCREEN_1 or LuaScreen()
 		SCREEN_1.pos = Vector(623.968750, -176.183197, 335.747162)
+		SCREEN_1.ang = Angle(180, 0, 180)
 		SCREEN_1.noClipping = false
 		SCREEN_1.w = 16*scrSize
 		SCREEN_1.h = 9*scrSize
@@ -73,7 +74,6 @@ So, I gotta get back to my army. Good luck, fellas.
 		end
 
 		hook.Add("Think", "aaoa", function()
-			SCREEN_1.ang = Angle(180, 0, 180)
 			SCREEN_1:think()
 		end)
 		

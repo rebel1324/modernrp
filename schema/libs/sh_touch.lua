@@ -112,7 +112,7 @@ if (CLIENT) then
 
 		-- If the screen is reversed from your view, do not draw the screen.
 		if (scrDir:DotProduct(ang:Forward()) < 0) then
-			--return
+			return
 		end
 
 		-- Shift the position little bit.

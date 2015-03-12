@@ -19,7 +19,7 @@ do
 	table.Merge(nut.lang.stored[langkey], langTable)
 end
 
-local charMeta = FindMetaTable("Character")
+local charMeta = nut.meta.character
 
 function charMeta:getStash()
 	return self:getData("stash", {})

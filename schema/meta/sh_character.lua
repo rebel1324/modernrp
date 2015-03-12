@@ -1,4 +1,4 @@
-local CHAR = FindMetaTable("Character")
+local CHAR = nut.meta.character
 
 function CHAR:getReserve()
 	return self:getData("reserve", 0)

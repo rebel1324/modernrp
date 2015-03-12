@@ -14,7 +14,7 @@ end
 
 nut.util.include("sh_recipes.lua")
 
-local inventoryMeta = FindMetaTable("Inventory")
+local inventoryMeta = nut.meta.inventory
 local playerMeta = FindMetaTable("Player")
 local entityMeta = FindMetaTable("Entity")
 

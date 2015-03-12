@@ -4,7 +4,7 @@ PLUGIN.author = "Black Tea"
 PLUGIN.desc = "You can make the groups."
 
 -- make it like lib.
-local charMeta = FindMetaTable("Character")
+local charMeta = nut.meta.character
 nut.group = nut.group or {}
 nut.group.list = nut.group.list or {}
 
